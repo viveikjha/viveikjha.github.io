@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* Existing CSS styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  padding: 20px;
+  background-color: #333;
+  color: #fff;
+  margin: 0;
+}
+
+.gallery-container {
+  column-count: 3;
+  column-gap: 0;
+}
+
+.gallery-item {
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  background-color: rgba(0,0,0,0.8); 
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.close {
+  position: fixed;
+  top: 20px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+}
+
+@media screen and (max-width: 800px) {
+  .gallery-container {
+    column-count: 2;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .gallery-container {
+    column-count: 1;
+  }
+}
+</style>
+</head>
+<body>
+
+<h1>Gallery</h1>
+
+<div class="gallery-container">
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/naini3_thumb.jpg" data-fullsrc="gallery/naini3.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kerala4_thumb.jpg" data-fullsrc="gallery/kerala4.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kodai1_thumb.jpg" data-fullsrc="gallery/kodai1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/mizo3_thumb.jpg" data-fullsrc="gallery/mizo3.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/assam2_thumb.jpg" data-fullsrc="gallery/assam2.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kerala6_thumb.jpg" data-fullsrc="gallery/kerala6.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/naini1_thumb.jpg" data-fullsrc="gallery/naini1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/tvm1_thumb.jpg" data-fullsrc="gallery/tvm1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kodai3_thumb.jpg" data-fullsrc="gallery/kodai3.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kerala1_thumb.jpg" data-fullsrc="gallery/kerala1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/mizo1_thumb.jpg" data-fullsrc="gallery/mizo1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kodai2_thumb.jpg" data-fullsrc="gallery/kodai2.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/haridwar1_thumb.jpg" data-fullsrc="gallery/haridwar1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/mizo4_thumb.jpg" data-fullsrc="gallery/mizo4.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/agra1_thumb.jpg" data-fullsrc="gallery/agra1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kodai4_thumb.jpg" data-fullsrc="gallery/kodai4.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kerala2_thumb.jpg" data-fullsrc="gallery/kerala2.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/naini4_thumb.jpg" data-fullsrc="gallery/naini4.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/pondi1_thumb.jpg" data-fullsrc="gallery/pondi1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kodai5_thumb.jpg" data-fullsrc="gallery/kodai5.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/assam1_thumb.jpg" data-fullsrc="gallery/assam1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/mizo2_thumb.jpg" data-fullsrc="gallery/mizo2.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kerala5_thumb.jpg" data-fullsrc="gallery/kerala5.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/naini2_thumb.jpg" data-fullsrc="gallery/naini2.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kerala3_thumb.jpg" data-fullsrc="gallery/kerala3.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kerala1_thumb.jpg" data-fullsrc="gallery/kerala1.jpg" alt="Image" onclick="openModal(this)">
+  </div>
+  <div class="gallery-item">
+    <img src="gallery/thumbnails/kohima1_thumb.jpg" data-fullsrc="gallery/kohima1.jpg" alt="Image" onclick="openModal(this)">
+</div>
+<div class="gallery-item">
+    <img src="gallery/thumbnails/manali1_thumb.jpg" data-fullsrc="gallery/manali1.jpg" alt="Image" onclick="openModal(this)">
+</div>
+<div class="gallery-item">
+    <img src="gallery/thumbnails/manali2_thumb.jpg" data-fullsrc="gallery/manali2.jpg" alt="Image" onclick="openModal(this)">
+</div>
+<div class="gallery-item">
+    <img src="gallery/thumbnails/manali3_thumb.jpg" data-fullsrc="gallery/manali3.jpg" alt="Image" onclick="openModal(this)">
+</div>
+<div class="gallery-item">
+    <img src="gallery/thumbnails/manali4_thumb.jpg" data-fullsrc="gallery/manali4.jpg" alt="Image" onclick="openModal(this)">
+</div>
+<div class="gallery-item">
+    <img src="gallery/thumbnails/manali5_thumb.jpg" data-fullsrc="gallery/manali5.jpg" alt="Image" onclick="openModal(this)">
+</div>
+<div class="gallery-item">
+    <img src="gallery/thumbnails/vill1_thumb.jpg" data-fullsrc="gallery/vill1.jpeg" alt="Image" onclick="openModal(this)">
+</div>
+
+
+
+
+
+</div>
+
+<div id="myModal" class="modal" onclick="closeModal(event)">
+  <span class="close" onclick="closeModal(event)">&times;</span>
+  <img class="modal-content" id="img01">
+</div>
+
+<script>
+function openModal(element) {
+  var modal = document.getElementById("myModal");
+  var modalImg = document.getElementById("img01");
+  modal.style.display = "flex";
+  modalImg.src = element.getAttribute('data-fullsrc');
+  document.addEventListener('keydown', escFunction);
+}
+
+function closeModal(event) {
+  if (event.target === event.currentTarget || event.target.className === 'close') {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+    document.removeEventListener('keydown', escFunction);
+  }
+}
+
+function escFunction(event) {
+  if (event.key === "Escape") {
+    closeModal({target: document.getElementById("myModal"), currentTarget: document.getElementById("myModal")});
+  }
+}
+</script>
+
+</body>
+</html>
