@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGN Review Papers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f43f5e;
+            --text-light: #f9fafb;
+            --text-dark: #1f2937;
+            --bg-card: rgba(255, 255, 255, 0.1);
+            --bg-glass: rgba(10, 10, 40, 0.85);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('back_list.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 1rem;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: var(--bg-glass);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-header {
+            padding: 1.5rem 1.5rem 0.75rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .card-footer {
+            padding: 0.75rem 1.5rem 1.5rem;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-footer p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .card-footer strong {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 6px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .card-link:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .card-link i {
+            margin-left: 0.5rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3rem;
+            height: 3rem;
+            background: var(--primary);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+        }
+
+        .timeline-container {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            padding: 1rem 0;
+            width: 100%;
+            margin: 0 auto 2rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(15px);
+            overflow-x: auto;
+            display: flex;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-content {
+            display: flex;
+            padding: 0 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .timeline-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 1rem;
+            min-width: 60px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .timeline-node span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-node::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .timeline-node:hover::after {
+            transform: scale(1.3);
+            background: var(--secondary);
+        }
+
+        .timeline-node::before {
+            content: '';
+            position: absolute;
+            width: calc(100% + 2rem);
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            top: 26px;
+            left: calc(50% + 6px);
+            z-index: -1;
+        }
+
+        .timeline-node:last-child::before {
+            display: none;
+        }
+
+        .year-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 16px;
+            border-left: 4px solid var(--secondary);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .year-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            display: inline-block;
+        }
+
+        .year-title::after {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 3px;
+            background: var(--secondary);
+            bottom: -5px;
+            left: 0;
+        }
+
+        .year-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .year-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <header>
+        <h1>AGN Review Papers</h1>
+        <p class="subtitle">A curated collection of important review papers on Active Galactic Nuclei</p>
+    </header>
+
+    <div class="timeline-container">
+        <div class="timeline-content" id="timelineContent">
+            <!-- Timeline nodes will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <div class="container" id="papersContainer">
+        <!-- Papers will be organized by year sections via JavaScript -->
+    </div>
+
+    <button class="back-to-top" id="backToTopBtn">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('papersContainer');
+            const timelineContent = document.getElementById('timelineContent');
+            
+            // Paper data - this could be moved to a separate JSON file
+            const papers = [
+                {
+                    title: "The emission lines of quasars and similar objects",
+                    authors: "Kris Davidson, Hagai Netzer",
+                    year: "1979",
+                    journal: "Reviews of Modern Physics",
+                    link: "https://core.ac.uk/download/pdf/211333388.pdf"
+                },
+                {
+                    title: "An introduction to active galactic nuclei: Classification and unification",
+                    authors: "Clive Tadhunter",
+                    year: "2008",
+                    journal: "New Astronomy Reviews",
+                    link: "https://www.sciencedirect.com/science/article/pii/S1387647308001012"
+                },
+                {
+                    title: "Active Galactic Nuclei at All Wavelengths and from All Angles",
+                    authors: "Not listed",
+                    year: "2017",
+                    journal: "Frontiers in Astronomy and Space Sciences",
+                    link: "https://www.frontiersin.org/articles/10.3389/fspas.2017.00035/full"
+                },
+                {
+                    title: "Broad spectral lines in AGNs and supermassive black hole mass measurements",
+                    authors: "Luka Č. Popović",
+                    year: "2020",
+                    journal: "Open Astronomy",
+                    link: "https://www.degruyter.com/document/doi/10.1515/astro-2020-0003/html?lang=en&srsltid=AfmBOooYVDSRncjZN5f6xdtAl5n3mgVbJRiSgCOpg3Jc2cy8QAd8naUE"
+                },
+                {
+                    title: "Revisiting the Unified Model of Active Galactic Nuclei",
+                    authors: "Hagai Netzer",
+                    year: "2015",
+                    journal: "Annual Review of Astronomy and Astrophysics",
+                    link: "https://www.annualreviews.org/content/journals/10.1146/annurev-astro-082214-122302"
+                },
+                
+                {
+                title: "Active Galactic Nuclei: what's in a name?",
+                authors: "P. Padovani, D. M. Alexander, R. J. Assef, B. De Marco, P. Giommi, R. C. Hickox, G. T. Richards, V. Smolčić, E. Hatziminaoglou, V. Mainieri & M. Salvato",
+                year: "2017",
+                journal: "The Astronomy and Astrophysics Review",
+                link: "https://link.springer.com/article/10.1007/s00159-017-0102-9"
+            },
+            {
+                title: "Unified Schemes for Radio-Loud Active Galactic Nuclei",
+                authors: "Urry, C. Megan and Padovani, Paolo",
+                year: "1995",
+                journal: "Publications of the Astronomical Society of the Pacific (PASP)",
+                link: "https://ui.adsabs.harvard.edu/abs/1995PASP..107..803U/abstract"
+            },
+            {
+                title: "Obscured Active Galactic Nuclei",
+                authors: "Ryan C. Hickox, and David M. Alexander",
+                year: "2018",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://www.annualreviews.org/doi/abs/10.1146/annurev-astro-081817-051803"
+            },
+            {
+                title: "A panchromatic review of thermal and nonthermal active galactic nuclei",
+                authors: "Antonucci, R.",
+                year: "2012",
+                journal: "Astronomical & Astrophysical Transactions (A&AT)",
+                link: "https://ui.adsabs.harvard.edu/abs/2012A%26AT...27..557A/abstract"
+            },
+            {
+                title: "A panchromatic view of AGN",
+                authors: "Guido Risaliti & Martin Elvis",
+                year: "2004",
+                journal: "Supermassive Black Holes in the Distant Universe (Book chapter)",
+                link: "https://link.springer.com/chapter/10.1007/978-1-4020-2471-9_6"
+            },
+            {
+                title: "Fifty Years of Quasars",
+                authors: "Mauro D'Onofrio, Paola Marziani, Jack W. Sulentic",
+                year: "2013",
+                journal: "Not Applicable (Book)",
+                link: "https://link.springer.com/book/10.1007/978-3-642-27564-7"
+            },
+            {
+                title: "Quasars at All Cosmic Epochs",
+                authors: "Collection of 70+ articles",
+                year: "2018",
+                journal: "Frontiers in Astronomy and Space Sciences",
+                link: "https://www.frontiersin.org/research-topics/5942/quasars-at-all-cosmic-epochs#overview"
+            },
+            {
+                title: "Observational Evidence of Active Galactic Nuclei Feedback",
+                authors: "Fabian, A. C.",
+                year: "2012",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://www.annualreviews.org/doi/abs/10.1146/annurev-astro-081811-125521"
+            },
+            {
+                title: "THE DISCOVERY OF QUASARS AND ITS AFTERMATH",
+                authors: "Kellermann, K. I.",
+                year: "2013",
+                journal: "Journal of Astronomical History and Heritage",
+                link: "https://ui.adsabs.harvard.edu/abs/2014JAHH...17..267K/abstract"
+            },
+            {
+                title: "VARIABILITY OF ACTIVE GALACTIC NUCLEI",
+                authors: "Ulrich, Marie-Helene; Maraschi, Laura; Urry, C. Megan",
+                year: "1997",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://www.annualreviews.org/doi/abs/10.1146/annurev.astro.35.1.445"
+            },
+            {
+                title: "Mass Loss from the Nuclei of Active Galaxies",
+                authors: "Crenshaw, D. Michael; Kraemer, Steven B.; George, Ian M.",
+                year: "2003",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://www.annualreviews.org/content/journals/10.1146/annurev.astro.41.082801.100328"
+            },
+            {
+                title: "Gamma-Ray Observations of Active Galactic Nuclei",
+                authors: "Grzegorz (Greg) Madejski, and Marek Sikora",
+                year: "2016",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://www.annualreviews.org/content/journals/10.1146/annurev-astro-081913-040044"
+            },
+            {
+                title: "Phenomenology of Broad Emission Lines in Active Galactic Nuclei",
+                authors: "Sulentic, J. W.; Marziani, P.; Dultzin-Hacyan, D.",
+                year: "2000",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://ui.adsabs.harvard.edu/abs/2000ARA%26A..38..521S/abstract"
+            },
+            {
+                title: "The Reionization of the Universe by the First Stars and Quasars",
+                authors: "Abraham Loeb, and Rennan Barkana",
+                year: "2001",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://www.annualreviews.org/content/journals/10.1146/annurev.astro.39.1.19"
+            },
+            {
+                title: "Disc accretion in active galactic nuclei",
+                authors: "Andrew King",
+                year: "2008",
+                journal: "New Astronomy Reviews",
+                link: "https://www.sciencedirect.com/science/article/pii/S1387647308001036"
+            },
+            {
+                title: "Relativistic Jets from Active Galactic Nuclei",
+                authors: "Roger Blandford, David Meier, and Anthony Readhead",
+                year: "2019",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://www.annualreviews.org/content/journals/10.1146/annurev-astro-081817-051948"
+            },
+            {
+                title: "Variability of the central region in active galactic nuclei",
+                authors: "F. H. Wallinder, S. Kato & M. A. Abramowicz",
+                year: "1992",
+                journal: "The Astronomy and Astrophysics Review",
+                link: "https://link.springer.com/article/10.1007/BF00874054"
+            },
+            {
+                title: "Continuum radiation from active galactic nuclei",
+                authors: "Joel N. Bregman",
+                year: "1990",
+                journal: "The Astronomy and Astrophysics Review",
+                link: "https://link.springer.com/article/10.1007/BF00872765"
+            },
+            {
+                title: "The emission line spectrum of active galactic nuclei and the unifying scheme",
+                authors: "M.P. Véron-Cetty & P. Véron",
+                year: "2000",
+                journal: "The Astronomy and Astrophysics Review",
+                link: "https://link.springer.com/article/10.1007/s001590000006"
+            },
+            {
+                title: "Radio observations of active galactic nuclei with mm-VLBI",
+                authors: "B. Boccardi, T. P. Krichbaum, E. Ros & J. A. Zensus",
+                year: "2017",
+                journal: "The Astronomy and Astrophysics Review",
+                link: "https://link.springer.com/article/10.1007/s00159-017-0105-6"
+            },
+            {
+                title: "Ionized gas in active galactic nuclei",
+                authors: "Hagai Netzer",
+                year: "2008",
+                journal: "New Astronomy Reviews",
+                link: "https://www.sciencedirect.com/science/article/pii/S1387647308001061"
+            },
+            {
+                title: "The central black hole and relationships with the host galaxy",
+                authors: "Bradley M. Peterson",
+                year: "2008",
+                journal: "New Astronomy Reviews",
+                link: "https://www.sciencedirect.com/science/article/pii/S1387647308001024"
+            },
+            {
+                title: "What broad emission lines tell us about how active galactic nuclei work",
+                authors: "C. Martin Gaskell",
+                year: "2009",
+                journal: "New Astronomy Reviews",
+                link: "https://www.sciencedirect.com/science/article/pii/S1387647309000608"
+            },
+            {
+                title: "Intermediate-Mass Black Holes",
+                authors: "Jenny E. Greene, Jay Strader, and Luis C. Ho",
+                year: "2020",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://www.annualreviews.org/content/journals/10.1146/annurev-astro-032620-021835"
+            },
+            {
+                title: "Reverberation mapping of active galactic nuclei: From X-ray corona to dusty torus",
+                authors: "Edward M. Cackett, Misty C. Bentz, Erin Kara",
+                year: "2021",
+                journal: "iScience",
+                link: "https://www.sciencedirect.com/science/article/pii/S2589004221005253?via%3Dihub"
+            },
+            {
+                title: "The Assembly of the First Massive Black Holes",
+                authors: "Kohei Inayoshi, Eli Visbal, and Zoltán Haiman",
+                year: "2020",
+                journal: "Annual Review of Astronomy and Astrophysics",
+                link: "https://www.annualreviews.org/content/journals/10.1146/annurev-astro-120419-014455"
+            }
+                        
+            ];
+            
+            // Organize papers by year
+            const papersByYear = {};
+
+            // Use the papers array defined above instead of looking for existing cards
+            papers.forEach(paper => {
+                const year = paper.year || 'Unknown';
+                
+                // Add to papersByYear
+                if (!papersByYear[year]) {
+                    papersByYear[year] = [];
+                }
+                
+                papersByYear[year].push(paper);
+            });
+
+            // Sort years
+            const sortedYears = Object.keys(papersByYear).sort((a, b) => {
+                if (a === 'Unknown') return 1;
+                if (b === 'Unknown') return -1;
+                return parseInt(a) - parseInt(b);
+            });
+            
+            // Create timeline
+            sortedYears.forEach(year => {
+                const node = document.createElement('div');
+                node.className = 'timeline-node';
+                node.innerHTML = `<span>${year}</span>`;
+                node.addEventListener('click', () => {
+                    document.getElementById(`year-${year}`).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+                timelineContent.appendChild(node);
+            });
+            
+            // Create year sections with papers
+            sortedYears.forEach(year => {
+                const section = document.createElement('div');
+                section.className = 'year-section';
+                section.id = `year-${year}`;
+                
+                const yearTitle = document.createElement('h2');
+                yearTitle.className = 'year-title';
+                yearTitle.textContent = year;
+                section.appendChild(yearTitle);
+                
+                const yearContent = document.createElement('div');
+                yearContent.className = 'year-content';
+                
+                // Add all papers for this year
+                papersByYear[year].forEach(paper => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    
+                    const header = document.createElement('div');
+                    header.className = 'card-header';
+                    header.innerHTML = `<h3>${paper.title}</h3>`;
+                    
+                    const footer = document.createElement('div');
+                    footer.className = 'card-footer';
+                    footer.innerHTML = `
+                        <p><strong>Author(s):</strong> ${paper.authors}</p>
+                        <p><strong>Year:</strong> ${paper.year}</p>
+                        <p><strong>Journal:</strong> ${paper.journal}</p>
+                        <a href="${paper.link}" class="card-link" target="_blank">View Paper <i class="fas fa-external-link-alt"></i></a>
+                    `;
+                    
+                    card.appendChild(header);
+                    card.appendChild(footer);
+                    yearContent.appendChild(card);
+                });
+                
+                section.appendChild(yearContent);
+                container.appendChild(section);
+            });
+            
+            // Back to top button functionality
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
