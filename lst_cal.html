@@ -90,6 +90,30 @@
     <div class="block"><div class="label">Local Solar Time <span id="tzOffset"></span></div><div class="value" id="localTime">-</div></div>
     <div class="block"><div class="label">Local Sidereal Time</div><div class="value" id="lst">-</div></div>
   </div>
+  <div style="display: flex; flex-direction: column; align-items: center; margin-top: 2em;">
+    <span style="font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; font-size: 1.15em; color: #333; margin-bottom: 1em;">
+      For viewing the Local Sidereal Time (LST) of multiple telescopes around the world simultaneously:
+    </span>
+    <a href="lst_mult.html" style="text-decoration: none;">
+      <button style="
+        background: #222;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 0.7em 1.5em;
+        font-size: 1.1em;
+        font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-left: 0.7em;
+        letter-spacing: 0.03em;
+        font-weight: 500;
+      "
+      onmouseover="this.style.background='#444';"
+      onmouseout="this.style.background='#222';"
+      >Click Here</button>
+    </a>
+  </div>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     const map = L.map('map').setView([20, 0], 2);
