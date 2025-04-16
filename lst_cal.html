@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sidereal Time Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  
+  
+  
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      margin: 1em 0 0.5em;
+    }
+    #map {
+      height: 60vh;
+      width: 100%;
+    }
+    #info {
+      padding: 1em;
+      background: #f0f0f0;
+      text-align: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1em;
+    }
+    .block {
+      background: white;
+      border-radius: 12px;
+      padding: 1em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      font-size: 1.1em;
+    }
+    .label {
+      font-weight: normal;
+      font-size: 0.95em;
+      color: #555;
+    }
+    .value {
+      font-weight: bold;
+      font-size: 1.3em;
+      color: #222;
+    }
+
+/* Dark Mode styles */
+.dark-mode {
+  background-color: #121212;
+  color: #eee;
+}
+
+.dark-mode .block {
+  background: #1e1e1e;
+}
+
+.dark-mode .value {
+  background: #2c2c2c;
+}
+
+    .toggle-darkmode {
+      margin-top: 1em;
+    }
+    details {
+      margin-top: 2em;
+      background: #ddd;
+      padding: 1em;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 600px;
+    }
+    .dark-mode details {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sidereal Time Explorer</h1>
+
+ </div>
+  <div id="map"></div>
+  <div id="info">
+    <div class="block"><div class="label">Latitude</div><div class="value" id="lat">-</div></div>
+    <div class="block"><div class="label">Longitude</div><div class="value" id="lon">-</div></div>
+    <div class="block"><div class="label">UTC Time</div><div class="value" id="utcTime">-</div></div>
+    <div class="block"><div class="label">Local Solar Time <span id="tzOffset"></span></div><div class="value" id="localTime">-</div></div>
+    <div class="block"><div class="label">Local Sidereal Time</div><div class="value" id="lst">-</div></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([20, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let currentLon = 0;
+    let latDisplay = document.getElementById('lat');
+    let lonDisplay = document.getElementById('lon');
+    let utcDisplay = document.getElementById('utcTime');
+    let localDisplay = document.getElementById('localTime');
+    let tzDisplay = document.getElementById('tzOffset');
+    let lstDisplay = document.getElementById('lst');
+
+    function calculateLST(date, longitude) {
+      const JD = (date.getTime() / 86400000) + 2440587.5;
+      const D = JD - 2451545.0;
+      let GMST = 280.46061837 + 360.98564736629 * D;
+      GMST = ((GMST % 360) + 360) % 360;
+      const LST = (GMST + longitude) % 360;
+      const hours = Math.floor(LST / 15);
+      const minutes = Math.floor((LST / 15 - hours) * 60);
+      const seconds = Math.floor((((LST / 15 - hours) * 60) - minutes) * 60);
+      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function getLocalTimeFromLon(date, lon) {
+      const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+      const offsetMs = lon * 4 * 60 * 1000;
+      const localDate = new Date(utc + offsetMs);
+      return localDate.toTimeString().split(' ')[0];
+    }
+
+    function getTZOffsetFromLon(lon) {
+      const offset = lon / 15;
+      const sign = offset >= 0 ? '+' : '-';
+      const absOffset = Math.abs(offset);
+      const hrs = Math.floor(absOffset);
+      const mins = Math.round((absOffset - hrs) * 60);
+      return `UTC${sign}${hrs}:${mins.toString().padStart(2, '0')}`;
+    }
+
+    function updateTimeDisplays() {
+      const now = new Date();
+      utcDisplay.textContent = now.toUTCString().split(' ')[4];
+      localDisplay.textContent = getLocalTimeFromLon(now, currentLon);
+      lstDisplay.textContent = calculateLST(now, currentLon);
+      tzDisplay.textContent = `(${getTZOffsetFromLon(currentLon)})`;
+    }
+
+    map.on('click', function(e) {
+      const lat = e.latlng.lat.toFixed(4);
+      const lon = e.latlng.lng.toFixed(4);
+      currentLon = parseFloat(lon);
+      latDisplay.textContent = lat;
+      lonDisplay.textContent = lon;
+      updateTimeDisplays();
+    });
+
+    // Live updating clock every second
+    setInterval(() => {
+      if (!isNaN(currentLon)) {
+        updateTimeDisplays();
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
