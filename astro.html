@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Welcome – Astro Tools Suite</title>
+    <style>
+        :root {
+            --bg-main: #0d1117;
+            --bg-card: #161b22;
+            --border: #30363d;
+            --accent: #238636;
+            --text-main: #c9d1d9;
+            --text-secondary: #8b949e;
+            --button-bg: #21262d;
+            --button-hover: #238636;
+            --button-text: #c9d1d9;
+            --button-hover-text: #fff;
+            --shadow: 0 4px 24px rgba(20, 20, 20, 0.2);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-main);
+            background: var(--bg-main);
+            overflow: hidden;
+        }
+
+        /* Subtle star background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: transparent url('https://raw.githubusercontent.com/VivekWhiz/astro-assets/main/stars2.png') repeat top center;
+            animation: moveStars 200s linear infinite;
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        @keyframes moveStars {
+            from {background-position: 0 0;}
+            to {background-position: 10000px 10000px;}
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2.7rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        p {
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        a.button {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border-radius: 0.7rem;
+            background: var(--button-bg);
+            border: 1px solid var(--border);
+            color: var(--button-text);
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(.4,0,.2,1);
+            box-shadow: var(--shadow);
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        a.button:hover, a.button:focus {
+            background: var(--button-hover);
+            color: var(--button-hover-text);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent), var(--shadow);
+            text-decoration: none;
+        }
+
+        /* Card for public links */
+        .public-links-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 80%;
+            max-width: 1000px;
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: box-shadow 0.2s;
+            z-index: 100;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .public-links-card h2 {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .public-links-card .links-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            padding: 0.5em 1em;
+            background: var(--bg-card);
+            border-top-left-radius: 8px;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-right: none;
+            backdrop-filter: blur(10px);
+            z-index: 2;
+        }
+
+        footer a {
+            font-weight: bold;
+            color: var(--accent);
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Astro Tools Suite</h1>
+        <p>Explore a sleek collection of browser-based astronomy utilities – crafted for observational astronomers, students, and night-sky dreamers alike.</p>
+        <div class="button-container">
+            <a class="button" href="astro/astro_cal.html">📐 Astro Calculators</a>
+            <a class="button" href="astro/lst_cal.html">🕒 Sidereal Time</a>
+            <a class="button" href="astro/lst_mult.html">🌍 Multi-Site LST</a>
+        </div>
+        <div class="public-links-card">
+            <h2>Public Astronomy Resources</h2>
+            <div class="links-container">
+                <a href="https://simbad.u-strasbg.fr/simbad/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">SIMBAD Database</a>
+                <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">NASA Exoplanet Archive</a>
+                <a href="https://skyserver.sdss.org/casjobs/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">SDSS Skyserver</a>
+                <a href="https://www.nasa.gov" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">NASA</a>
+                <a href="https://www.exoplanets.nasa.gov/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">Exoplanet Exploration</a>
+                <a href="https://www.zooniverse.org/projects?discipline=astronomy" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">Zooniverse</a>
+                <a href="https://www.astrobin.com/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">AstroBin</a>
+                <a href="https://skyandtelescope.org/astronomy-resources/astrophotography/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">Sky & Telescope</a>
+            </div>
+        </div>
+    </div>
+    <footer>
+        Developed and maintained by <a href="https://viveikjha.github.io">Vivek Kumar Jha</a>
+    </footer>
+</body>
+</html>

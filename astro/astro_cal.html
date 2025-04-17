@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astronomy Tools Suite</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            margin: 0;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        h1 {
+            color: #58a6ff;
+            font-size: 2rem;
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .tool {
+            background: #161b22;
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 0 8px rgba(22,27,34,0.2);
+            position: relative;
+            border: 1px solid #21262d;
+        }
+        h2 {
+            color: #79c0ff;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .info-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #21262d;
+            color: #c9d1d9;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .info-btn:hover, .info-btn:focus {
+            background: #30363d;
+            color: #58a6ff;
+        }
+        .desc {
+            display: none;
+            font-size: 0.85rem;
+            background: #21262d;
+            color: #8b949e;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid #30363d;
+        }
+        .tool:hover .desc,
+        .tool:focus-within .desc,
+        .tool .info-btn:focus + .desc {
+            display: block;
+        }
+        input, select, button {
+            margin: 0.25rem 0;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #30363d;
+            font-size: 1rem;
+            width: 100%;
+            background: #0d1117;
+            color: #c9d1d9;
+            box-sizing: border-box;
+            transition: border 0.2s;
+        }
+        input:focus, select:focus {
+            border: 1.5px solid #58a6ff;
+            outline: none;
+        }
+        button {
+            background: linear-gradient(90deg, #238636, #2ea043);
+            color: #f0f6fc;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #2ea043, #238636);
+        }
+        p {
+            color: #adbac7;
+            margin: 0.5rem 0 0 0;
+            font-size: 1rem;
+        }
+        select {
+            background: #161b22;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔭 Astronomy Tools Suite</h1>
+
+    <div class="tool">
+        <h2>Julian Date Calculator</h2>
+        <button class="info-btn">i</button>
+        <div class="desc">Converts a calendar date/time to Julian Date, which is used in astronomical timekeeping. JD = days since noon, January 1, 4713 BCE.</div>
+        <input type="datetime-local" id="jd-date" />
+        <button onclick="calculateJD()">Calculate JD</button>
+        <p id="jd-result"></p>
+    </div>
+
+    <div class="tool">
+        <h2>RA/Dec Converter</h2>
+        <button class="info-btn">i</button>
+        <div class="desc">Convert RA from HH:MM:SS to degrees and Dec from DD:MM:SS to degrees. This format is standard in celestial coordinate systems.</div>
+        <input type="text" id="ra-hms" placeholder="RA (HH:MM:SS)" />
+        <input type="text" id="dec-dms" placeholder="Dec (DD:MM:SS)" />
+        <button onclick="convertRaDec()">Convert</button>
+        <p id="radec-result"></p>
+    </div>
+
+    <div class="tool">
+        <h2>Cosmology: Distance vs Redshift</h2>
+        <button class="info-btn">i</button>
+        <div class="desc">Estimate comoving distance from redshift using a basic ΛCDM cosmology (H₀ = 70, Ωₘ = 0.3). Useful for large-scale structure studies.</div>
+        <input type="number" id="cosmo-z" placeholder="Redshift (z)" step="any" />
+        <button onclick="cosmoCalc()">Calculate</button>
+        <p id="cosmo-result"></p>
+    </div>
+
+    <div class="tool">
+        <h2>Galactic Extinction Calculator</h2>
+        <button class="info-btn">i</button>
+        <div class="desc">Computes extinction A(λ) using E(B-V) and band-specific R-values from Schlafly & Finkbeiner (2011). Useful for correcting observed magnitudes.</div>
+        <input type="number" id="ebv" placeholder="E(B-V)" step="any" />
+        <select id="band">
+            <option value="3.1">V-band</option>
+            <option value="2.742">g-band</option>
+            <option value="2.285">r-band</option>
+            <option value="1.698">i-band</option>
+        </select>
+        <button onclick="calcExtinction()">Calculate</button>
+        <p id="extinction-result"></p>
+    </div>
+
+    <div class="tool">
+        <h2>Angular Size Calculator</h2>
+        <button class="info-btn">i</button>
+        <div class="desc">Convert physical size (in kpc) to angular size using angular diameter distance. θ = (D / D<sub>A</sub>) × 206.265 arcsec.</div>
+        <input type="number" id="physical-size" placeholder="Size (kpc)" step="any" />
+        <input type="number" id="z-angular" placeholder="Redshift (z)" step="any" />
+        <button onclick="angularSize()">Calculate</button>
+        <p id="angular-result"></p>
+    </div>
+
+    <div class="tool">
+        <h2>Lookback Time Calculator</h2>
+        <button class="info-btn">i</button>
+        <div class="desc">Estimate the time since light left a galaxy, given redshift. Approximate formula: t = z / (1+z) × 13.8 Gyr.</div>
+        <input type="number" id="z-lookback" placeholder="Redshift (z)" step="any" />
+        <button onclick="lookbackTime()">Calculate</button>
+        <p id="lookback-result"></p>
+    </div>
+
+    <div class="tool">
+        <h2>Airmass Calculator (Simplified)</h2>
+        <button class="info-btn">i</button>
+        <div class="desc">Estimate airmass using: airmass ≈ sec(z) = 1 / cos(90° – Altitude). Used to determine atmospheric attenuation.</div>
+        <input type="number" id="altitude" placeholder="Altitude (deg)" step="any" />
+        <button onclick="calcAirmass()">Calculate</button>
+        <p id="airmass-result"></p>
+        <footer style="position: fixed; bottom: 0; right: 0; font-size: 0.7em; color: #666; padding: 0.5em 1em; background: rgba(255, 255, 255, 0.8); border-top-left-radius: 8px;">
+            Developed and maintained by <a href="https://viveikjha.github.io" style="font-weight: bold; color: inherit; text-decoration: none;">Vivek Kumar Jha</a>
+          </footer>
+    </div>
+
+    <script>
+        function calculateJD() {
+            const dt = new Date(document.getElementById("jd-date").value);
+            const jd = dt.getTime() / 86400000 + 2440587.5;
+            document.getElementById("jd-result").innerText = `Julian Date: ${jd.toFixed(5)}`;
+        }
+
+        function convertRaDec() {
+            const ra = document.getElementById("ra-hms").value.split(":"),
+                        dec = document.getElementById("dec-dms").value.split(":");
+            const raDeg = (+ra[0] + ra[1] / 60 + ra[2] / 3600) * 15;
+            const sign = dec[0].startsWith("-") ? -1 : 1;
+            const absDec = dec.map(d => Math.abs(+d));
+            const decDeg = sign * (absDec[0] + absDec[1] / 60 + absDec[2] / 3600);
+            document.getElementById("radec-result").innerText = `RA: ${raDeg.toFixed(5)}°, Dec: ${decDeg.toFixed(5)}°`;
+        }
+
+        function cosmoCalc() {
+            const z = parseFloat(document.getElementById("cosmo-z").value);
+            const H0 = 70, c = 299792.458, omegaM = 0.3;
+            const d = (c / H0) * z * (1 - 0.5 * omegaM * z);
+            document.getElementById("cosmo-result").innerText = `Comoving Distance ≈ ${d.toFixed(2)} Mpc`;
+        }
+
+        function calcExtinction() {
+            const ebv = parseFloat(document.getElementById("ebv").value);
+            const r = parseFloat(document.getElementById("band").value);
+            const extinction = ebv * r;
+            document.getElementById("extinction-result").innerText = `A(λ) ≈ ${extinction.toFixed(3)} mag`;
+        }
+
+        function angularSize() {
+            const size = parseFloat(document.getElementById("physical-size").value);
+            const z = parseFloat(document.getElementById("z-angular").value);
+            const D_A = 1000 / (1 + z);
+            const theta = (size / D_A) * 206.265;
+            document.getElementById("angular-result").innerText = `Angular size ≈ ${theta.toFixed(2)} arcsec`;
+        }
+
+        function lookbackTime() {
+            const z = parseFloat(document.getElementById("z-lookback").value);
+            const t = (z / (1 + z)) * 13.8;
+            document.getElementById("lookback-result").innerText = `Lookback Time ≈ ${t.toFixed(2)} Gyr`;
+        }
+
+        function calcAirmass() {
+            const alt = parseFloat(document.getElementById("altitude").value);
+            const airmass = 1 / Math.cos((90 - alt) * Math.PI / 180);
+            document.getElementById("airmass-result").innerText = `Airmass ≈ ${airmass.toFixed(3)}`;
+        }
+    </script>
+</body>
+</html>
