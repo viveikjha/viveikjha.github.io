@@ -181,11 +181,13 @@
         <input type="number" id="altitude" placeholder="Altitude (deg)" step="any" />
         <button onclick="calcAirmass()">Calculate</button>
         <p id="airmass-result"></p>
-        <footer style="position: fixed; bottom: 0; right: 0; font-size: 0.7em; color: #666; padding: 0.5em 1em; background: rgba(255, 255, 255, 0.8); border-top-left-radius: 8px;">
-            Developed and maintained by <a href="https://viveikjha.github.io" style="font-weight: bold; color: inherit; text-decoration: none;">Vivek Kumar Jha</a>
-          </footer>
+        
+       
+    
     </div>
-
+    <footer style="grid-column: 1 / -1; text-align: center; margin-top: 2rem; position: fixed; left: 0; bottom: 0; width: 100%; background: #161b22; padding: 0.75rem 0; border-top: 1px solid #21262d; z-index: 10;">
+        Developed and maintained by <a href="https://viveikjha.github.io" style="color: #58a6ff; text-decoration: none;">Vivek Kumar Jha</a>
+    </footer>
     <script>
         function calculateJD() {
             const dt = new Date(document.getElementById("jd-date").value);

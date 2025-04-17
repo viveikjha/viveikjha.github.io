@@ -3,188 +3,453 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Welcome – Astro Tools Suite</title>
-    <style>
-        :root {
-            --bg-main: #0d1117;
-            --bg-card: #161b22;
-            --border: #30363d;
-            --accent: #238636;
-            --text-main: #c9d1d9;
-            --text-secondary: #8b949e;
-            --button-bg: #21262d;
-            --button-hover: #238636;
-            --button-text: #c9d1d9;
-            --button-hover-text: #fff;
-            --shadow: 0 4px 24px rgba(20, 20, 20, 0.2);
-        }
+    <title>Astro Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
 
+    <style>
         body {
             margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--text-main);
-            background: var(--bg-main);
-            overflow: hidden;
-        }
-
-        /* Subtle star background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: transparent url('https://raw.githubusercontent.com/VivekWhiz/astro-assets/main/stars2.png') repeat top center;
-            animation: moveStars 200s linear infinite;
-            z-index: 0;
-            opacity: 0.15;
-            pointer-events: none;
-        }
-
-        @keyframes moveStars {
-            from {background-position: 0 0;}
-            to {background-position: 10000px 10000px;}
-        }
-
-        .content {
+            font-family: 'Segoe UI', 'Inter', 'Roboto', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
             position: relative;
-            z-index: 1;
             min-height: 100vh;
-            display: flex;
+            /* Subtle dark texture using SVG data URI */
+            background-image:
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='40' height='40' fill='%230d1117'/%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%23161b22'/%3E%3Ccircle cx='10' cy='10' r='0.7' fill='%23161b22'/%3E%3Ccircle cx='30' cy='30' r='0.7' fill='%23161b22'/%3E%3Ccircle cx='30' cy='10' r='0.5' fill='%23161b22'/%3E%3Ccircle cx='10' cy='30' r='0.5' fill='%23161b22'/%3E%3C/svg%3E"),
+                linear-gradient(135deg, #161b22 0%, #21262d 100%);
+            background-blend-mode: overlay;
+            background-size: 80px 80px, cover;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 54px;
+            background: linear-gradient(135deg, #161b22 80%, #21262d 100%);
+            box-shadow: 2px 0 16px 0 rgba(20,30,40,0.18);
+            overflow-x: hidden;
+            overflow-y: auto;
+            transition: width 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+            z-index: 1000;
+            border-right: 1.5px solid #22262e;
+            backdrop-filter: blur(2px);
+        }
+
+        .sidebar.expanded {
+            width: 270px;
+            box-shadow: 4px 0 32px 0 rgba(20,30,40,0.22);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 1.25rem;
+            color: #58a6ff;
+            margin: 1.2rem 0 0.8rem 0;
+            letter-spacing: 0.02em;
+            font-weight: 600;
+            text-shadow: 0 2px 8px #0d1117;
+        }
+
+        .sidebar .toggle-btn {
+            display: block;
+            font-size: 1.05rem;
+            background: none;
+            border: none;
+            color: #c9d1d9;
+            padding: 0.7rem 1.2rem 0.7rem 1.2rem;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.18s;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+        .sidebar .toggle-btn:hover {
+            background: linear-gradient(90deg, #21262d 70%, #23863622 100%);
+            color: #58a6ff;
+        }
+
+        .link-group {
+            display: none;
             flex-direction: column;
+            margin-bottom: 1rem;
+            padding-left: 1.2rem;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .sidebar.expanded .link-group {
+            display: flex;
+        }
+
+        .link-group a {
+            padding: 0.45rem 0.5rem;
+            color: #c9d1d9;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin: 0.1rem 0;
+            transition: background 0.18s, color 0.18s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 400;
+        }
+
+        .link-group a:hover {
+            background: linear-gradient(90deg, #238636 60%, #2ea043 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px #23863622;
+        }
+
+        .link-group a i {
+            margin-right: 0.6rem;
+            font-size: 1.1em;
+            opacity: 0.85;
+        }
+
+        .sidebar .menu-toggle {
+            display: flex;
             justify-content: center;
             align-items: center;
+            height: 54px;
+            width: 54px;
+            cursor: pointer;
+            color: #c9d1d9;
+            background: linear-gradient(135deg, #21262d 80%, #161b22 100%);
+            border: none;
+            border-bottom: 1.5px solid #22262e;
+            font-size: 1.35rem;
+            transition: background 0.18s;
+        }
+        .sidebar .menu-toggle:hover {
+            background: #21262d;
+            color: #58a6ff;
+        }
+
+        /* Main content */
+        .main {
+            margin-left: 64px;
+            padding: 2.5rem 1.5rem;
+            transition: margin-left 0.3s cubic-bezier(.4,2,.6,1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            padding-bottom: 3rem; /* Space for footer */
+        }
+
+        .sidebar.expanded ~ .main {
+            margin-left: 280px;
+        }
+
+        /* Tools card */
+        .tools-card {
+            background: linear-gradient(135deg, #161b22 80%, #21262d 100%);
+            border-radius: 16px;
+            padding: 2.5rem 2.2rem;
+            max-width: 600px;
+            width: 100%;
             text-align: center;
-            padding: 2rem;
+            box-shadow: 0 4px 32px 0 rgba(90, 175, 255, 0.08), 0 1.5px 0 #22262e;
+            border: 1.5px solid #22262e;
+            backdrop-filter: blur(1px);
+            transition: box-shadow 0.2s;
         }
 
-        h1 {
-            font-size: 2.7rem;
-            color: var(--accent);
+        .tools-card h1 {
+            margin-bottom: 1.2rem;
+            color: #58a6ff;
+            font-size: 2.1rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
-            letter-spacing: -1px;
+            letter-spacing: 0.01em;
+            text-shadow: 0 2px 8px #0d1117;
         }
 
-        p {
-            font-size: 1.15rem;
-            max-width: 700px;
-            margin-bottom: 2rem;
-            color: var(--text-secondary);
+        .tools-card p {
+            margin-bottom: 2.2rem;
+            font-size: 1.08rem;
+            color: #8b949e;
+            font-weight: 400;
+            letter-spacing: 0.01em;
         }
 
         .button-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: center;
+            flex-direction: column;
+            gap: 1.1rem;
         }
 
-        a.button {
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            border-radius: 0.7rem;
-            background: var(--button-bg);
-            border: 1px solid var(--border);
-            color: var(--button-text);
+        .button-container a.button {
+            background: linear-gradient(90deg, #238636 70%, #2ea043 100%);
+            color: #fff;
+            padding: 1.1rem 0.5rem;
             text-decoration: none;
-            transition: all 0.2s cubic-bezier(.4,0,.2,1);
-            box-shadow: var(--shadow);
-            font-weight: 500;
-            display: inline-block;
-        }
-
-        a.button:hover, a.button:focus {
-            background: var(--button-hover);
-            color: var(--button-hover-text);
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px var(--accent), var(--shadow);
-            text-decoration: none;
-        }
-
-        /* Card for public links */
-        .public-links-card {
-            background: var(--bg-card);
-            border-radius: 1rem;
-            padding: 2rem;
-            width: 80%;
-            max-width: 1000px;
-            margin-top: 2rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            transition: box-shadow 0.2s;
-            z-index: 100;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .public-links-card h2 {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
             font-weight: 600;
-        }
-
-        .public-links-card .links-container {
+            border-radius: 8px;
+            transition: background 0.18s, box-shadow 0.18s, transform 0.13s;
+            font-size: 1.13rem;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.7rem;
+            align-items: center;
             justify-content: center;
-            margin-top: 1.5rem;
+            box-shadow: 0 2px 12px #23863622;
+            letter-spacing: 0.01em;
+            border: none;
+            outline: none;
+            gap: 0.7rem;
         }
 
+        .button-container a.button:hover {
+            background: linear-gradient(90deg, #2ea043 60%, #238636 100%);
+            box-shadow: 0 4px 24px #23863644;
+            transform: translateY(-2px) scale(1.03);
+            color: #fff;
+        }
+
+        /* Footer */
         footer {
             position: fixed;
-            bottom: 0;
-            right: 0;
-            font-size: 0.8em;
-            color: var(--text-secondary);
-            padding: 0.5em 1em;
-            background: var(--bg-card);
-            border-top-left-radius: 8px;
-            border: 1px solid var(--border);
-            border-bottom: none;
-            border-right: none;
-            backdrop-filter: blur(10px);
-            z-index: 2;
+            bottom: 12px;
+            right: 18px;
+            font-size: 0.93rem;
+            color: #8b949e;
+            font-style: italic;
+            z-index: 999;
+            background: rgba(13,17,23,0.85);
+            padding: 0.4rem 1.1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0d111755;
+            border: 1px solid #22262e;
+            backdrop-filter: blur(2px);
+            transition: background 0.18s;
         }
 
         footer a {
-            font-weight: bold;
-            color: var(--accent);
+            color: #58a6ff;
             text-decoration: none;
+            font-weight: 500;
+            transition: color 0.18s;
         }
+
         footer a:hover {
             text-decoration: underline;
+            color: #2ea043;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .sidebar.expanded ~ .main {
+                margin-left: 64px;
+            }
+            .sidebar {
+                width: 54px !important;
+            }
+            .sidebar.expanded {
+                width: 220px !important;
+            }
+            .main {
+                padding: 1.1rem 0.2rem 3rem 0.2rem;
+            }
+            .tools-card {
+                padding: 1.2rem 0.5rem;
+                max-width: 98vw;
+            }
+            footer {
+                font-size: 0.85rem;
+                right: 6px;
+                bottom: 6px;
+                padding: 0.3rem 0.7rem;
+            }
         }
     </style>
+
 </head>
 <body>
-    <div class="content">
-        <h1>Astro Tools Suite</h1>
-        <p>Explore a sleek collection of browser-based astronomy utilities – crafted for observational astronomers, students, and night-sky dreamers alike.</p>
-        <div class="button-container">
-            <a class="button" href="astro/astro_cal.html">📐 Astro Calculators</a>
-            <a class="button" href="astro/lst_cal.html">🕒 Sidereal Time</a>
-            <a class="button" href="astro/lst_mult.html">🌍 Multi-Site LST</a>
-        </div>
-        <div class="public-links-card">
-            <h2>Public Astronomy Resources</h2>
-            <div class="links-container">
-                <a href="https://simbad.u-strasbg.fr/simbad/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">SIMBAD Database</a>
-                <a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">NASA Exoplanet Archive</a>
-                <a href="https://skyserver.sdss.org/casjobs/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">SDSS Skyserver</a>
-                <a href="https://www.nasa.gov" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">NASA</a>
-                <a href="https://www.exoplanets.nasa.gov/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">Exoplanet Exploration</a>
-                <a href="https://www.zooniverse.org/projects?discipline=astronomy" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">Zooniverse</a>
-                <a href="https://www.astrobin.com/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">AstroBin</a>
-                <a href="https://skyandtelescope.org/astronomy-resources/astrophotography/" target="_blank" class="button" style="padding:0.5rem 1.2rem; font-size:0.95rem;">Sky & Telescope</a>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        <div id="sidebar-content" style="display: none;">
+                <h2><i class="fas fa-star"></i> Astro Links</h2>
+            
+                <button class="toggle-btn"><i class="fas fa-database"></i> Databases</button>
+                <div class="link-group">
+                    <a href="https://cdsarc.cds.unistra.fr/" target="_blank"><i class="fas fa-database"></i> CDS Portal</a>
+                    <a href=" https://www.legacysurvey.org/" target="_blank"><i class="fas fa-database"></i> Legacy Survey</a>
+                    <a href="https://ned.ipac.caltech.edu/" target="_blank"><i class="fas fa-database"></i> NED</a>
+                    <a href="https://mast.stsci.edu/" target="_blank"><i class="fas fa-database"></i> MAST Portal</a>
+                    <a href="https://www.sdss.org/dr18/" target="_blank"><i class="fas fa-database"></i> SDSS</a>
+                    <a href="https://simbad.u-strasbg.fr/simbad/" target="_blank"><i class="fas fa-search"></i> SIMBAD</a>
+                </div>
+                
+                <button class="toggle-btn"><i class="fas fa-telescope"></i> Visualization</button>
+                <div class="link-group">
+                    <a href="https://aladin.u-strasbg.fr/" target="_blank"><i class="fas fa-satellite-dish"></i> Aladin</a>
+                    <a href="https://stellarium-web.org/" target="_blank"><i class="fas fa-compass"></i> Stellarium</a>
+                </div>
+            
+                <button class="toggle-btn"><i class="fas fa-building-columns"></i> Institutions</button>
+                <div class="link-group">
+                    <a href="https://www.nasa.gov" target="_blank"><i class="fab fa-globe"></i> NASA</a>
+                    <a href="https://www.esa.int/" target="_blank"><i class="fas fa-globe-europe"></i> ESA</a>
+                    <a href="https://www.eso.org/public/" target="_blank"><i class="fas fa-eye"></i> ESO</a>
+                </div>
+            
+                <button class="toggle-btn"><i class="fas fa-tools"></i> General Tools</button>
+                <div class="link-group">
+                 <a href="https://astroquery.readthedocs.io/en/latest/" target="_blank"><i class="fas fa-code"></i> Astroquery</a>
+                    <a href="https://cosmocalc.icrar.org/" target="_blank"><i class="fas fa-expand-arrows-alt"></i> ICRAR Cosmology Calculator</a>
+                </div>
+            
+                <button class="toggle-btn"><i class="fas fa-layer-group"></i> Multi-Wavelength</button>
+                <div class="link-group">
+                    <a href="https://skyview.gsfc.nasa.gov/current/cgi/titlepage.pl" target="_blank"><i class="fas fa-globe"></i> SkyView</a>
+                    <a href="https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/" target="_blank"><i class="fas fa-cloud-download-alt"></i> CADC</a>
+                </div>
             </div>
-        </div>
     </div>
-    <footer>
-        Developed and maintained by <a href="https://viveikjha.github.io">Vivek Kumar Jha</a>
-    </footer>
+
+        <!-- Centered Tools & APOD in Grid, Quote at Bottom -->
+        <div class="main">
+            <main class="content" style="width:100%;max-width:900px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 60px);">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;width:100%;max-width:900px;margin-bottom:2.2rem;">
+                <!-- NASA APOD Box -->
+                <div id="apod-box" style="background:linear-gradient(90deg,#161b22 70%,#22262e 100%);color:#c9d1d9;border-radius:12px;padding:1.2rem 1.5rem;box-shadow:0 2px 12px #0d111733;border:1.5px solid #22262e;">
+                <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.7rem;">
+                    <i class="fas fa-image" style="font-size:1.5rem;color:#58a6ff;"></i>
+                    <span style="font-size:1.13rem;font-weight:600;">NASA Astronomy Picture of the Day</span>
+                </div>
+                <div id="apod-content" style="text-align:center;">
+                    <span style="color:#8b949e;">Loading...</span>
+                </div>
+                </div>
+                <!-- Tools Card -->
+                <div class="tools-card" style="margin:0;">
+                <h1>Astro Tools </h1>
+                <p>Explore quick-access web tools for astronomers and astrophysics students.</p>
+                <div class="button-container">
+                    <a class="button" href="astro/astro_cal.html">📐 Astro Calculators</a>
+                    <a class="button" href="astro/lst_cal.html">🕒 Sidereal Time</a>
+                    <a class="button" href="astro/lst_mult.html">🌍 Multi-Site LST</a>
+                </div>
+                </div>
+            </div>
+            <!-- Astronomical Quote Box (spans both columns, perfectly aligned) -->
+            <div id="astro-quote" style="background:linear-gradient(90deg,#22262e 70%,#161b22 100%);color:#b3c7e6;border-radius:12px;padding:1.2rem 1.5rem;max-width:900px;width:100%;box-shadow:0 2px 12px #0d111733;border:1.5px solid #22262e;margin:0 auto;box-sizing:border-box;display:block;">
+                <span id="quote-text" style="font-size:1.13rem;font-style:italic;"></span>
+                <div id="quote-author" style="margin-top:0.5rem;font-size:1rem;color:#8b949e;text-align:right;"></div>
+            </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            Developed and maintained by <a href="https://viveikjha.github.io" target="_blank">Vivek Kumar Jha</a>
+        </footer>
+
+        <style>
+            @media (max-width: 900px) {
+                .main .content > div[style*="display:grid"] {
+                    grid-template-columns:1fr!important;
+                    gap:1.2rem!important;
+                }
+                #astro-quote {
+                    max-width:98vw!important;
+                    padding:1rem 0.5rem!important;
+                }
+                #apod-box, .tools-card {
+                    max-width:98vw!important;
+                    padding:1rem 0.5rem!important;
+                }
+            }
+        </style>
+
+    <!-- Sidebar Script & Astro Quote/APOD -->
+    <script>
+        // Sidebar logic
+        const sidebar = document.getElementById("sidebar");
+        const content = document.getElementById("sidebar-content");
+
+        function toggleSidebar() {
+            sidebar.classList.toggle("expanded");
+            content.style.display = sidebar.classList.contains("expanded") ? "block" : "none";
+        }
+
+        document.addEventListener("click", function(event) {
+            const isClickInside = sidebar.contains(event.target);
+            if (!isClickInside && sidebar.classList.contains("expanded")) {
+                sidebar.classList.remove("expanded");
+                content.style.display = "none";
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Sidebar toggle buttons
+            const toggleButtons = document.querySelectorAll(".toggle-btn");
+            toggleButtons.forEach(btn => {
+                btn.addEventListener("click", function () {
+                    const group = this.nextElementSibling;
+                    group.style.display = group.style.display === "flex" ? "none" : "flex";
+                });
+            });
+
+            // Astronomical Quotes (from TheySaidSo API)
+            fetch('https://quotes.rest/qod?category=science')
+                .then(resp => resp.json())
+                .then(data => {
+                    const quote = data.contents && data.contents.quotes && data.contents.quotes[0];
+                    if (quote) {
+                        document.getElementById('quote-text').textContent = quote.quote;
+                        document.getElementById('quote-author').textContent = "— " + quote.author;
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(() => {
+                    // Fallback quotes if API fails
+                    const fallbackQuotes = [
+                        {quote: "The nitrogen in our DNA, the calcium in our teeth, the iron in our blood, the carbon in our apple pies were made in the interiors of collapsing stars. We are made of starstuff.", author: "Carl Sagan"},
+                        {quote: "Somewhere, something incredible is waiting to be known.", author: "Carl Sagan"},
+                        {quote: "Equipped with his five senses, man explores the universe around him and calls the adventure Science.", author: "Edwin Hubble"},
+                        {quote: "The universe is under no obligation to make sense to you.", author: "Neil deGrasse Tyson"},
+                        {quote: "Across the sea of space, the stars are other suns.", author: "Carl Sagan"}
+                    ];
+                    const pick = fallbackQuotes[Math.floor(Math.random() * fallbackQuotes.length)];
+                    document.getElementById('quote-text').textContent = pick.quote;
+                    document.getElementById('quote-author').textContent = "— " + pick.author;
+                });
+
+            // NASA APOD (Astronomy Picture of the Day)
+            fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY')
+                .then(resp => resp.json())
+                .then(apod => {
+                    let html = '';
+                    if (apod.media_type === "image") {
+                        html += `<a href="${apod.hdurl || apod.url}" target="_blank" style="display:block;"><img src="${apod.url}" alt="${apod.title}" style="max-width:100%;border-radius:8px;box-shadow:0 2px 8px #22262e44;margin-bottom:0.7rem;"></a>`;
+                    } else if (apod.media_type === "video") {
+                        html += `<iframe src="${apod.url}" frameborder="0" allowfullscreen style="width:100%;min-height:260px;border-radius:8px;margin-bottom:0.7rem;"></iframe>`;
+                    }
+                    html += `<div style="font-size:1.08rem;font-weight:600;color:#58a6ff;margin-bottom:0.3rem;">${apod.title}</div>`;
+                    html += `<div style="font-size:0.98rem;color:#8b949e;margin-bottom:0.5rem;">${apod.date}</div>`;
+                    html += `<div style="font-size:0.98rem;">${apod.explanation.length > 300 ? apod.explanation.substring(0,300) + '...' : apod.explanation}</div>`;
+                    document.getElementById('apod-content').innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById('apod-content').innerHTML = '<span style="color:#e06c75;">Could not load APOD. Try again later.</span>';
+                });
+        });
+    </script>
+
 </body>
 </html>
