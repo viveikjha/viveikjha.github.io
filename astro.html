@@ -14,7 +14,6 @@
             color: #c9d1d9;
             position: relative;
             min-height: 100vh;
-            /* Subtle dark texture using SVG data URI */
             background-image:
                 url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='40' height='40' fill='%230d1117'/%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%23161b22'/%3E%3Ccircle cx='10' cy='10' r='0.7' fill='%23161b22'/%3E%3Ccircle cx='30' cy='30' r='0.7' fill='%23161b22'/%3E%3Ccircle cx='30' cy='10' r='0.5' fill='%23161b22'/%3E%3Ccircle cx='10' cy='30' r='0.5' fill='%23161b22'/%3E%3C/svg%3E"),
                 linear-gradient(135deg, #161b22 0%, #21262d 100%);
@@ -22,12 +21,71 @@
             background-size: 80px 80px, cover;
         }
 
-        /* Sidebar */
-        .sidebar {
+        /* Clock strip styles */
+        .clock-strip-container {
+            width: 100vw;
+            overflow: hidden;
             position: fixed;
             top: 0;
             left: 0;
-            height: 100vh;
+            z-index: 2000;
+            background: linear-gradient(90deg, #161b22 80%, #21262d 100%);
+            border-bottom: 1.5px solid #22262e;
+            box-shadow: 0 2px 12px #0d111733;
+            height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        .clock-strip {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            animation: scroll-clock-strip 32s linear infinite;
+            font-size: 1.08rem;
+            font-weight: 500;
+            color: #b3c7e6;
+            gap: 2.2rem;
+            padding-left: 100vw;
+        }
+        .clock-strip .city {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(90deg, #22262e 70%, #161b22 100%);
+            border-radius: 8px;
+            padding: 0.3rem 0.9rem;
+            margin-right: 0.7rem;
+            box-shadow: 0 2px 8px #0d111733;
+            border: 1px solid #22262e;
+        }
+        .clock-strip .city i {
+            color: #58a6ff;
+            font-size: 1.1em;
+        }
+        @keyframes scroll-clock-strip {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100vw); }
+        }
+        @media (max-width: 700px) {
+            .clock-strip-container {
+                height: 36px;
+            }
+            .clock-strip {
+                font-size: 0.95rem;
+                gap: 1.1rem;
+            }
+            .clock-strip .city {
+                padding: 0.2rem 0.5rem;
+                margin-right: 0.3rem;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 44px; /* Adjust for clock strip */
+            left: 0;
+            height: calc(100vh - 44px);
             width: 54px;
             background: linear-gradient(135deg, #161b22 80%, #21262d 100%);
             box-shadow: 2px 0 16px 0 rgba(20,30,40,0.18);
@@ -148,6 +206,7 @@
             min-height: 100vh;
             box-sizing: border-box;
             padding-bottom: 3rem; /* Space for footer */
+            padding-top: 44px; /* Space for clock strip */
         }
 
         .sidebar.expanded ~ .main {
@@ -254,12 +313,15 @@
             }
             .sidebar {
                 width: 54px !important;
+                top: 36px !important;
+                height: calc(100vh - 36px) !important;
             }
             .sidebar.expanded {
                 width: 220px !important;
             }
             .main {
                 padding: 1.1rem 0.2rem 3rem 0.2rem;
+                padding-top: 36px !important;
             }
             .tools-card {
                 padding: 1.2rem 0.5rem;
@@ -276,6 +338,13 @@
 
 </head>
 <body>
+
+    <!-- Clock Strip -->
+    <div class="clock-strip-container">
+        <div class="clock-strip" id="clock-strip" style="will-change: transform;">
+            <!-- Clocks will be injected here by JS -->
+        </div>
+    </div>
 
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
@@ -377,6 +446,63 @@
 
     <!-- Sidebar Script & Astro Quote/APOD -->
     <script>
+        // Clock strip logic
+        const cities = {
+            "UT": "UTC",
+            "New York": "America/New_York",
+            "Tokyo": "Asia/Tokyo",
+            "Beijing": "Asia/Shanghai",
+            "Chennai": "Asia/Kolkata",
+            "Moscow": "Europe/Moscow",
+            "Dubai": "Asia/Dubai",
+            "Paris": "Europe/Paris",
+            "Istanbul": "Europe/Istanbul",
+            "Rio de Janeiro": "America/Sao_Paulo",
+            "Los Angeles": "America/Los_Angeles"
+        };
+
+        function getCityIcon(city) {
+            // Simple icons for some cities, fallback to globe
+            switch(city) {
+                case "UT": return '<i class="fas fa-globe"></i>';
+                case "New York": return '<i class="fas fa-city"></i>';
+                case "Tokyo": return '<i class="fas fa-mountain"></i>';
+                case "Beijing": return '<i class="fas fa-dragon"></i>';
+                case "Chennai": return '<i class="fas fa-sun"></i>';
+                case "Moscow": return '<i class="fas fa-landmark"></i>';
+                case "Dubai": return '<i class="fas fa-building"></i>';
+                case "Paris": return '<i class="fas fa-archway"></i>';
+                case "Istanbul": return '<i class="fas fa-mosque"></i>';
+                case "Rio de Janeiro": return '<i class="fas fa-umbrella-beach"></i>';
+                case "Los Angeles": return '<i class="fas fa-film"></i>';
+                default: return '<i class="fas fa-globe"></i>';
+            }
+        }
+
+        function updateClockStrip() {
+            const now = new Date();
+            let html = '';
+            for (const [city, tz] of Object.entries(cities)) {
+                let timeStr;
+                try {
+                    timeStr = now.toLocaleTimeString('en-GB', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false,
+                        timeZone: tz
+                    });
+                } catch {
+                    timeStr = '--:--:--';
+                }
+                html += `<span class="city">${getCityIcon(city)} <span>${city}</span> <span style="font-variant-numeric:tabular-nums;font-family:monospace;">${timeStr}</span></span>`;
+            }
+            // Duplicate for seamless scroll
+            document.getElementById('clock-strip').innerHTML = html + html;
+        }
+        setInterval(updateClockStrip, 1000);
+        updateClockStrip();
+
         // Sidebar logic
         const sidebar = document.getElementById("sidebar");
         const content = document.getElementById("sidebar-content");
