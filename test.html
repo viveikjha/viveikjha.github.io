@@ -3,312 +3,135 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Astro Tools</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
-
+  <title>Solar System Sky Tracker</title>
   <style>
     body {
-      margin: 0;
+      background: #0d1117;
+      color: #c9d1d9;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #0d1117;
-      color: #c9d1d9;
-      position: relative;
-      min-height: 100vh;
-    }
-
-    /* Running Clock Strip */
-    #clock-strip {
-      background-color: #21262d;
-      color: #58a6ff;
-      font-size: 1rem;
-      padding: 0.5rem;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1001;
-    }
-
-    #clock-strip span {
-      display: inline-block;
-      margin-right: 2rem;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 50px;
-      background-color: #161b22;
-      overflow-x: hidden;
-      overflow-y: auto;
-      transition: width 0.3s ease;
-      z-index: 1000;
-    }
-
-    .sidebar.expanded {
-      width: 260px;
-    }
-
-    .sidebar h2 {
-      text-align: center;
-      font-size: 1.2rem;
-      color: #58a6ff;
-      margin: 1rem 0;
-    }
-
-    .sidebar .toggle-btn {
-      display: block;
-      font-size: 1rem;
-      background: none;
-      border: none;
-      color: #c9d1d9;
-      padding: 0.7rem 1rem;
-      text-align: left;
-      width: 100%;
-      cursor: pointer;
-    }
-
-    .sidebar .toggle-btn:hover {
-      background-color: #21262d;
-    }
-
-    .link-group {
-      display: none;
-      flex-direction: column;
-      margin-bottom: 1rem;
-      padding-left: 1rem;
-    }
-
-    .sidebar.expanded .link-group {
-      display: flex;
-    }
-
-    .link-group a {
-      padding: 0.4rem 0.5rem;
-      color: #c9d1d9;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-
-    .link-group a:hover {
-      background-color: #238636;
-    }
-
-    .link-group a i {
-      margin-right: 0.6rem;
-    }
-
-    .sidebar .menu-toggle {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 50px;
-      width: 50px;
-      cursor: pointer;
-      color: #c9d1d9;
-      background-color: #21262d;
-      border: none;
-    }
-
-    /* Main content */
-    .main {
-      margin-left: 60px;
       padding: 2rem;
-      transition: margin-left 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      box-sizing: border-box;
-      padding-bottom: 3rem; /* Space for footer */
-    }
-
-    .sidebar.expanded ~ .main {
-      margin-left: 270px;
-    }
-
-    /* Tools card */
-    .tools-card {
-      background-color: #161b22;
-      border-radius: 10px;
-      padding: 2rem;
-      max-width: 600px;
       text-align: center;
-      box-shadow: 0 0 20px rgba(90, 175, 255, 0.1);
     }
 
-    .tools-card h1 {
+    h1 {
+      color: #58a6ff;
       margin-bottom: 1rem;
+    }
+
+    table {
+      margin: 2rem auto;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 800px;
+      background-color: #161b22;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    th, td {
+      padding: 0.8rem;
+      border: 1px solid #30363d;
+    }
+
+    th {
+      background-color: #21262d;
       color: #58a6ff;
     }
 
-    .tools-card p {
-      margin-bottom: 2rem;
+    td {
       font-size: 1rem;
-      color: #8b949e;
     }
 
-    .button-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .button-container a.button {
-      background-color: #238636;
-      color: #fff;
-      padding: 1rem;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 6px;
-      transition: background-color 0.2s ease;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .button-container a.button:hover {
-      background-color: #2ea043;
-    }
-
-    /* Footer */
     footer {
-      position: fixed;
-      bottom: 10px;
-      right: 15px;
-      font-size: 0.85rem;
-      color: #8b949e;
+      margin-top: 2rem;
       font-style: italic;
-      z-index: 999;
-    }
-
-    footer a {
-      color: #58a6ff;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
+      color: #8b949e;
     }
   </style>
-
 </head>
 <body>
+  <h1>🌠 Sky Tracker: Naked-Eye Solar System Objects</h1>
+  <p>Based on your current location and time</p>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Object</th>
+        <th>Altitude (°)</th>
+        <th>Azimuth (°)</th>
+      </tr>
+    </thead>
+    <tbody id="skyTable">
+      <tr><td colspan="3">Loading...</td></tr>
+    </tbody>
+  </table>
 
-  <!-- Running Clock Strip -->
-  <div id="clock-strip"></div>
-
-  <!-- Sidebar -->
-  <div id="sidebar" class="sidebar">
-    <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-    <div id="sidebar-content" style="display: none;">
-      <h2><i class="fas fa-star"></i> Astro Links</h2>
-
-      <button class="toggle-btn"><i class="fas fa-database"></i> Databases</button>
-      <div class="link-group">
-        <a href="https://simbad.u-strasbg.fr/simbad/" target="_blank"><i class="fas fa-search"></i> SIMBAD</a>
-        <a href="https://ned.ipac.caltech.edu/" target="_blank"><i class="fas fa-globe"></i> NED</a>
-        <a href="https://skyserver.sdss.org/casjobs/" target="_blank"><i class="fas fa-database"></i> SDSS</a>
-        <a href="https://www.mast.stsci.edu/" target="_blank"><i class="fas fa-database"></i> MAST Portal</a>
-        <a href="https://irsa.ipac.caltech.edu/" target="_blank"><i class="fas fa-database"></i> IRSA</a>
-        <a href="https://www.cds.unistra.fr/" target="_blank"><i class="fas fa-database"></i> CDS Portal</a>
-      </div>
-
-      <button class="toggle-btn"><i class="fas fa-telescope"></i> Visualization</button>
-      <div class="link-group">
-        <a href="https://aladin.u-strasbg.fr/" target="_blank"><i class="fas fa-satellite-dish"></i> Aladin</a>
-        <a href="https://stellarium-web.org/" target="_blank"><i class="fas fa-compass"></i> Stellarium</a>
-      </div>
-
-      <button class="toggle-btn"><i class="fas fa-building-columns"></i> Institutions</button>
-      <div class="link-group">
-        <a href="https://www.nasa.gov" target="_blank"><i class="fab fa-nasa"></i> NASA</a>
-        <a href="https://www.esa.int/" target="_blank"><i class="fas fa-globe-europe"></i> ESA</a>
-        <a href="https://www.eso.org/public/" target="_blank"><i class="fas fa-eye"></i> ESO</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Centered Tools Card -->
-  <div class="main">
-    <main class="content">
-      <div class="tools-card">
-        <h1>Astro Tools Suite</h1>
-        <p>Explore quick-access web tools for astronomers and astrophysics students.</p>
-        <div class="button-container">
-          <a class="button" href="astro/astro_cal.html">📐 Astro Calculators</a>
-          <a class="button" href="astro/lst_cal.html">🕒 Sidereal Time</a>
-          <a class="button" href="astro/lst_mult.html">🌍 Multi-Site LST</a>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- Footer -->
   <footer>
-    Developed and maintained by <a href="https://viveikjha.github.io" target="_blank">Vivek Kumar Jha</a>
+    Data updates every 10 seconds. Clear skies!
   </footer>
 
-  <!-- Sidebar Script -->
+  <!-- Include SunCalc -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+  <!-- Include planetary JS from Skyfield-lite (via CDN or custom ephemeris)—simplified here -->
   <script>
-    const sidebar = document.getElementById("sidebar");
-    const content = document.getElementById("sidebar-content");
+    // Define the objects to track
+    const objects = [
+      { name: "Sun", type: "sun" },
+      { name: "Moon", type: "moon" }
+    ];
 
-    function toggleSidebar() {
-      sidebar.classList.toggle("expanded");
-      content.style.display = sidebar.classList.contains("expanded") ? "block" : "none";
+    // Add placeholder for future planets (dummy for now)
+    const planets = [
+      "Mercury", "Venus", "Mars", "Jupiter", "Saturn"
+    ];
+
+    let userLat = null;
+    let userLon = null;
+
+    function toDegrees(rad) {
+      return (rad * 180) / Math.PI;
     }
 
-    document.addEventListener("click", function(event) {
-      const isClickInside = sidebar.contains(event.target);
-      if (!isClickInside && sidebar.classList.contains("expanded")) {
-        sidebar.classList.remove("expanded");
-        content.style.display = "none";
-      }
-    });
+    function updateSkyTable() {
+      if (userLat === null || userLon === null) return;
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const toggleButtons = document.querySelectorAll(".toggle-btn");
-      toggleButtons.forEach(btn => {
-        btn.addEventListener("click", function () {
-          const group = this.nextElementSibling;
-          group.style.display = group.style.display === "flex" ? "none" : "flex";
-        });
+      const date = new Date();
+      const table = document.getElementById("skyTable");
+      table.innerHTML = "";
+
+      // Sun and Moon using SunCalc
+      objects.forEach(obj => {
+        const pos = SunCalc.getPosition(date, userLat, userLon);
+        const alt = toDegrees(pos.altitude).toFixed(2);
+        const az = toDegrees(pos.azimuth).toFixed(2);
+        const row = `<tr><td>${obj.name}</td><td>${alt}</td><td>${az}</td></tr>`;
+        table.innerHTML += row;
       });
-    });
 
-    function updateClockStrip() {
-      const cities = {
-        "UT": "UTC",
-        "New York": "America/New_York",
-        "Tokyo": "Asia/Tokyo",
-        "Beijing": "Asia/Shanghai",
-        "Chennai": "Asia/Kolkata",
-        "Moscow": "Europe/Moscow",
-        "Dubai": "Asia/Dubai",
-        "Paris": "Europe/Paris",
-        "Istanbul": "Europe/Istanbul",
-        "Rio de Janeiro": "America/Sao_Paulo",
-        "Los Angeles": "America/Los_Angeles"
-      };
-
-      let timeString = '';
-      for (const [city, timezone] of Object.entries(cities)) {
-        const time = new Date().toLocaleString("en-US", { timeZone: timezone });
-        timeString += `<span>${city}: ${new Date(time).toLocaleTimeString()}</span>`;
-      }
-
-      document.getElementById("clock-strip").innerHTML = timeString;
+      // Add mock planet positions (you can hook with ephemeris API or spice-js)
+      planets.forEach(planet => {
+        const dummyAlt = (Math.random() * 90).toFixed(2);
+        const dummyAz = (Math.random() * 360).toFixed(2);
+        const row = `<tr><td>${planet}</td><td>${dummyAlt}</td><td>${dummyAz}</td></tr>`;
+        table.innerHTML += row;
+      });
     }
 
-    setInterval(updateClockStrip, 1000);
-  </script>
+    function initSkyTracker() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          userLat = pos.coords.latitude;
+          userLon = pos.coords.longitude;
+          updateSkyTable();
+          setInterval(updateSkyTable, 10000);
+        }, err => {
+          alert("Location access denied. Cannot show sky positions.");
+        });
+      } else {
+        alert("Geolocation not supported in your browser.");
+      }
+    }
 
+    window.onload = initSkyTracker;
+  </script>
 </body>
 </html>
