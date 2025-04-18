@@ -11,62 +11,39 @@
             margin: 0;
             padding: 0;
             font-family: 'Montserrat', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            background: #0d1117;
             min-height: 100vh;
-            color: #f8f8ff;
+            color: #c9d1d9;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Subtle SVG pattern overlay */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 0;
-            opacity: 0.18;
-            pointer-events: none;
-            background: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="1.5" fill="white" fill-opacity="0.5"/><circle cx="10" cy="50" r="1" fill="white" fill-opacity="0.3"/><circle cx="50" cy="10" r="1" fill="white" fill-opacity="0.3"/><circle cx="45" cy="45" r="0.7" fill="white" fill-opacity="0.2"/><circle cx="15" cy="15" r="0.7" fill="white" fill-opacity="0.2"/></svg>');
-            background-size: 80px 80px;
-        }
-
         .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/05/Telescope_cartoon.svg');
-            background-repeat: no-repeat;
-            background-position: bottom right;
-            background-size: 40vw auto;
-            opacity: 0.08;
-            z-index: 1;
-            pointer-events: none;
+            display: none;
         }
 
         h1 {
             text-align: center;
-            color: #eae4e5;
+            color: #e6edf3;
             margin-top: 2.2rem;
-            font-size: 2.7rem;
+            font-size: 2.2rem;
             letter-spacing: 1px;
             font-weight: 700;
-            text-shadow: 0 2px 16px #1e3c72cc, 0 1px 0 #fff2;
+            text-shadow: none;
             z-index: 2;
             position: relative;
         }
 
         #ut-clock {
             text-align: center;
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             margin: 1.2rem 0 0.5rem 0;
-            color: #cf0a06;
+            color: #36e13c;
             letter-spacing: 1px;
             font-weight: 500;
             z-index: 2;
             position: relative;
-            text-shadow: 0 1px 8px #0004;
+            text-shadow: none;
         }
 
         .clock-container {
@@ -81,50 +58,40 @@
         }
 
         .clock {
-            background: linear-gradient(135deg, #232526 0%, #414345 100%);
-            border-radius: 18px;
+            background: #161b22;
+            border-radius: 12px;
             padding: 1.5rem 1.2rem 1.2rem 1.2rem;
-            box-shadow: 0 8px 32px 0 rgba(30,60,114,0.18), 0 1.5px 8px #0002;
-            border: 1.5px solid rgba(255,255,255,0.09);
-            transition: transform 0.25s, box-shadow 0.25s;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px 0 #01040944;
+            border: 1.5px solid #30363d;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.2s;
             position: relative;
             overflow: hidden;
         }
         .clock:hover {
-            transform: translateY(-6px) scale(1.035);
-            box-shadow: 0 16px 40px 0 rgba(30,60,114,0.22), 0 2px 12px #0003;
-            border-color: #ffe9b3cc;
-        }
-        .clock::before {
-            content: "";
-            position: absolute;
-            top: -40px; right: -40px;
-            width: 90px; height: 90px;
-            background: radial-gradient(circle, #ffe9b3cc 0%, transparent 70%);
-            opacity: 0.13;
-            z-index: 0;
+            transform: translateY(-4px) scale(1.025);
+            box-shadow: 0 8px 24px 0 #01040966;
+            border-color: #388bfd;
         }
         .clock h2 {
             margin-bottom: 0.7rem;
-            color: #fdfdfd;
-            font-size: 1.25rem;
+            color: #e6edf3;
+            font-size: 1.18rem;
             font-weight: 700;
             letter-spacing: 0.5px;
             z-index: 1;
             position: relative;
-            text-shadow: 0 1px 8px #0002;
+            text-shadow: none;
         }
         .clock p {
             margin: 0.3rem 0;
             font-size: 1.07rem;
-            color: #e3f2fd;
+            color: #8b949e;
             z-index: 1;
             position: relative;
-            text-shadow: 0 1px 4px #0001;
+            text-shadow: none;
         }
         .clock p:last-child {
-            color: #efebeb;
+            color: #3bd842;
             font-size: 0.98rem;
             margin-top: 0.7rem;
             font-weight: 500;
@@ -132,7 +99,7 @@
         }
 
         @media (max-width: 700px) {
-            h1 { font-size: 1.5rem; }
+            h1 { font-size: 1.2rem; }
             .clock-container { padding: 1rem; gap: 1.2rem; }
             .clock { padding: 1rem 0.7rem; }
         }
@@ -140,25 +107,27 @@
 </head>
 <body>
     <div class="background"></div>
-    <h1>🕒 Telescope Time Zones — Around the World</h1>
+    <h1>🕒 Telescope Time Zones — Across Some Observatories</h1>
     <div id="ut-clock">UT: Loading...</div>
     <div class="clock-container" id="clockContainer"></div>
 
     <script>
-        const observatories = [
-            { name: 'Mauna Kea',       longitude: -155.468, tz: -10 },
-            { name: 'Palomar',         longitude: -116.863, tz: -8 },
-            { name: 'Kitt Peak',       longitude: -111.600, tz: -7 },
-            { name: 'Gemini North',    longitude: -155.470, tz: -10 },
-            { name: 'La Palma',        longitude: -17.890,  tz: 0 },
-            { name: 'Paranal',         longitude: -70.403,  tz: -4 },
-            { name: 'Cerro Tololo',    longitude: -70.806,  tz: -4 },
-            { name: 'SAAO (Sutherland)', longitude: 20.810, tz: 2 },
-            { name: 'ARIES  (India)', longitude: 78.821, tz: 5.5 },
-            { name: 'Subaru',          longitude: -155.476, tz: -10 },
-            { name: 'Siding Spring',   longitude: 149.070,  tz: 10 },
-            { name: 'Subaru South (Test)', longitude: -70.402, tz: -4 }
-        ];
+       const observatories = [
+    { name: 'Mauna Kea Observatory', location: 'Hawaii, USA', longitude: -155.468, tz: -10 },
+    { name: 'Palomar Observatory', location: 'California, USA', longitude: -116.863, tz: -8 },
+    { name: 'Kitt Peak National Observatory', location: 'Arizona, USA', longitude: -111.600, tz: -7 },
+    { name: 'Roque de los Muchachos Observatory', location: 'La Palma, Canary Islands, Spain', longitude: -17.890, tz: 0 },
+    { name: 'Paranal Observatory', location: 'Atacama Desert, Chile', longitude: -70.403, tz: -4 },
+    { name: 'SAAO Sutherland', location: 'Western Cape, South Africa', longitude: 20.810, tz: 2 },
+    { name: 'ARIES Nainital', location: 'Uttarakhand, India', longitude: 78.821, tz: 5.5 },
+    { name: 'Subaru Telescope', location: 'Mauna Kea, Hawaii, USA', longitude: -155.476, tz: -10 },
+    { name: 'Siding Spring Observatory', location: 'New South Wales, Australia', longitude: 149.070, tz: 10 },
+    { name: 'ALMA Observatory', location: 'Atacama Desert, Chile', longitude: -67.755, tz: -4 },
+    { name: 'Vera C. Rubin Observatory', location: 'Cerro Pachón, Chile', longitude: -70.736, tz: -4 },
+    { name: 'Lijiang Observatory', location: 'Lijiang, China', longitude: 100.245, tz: 8 }
+];
+
+
 
         const container = document.getElementById('clockContainer');
 
