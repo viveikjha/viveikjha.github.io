@@ -1,137 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Solar System Sky Tracker</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Spectrum & HR Diagram</title>
   <style>
     body {
-      background: #0d1117;
-      color: #c9d1d9;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 2rem;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+    .container {
+      width: 90%;
+      margin: auto;
+      padding: 20px;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .section h2 {
       text-align: center;
     }
-
-    h1 {
-      color: #58a6ff;
-      margin-bottom: 1rem;
+    #temperature {
+      width: 100%;
+      margin: 20px 0;
     }
-
-    table {
-      margin: 2rem auto;
-      border-collapse: collapse;
-      width: 90%;
-      max-width: 800px;
-      background-color: #161b22;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    .canvas-container {
+      display: flex;
+      justify-content: space-around;
     }
-
-    th, td {
-      padding: 0.8rem;
-      border: 1px solid #30363d;
-    }
-
-    th {
-      background-color: #21262d;
-      color: #58a6ff;
-    }
-
-    td {
-      font-size: 1rem;
-    }
-
-    footer {
-      margin-top: 2rem;
-      font-style: italic;
-      color: #8b949e;
+    canvas {
+      border: 1px solid #ccc;
+      background-color: #fff;
     }
   </style>
 </head>
 <body>
-  <h1>🌠 Sky Tracker: Naked-Eye Solar System Objects</h1>
-  <p>Based on your current location and time</p>
-  
-  <table>
-    <thead>
-      <tr>
-        <th>Object</th>
-        <th>Altitude (°)</th>
-        <th>Azimuth (°)</th>
-      </tr>
-    </thead>
-    <tbody id="skyTable">
-      <tr><td colspan="3">Loading...</td></tr>
-    </tbody>
-  </table>
 
-  <footer>
-    Data updates every 10 seconds. Clear skies!
-  </footer>
+  <div class="container">
+    <h1 style="text-align: center;">Star Spectrum & HR Diagram</h1>
 
-  <!-- Include SunCalc -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
-  <!-- Include planetary JS from Skyfield-lite (via CDN or custom ephemeris)—simplified here -->
+    <div class="section">
+      <h2>Star Spectrum</h2>
+      <label for="temperature">Select Star Temperature (K): </label>
+      <input type="range" id="temperature" min="3000" max="10000" value="6000" step="500">
+      <span id="tempValue">6000 K</span>
+
+      <div class="canvas-container">
+        <canvas id="spectrumCanvas" width="600" height="300"></canvas>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>HR Diagram</h2>
+      <div class="canvas-container">
+        <canvas id="hrDiagramCanvas" width="600" height="300"></canvas>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Define the objects to track
-    const objects = [
-      { name: "Sun", type: "sun" },
-      { name: "Moon", type: "moon" }
-    ];
+    // Planck's Law to calculate the spectrum for a given temperature (in Kelvin)
+    function planckSpectrum(temperature, frequency) {
+      const h = 6.62607015e-34; // Planck's constant (J·s)
+      const c = 3.0e8; // Speed of light (m/s)
+      const k = 1.380649e-23; // Boltzmann constant (J/K)
 
-    // Add placeholder for future planets (dummy for now)
-    const planets = [
-      "Mercury", "Venus", "Mars", "Jupiter", "Saturn"
-    ];
-
-    let userLat = null;
-    let userLon = null;
-
-    function toDegrees(rad) {
-      return (rad * 180) / Math.PI;
+      return (2 * h * frequency ** 3) / (c ** 2) / (Math.exp((h * frequency) / (k * temperature)) - 1);
     }
 
-    function updateSkyTable() {
-      if (userLat === null || userLon === null) return;
+    // Create the frequency range for the star spectrum
+    function generateSpectrumData(temperature) {
+      const frequencies = [];
+      const spectrum = [];
 
-      const date = new Date();
-      const table = document.getElementById("skyTable");
-      table.innerHTML = "";
-
-      // Sun and Moon using SunCalc
-      objects.forEach(obj => {
-        const pos = SunCalc.getPosition(date, userLat, userLon);
-        const alt = toDegrees(pos.altitude).toFixed(2);
-        const az = toDegrees(pos.azimuth).toFixed(2);
-        const row = `<tr><td>${obj.name}</td><td>${alt}</td><td>${az}</td></tr>`;
-        table.innerHTML += row;
-      });
-
-      // Add mock planet positions (you can hook with ephemeris API or spice-js)
-      planets.forEach(planet => {
-        const dummyAlt = (Math.random() * 90).toFixed(2);
-        const dummyAz = (Math.random() * 360).toFixed(2);
-        const row = `<tr><td>${planet}</td><td>${dummyAlt}</td><td>${dummyAz}</td></tr>`;
-        table.innerHTML += row;
-      });
-    }
-
-    function initSkyTracker() {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(pos => {
-          userLat = pos.coords.latitude;
-          userLon = pos.coords.longitude;
-          updateSkyTable();
-          setInterval(updateSkyTable, 10000);
-        }, err => {
-          alert("Location access denied. Cannot show sky positions.");
-        });
-      } else {
-        alert("Geolocation not supported in your browser.");
+      // Frequency range from 1 THz to 1 PHz (in Hz)
+      for (let i = 1e12; i <= 1e15; i += 1e12) {
+        frequencies.push(i);
+        spectrum.push(planckSpectrum(temperature, i));
       }
+
+      return { frequencies, spectrum };
     }
 
-    window.onload = initSkyTracker;
+    // Update the spectrum plot
+    function updateSpectrumPlot(temperature) {
+      const data = generateSpectrumData(temperature);
+      const canvas = document.getElementById('spectrumCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Clear canvas before drawing
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Set axis labels
+      ctx.font = '14px Arial';
+      ctx.fillStyle = 'black';
+      ctx.fillText('Frequency (THz)', canvas.width - 100, canvas.height - 10);
+      ctx.fillText('Spectral Radiance', 10, 20);
+
+      // Plot the spectrum
+      ctx.beginPath();
+      const xScale = canvas.width / data.frequencies.length;
+      const yScale = canvas.height / Math.max(...data.spectrum);
+      for (let i = 0; i < data.frequencies.length; i++) {
+        const x = i * xScale;
+        const y = canvas.height - data.spectrum[i] * yScale;
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      ctx.strokeStyle = 'rgba(0, 123, 255, 0.7)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // Luminosity calculation using Stefan-Boltzmann Law
+    function luminosity(temperature, radius = 1) {
+      const sigma = 5.670374419e-8; // Stefan-Boltzmann constant (W/m^2/K^4)
+      return 4 * Math.PI * radius ** 2 * sigma * temperature ** 4;
+    }
+
+    // Update the HR diagram
+    function updateHRDiagram(temperature) {
+  const canvas = document.getElementById('hrDiagramCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Axis labels
+  ctx.font = '14px Arial';
+  ctx.fillStyle = 'black';
+  ctx.fillText('← Temperature (K)', canvas.width - 170, canvas.height - 10);
+  ctx.fillText('Luminosity (L☉) ↑', 10, 20);
+
+  // Draw HR diagram axes
+  const padding = 50;
+  const plotWidth = canvas.width - padding * 2;
+  const plotHeight = canvas.height - padding * 2;
+
+  ctx.strokeStyle = '#ccc';
+  ctx.strokeRect(padding, padding, plotWidth, plotHeight);
+
+  // Draw tick marks for temperature (reverse axis: 10000K → 3000K)
+  const tempTicks = [10000, 7500, 6000, 5000, 4000, 3000];
+  tempTicks.forEach((temp, i) => {
+    const x = padding + ((10000 - temp) / (10000 - 3000)) * plotWidth;
+    ctx.beginPath();
+    ctx.moveTo(x, canvas.height - padding);
+    ctx.lineTo(x, canvas.height - padding + 5);
+    ctx.stroke();
+    ctx.fillText(temp.toString(), x - 15, canvas.height - padding + 20);
+  });
+
+  // Draw tick marks for luminosity (log scale, 0.1 to 1000 L☉)
+  const lumTicks = [0.1, 1, 10, 100, 1000];
+  lumTicks.forEach(lum => {
+    const y = padding + (1 - (Math.log10(lum) - Math.log10(0.1)) / (Math.log10(1000) - Math.log10(0.1))) * plotHeight;
+    ctx.beginPath();
+    ctx.moveTo(padding - 5, y);
+    ctx.lineTo(padding, y);
+    ctx.stroke();
+    ctx.fillText(lum.toString(), 5, y + 4);
+  });
+
+  // Plot the star
+  const starLuminosity = luminosity(temperature) / 3.828e26; // in solar units
+  const x = padding + ((10000 - temperature) / (10000 - 3000)) * plotWidth;
+  const y = padding + (1 - (Math.log10(starLuminosity) - Math.log10(0.1)) / (Math.log10(1000) - Math.log10(0.1))) * plotHeight;
+
+  ctx.beginPath();
+  ctx.arc(x, y, 6, 0, Math.PI * 2);
+  ctx.fillStyle = 'blue';
+  ctx.fill();
+  ctx.strokeStyle = '#333';
+  ctx.stroke();
+}
+
   </script>
+
 </body>
 </html>
