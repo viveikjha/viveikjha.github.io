@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Time Scientific Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #181c20;
+            --panel-bg: #23272b;
+            --border: #353a40;
+            --text: #e6e9ef;
+            --muted: #8b98a9;
+            --accent: #3fa8ff;
+            --accent2: #00c2b2;
+            --shadow: 0 2px 24px #000a;
+            --radius: 0.7rem;
+            --ut-bg: linear-gradient(135deg, #23272b 0%, #23272b 100%);
+            --ut-border: #3fa8ff;
+            --ut-text: #e6e9ef;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', system-ui, sans-serif;
+            font-size: 17px;
+            min-height: 100vh;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+        }
+        header {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 1.2rem 1.5rem;
+            text-align: left;
+        }
+        h1 {
+            font-size: 2.1rem;
+            font-weight: 600;
+            margin: 0 0 0.3em 0;
+            letter-spacing: -0.01em;
+            color: var(--accent);
+            font-family: 'IBM Plex Sans', system-ui, sans-serif;
+        }
+        .subtitle {
+            color: var(--muted);
+            font-size: 1.08rem;
+            margin-bottom: 0.5em;
+            font-family: 'IBM Plex Mono', monospace, monospace;
+            letter-spacing: 0.01em;
+        }
+        main {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem 2.5rem 1.5rem;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2.2rem;
+        }
+        .clock-panel {
+            background: var(--panel-bg);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.7rem 1.3rem 1.1rem 1.3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.6rem;
+            margin-bottom: 0.5rem;
+            transition: border-color 0.18s, box-shadow 0.18s, transform 0.15s;
+            min-width: 0;
+            min-height: 150px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .clock-panel:focus-within, .clock-panel:hover {
+            border-color: var(--accent);
+            box-shadow: 0 6px 32px #3fa8ff22;
+            transform: translateY(-2px) scale(1.012);
+        }
+        .clock-panel.ut-panel {
+            background: var(--ut-bg);
+            color: var(--ut-text);
+            border: 2px solid var(--ut-border);
+            box-shadow: 0 8px 40px #3fa8ff22;
+            min-height: 220px;
+            max-width: 600px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            align-items: flex-start;
+        }
+        .clock-panel.ut-panel .city,
+        .clock-panel.ut-panel .label {
+            color: var(--ut-text);
+        }
+        .city {
+            font-size: 1.08rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            margin-bottom: 0.1em;
+            color: var(--accent2);
+            font-family: 'IBM Plex Mono', monospace, monospace;
+        }
+        .clock-panel.ut-panel .city {
+            font-size: 1.25rem;
+            color: var(--accent);
+        }
+        .time {
+            font-size: 2.1rem;
+            font-family: 'IBM Plex Mono', monospace, monospace;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.1em;
+            word-break: break-all;
+            color: var(--text);
+        }
+        .clock-panel.ut-panel .time {
+            font-size: 2.7rem;
+            color: var(--accent2);
+        }
+        .label {
+            font-size: 0.98rem;
+            color: var(--muted);
+            font-weight: 400;
+            margin-top: 0.1em;
+            font-family: 'IBM Plex Mono', monospace, monospace;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        .dashboard .clock-panel {
+            align-items: flex-start;
+            min-width: 0;
+            min-height: 150px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .dashboard2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        .dashboard2 .clock-panel {
+            min-width: 0;
+            min-height: 150px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            background: var(--panel-bg);
+            color: var(--text);
+        }
+        @media (max-width: 1200px) {
+            main { max-width: 100vw; }
+            header { max-width: 100vw; }
+            .dashboard { grid-template-columns: repeat(3, 1fr); }
+            .dashboard2 { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 900px) and (min-width: 601px) {
+            .dashboard { grid-template-columns: repeat(2, 1fr); }
+            .dashboard2 { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            main { padding: 0 0.5rem 2rem 0.5rem; }
+            .dashboard { grid-template-columns: 1fr; gap: 1rem; }
+            .dashboard2 { grid-template-columns: 1fr; gap: 1rem; }
+            .clock-panel { padding: 1.1rem 0.6rem 0.8rem 0.6rem; }
+            header { padding: 1.2rem 0.7rem 0.7rem 0.7rem; }
+        }
+        footer {
+            width: 100%;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.98rem;
+            padding: 1.2rem 0 1.6rem 0;
+            letter-spacing: 0.01em;
+            border-top: 1px solid var(--border);
+            background: linear-gradient(to top, #181c20 80%, #181c2000 100%);
+            font-family: 'IBM Plex Mono', monospace, monospace;
+        }
+        ::selection {
+            background: #3fa8ff33;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>World Time Dashboard</h1>
+        <div class="subtitle">A time dashboard showing UTC, Julian Date, Unix Time.</div>
+    </header>
+    <main>
+        <div class="clock-panel ut-panel">
+            <div class="city">Universal Time (UTC)</div>
+            <div class="time" id="time-UniversalTime">--:--:--</div>
+            <div class="label">Coordinated Universal Time</div>
+        </div>
+        <div class="dashboard" id="dashboard"></div>
+        <div class="dashboard2">
+            <div class="clock-panel">
+                <div class="city">Julian Date</div>
+                <div class="time" id="julian-date" style="font-size:1.5rem;word-break:break-all;">--</div>
+                <div class="label">Astronomical Julian Day Number</div>
+            </div>
+            <div class="clock-panel">
+                <div class="city">Unix Timestamp</div>
+                <div class="time" id="unix-timestamp" style="font-size:1.5rem;word-break:break-all;">--</div>
+                <div class="label">Seconds since 1970-01-01T00:00:00Z</div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        &copy; 2025 World Time Scientific Dashboard &mdash; developed and maintained by Vivek Kumar Jha.
+    </footer>
+    <script>
+        const cities = [
+            { name: 'Tokyo', offset: 9, label: 'Japan' },
+            { name: 'Beijing', offset: 8, label: 'China' },
+            { name: 'New Delhi', offset: 5.5, label: 'India' },
+            { name: 'Dubai', offset: 4, label: 'UAE' },
+            { name: 'Paris', offset: 2, label: 'France' },
+            { name: 'New York', offset: -4, label: 'USA (East)' },
+            { name: 'San Francisco', offset: -7, label: 'USA (West)' },
+            { name: 'London', offset: 1, label: 'UK' }
+        ];
+
+        function createClocks() {
+            const container = document.getElementById('dashboard');
+            cities.forEach((city) => {
+                const box = document.createElement('div');
+                box.className = `clock-panel`;
+                box.innerHTML = `
+                    <div class="city">${city.name}</div>
+                    <div class="time" id="time-${city.name.replace(/\s+/g, '')}">--:--:--</div>
+                    <div class="label">${city.label}</div>
+                `;
+                container.appendChild(box);
+            });
+        }
+
+        // Julian Date calculation
+        function getJulianDate(date) {
+            const Y = date.getUTCFullYear();
+            const M = date.getUTCMonth() + 1;
+            const D = date.getUTCDate() +
+                (date.getUTCHours() + (date.getUTCMinutes() + (date.getUTCSeconds() / 60)) / 60) / 24;
+            let A = Math.floor(Y / 100);
+            let B = 2 - A + Math.floor(A / 4);
+            let JD = Math.floor(365.25 * (Y + 4716)) +
+                Math.floor(30.6001 * (M + 1)) +
+                D + B - 1524.5;
+            return JD;
+        }
+
+        function updateClocks() {
+            const now = new Date();
+
+            // UTC
+            const utcTime = document.getElementById('time-UniversalTime');
+            const utcHours = String(now.getUTCHours()).padStart(2, '0');
+            const utcMinutes = String(now.getUTCMinutes()).padStart(2, '0');
+            const utcSeconds = String(now.getUTCSeconds()).padStart(2, '0');
+            utcTime.textContent = `${utcHours}:${utcMinutes}:${utcSeconds}`;
+
+            // Cities
+            cities.forEach(city => {
+                const local = new Date(now.getTime() + city.offset * 3600 * 1000);
+                const hours = String(local.getUTCHours()).padStart(2, '0');
+                const minutes = String(local.getUTCMinutes()).padStart(2, '0');
+                const seconds = String(local.getUTCSeconds()).padStart(2, '0');
+                const element = document.getElementById(`time-${city.name.replace(/\s+/g, '')}`);
+                if (element) {
+                    element.textContent = `${hours}:${minutes}:${seconds}`;
+                }
+            });
+
+            // Julian Date
+            const julianDate = getJulianDate(now);
+            document.getElementById('julian-date').textContent = julianDate.toFixed(5);
+
+            // Unix Timestamp
+            document.getElementById('unix-timestamp').textContent = Math.floor(now.getTime() / 1000);
+        }
+
+        createClocks();
+        setInterval(updateClocks, 1000);
+        updateClocks();
+    </script>
+</body>
+</html>
