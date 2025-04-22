@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PDF Splitter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    input[type="file"] {
+      margin: 20px 0;
+    }
+    .button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      margin-top: 30px;
+    }
+    .output a {
+      display: block;
+      margin: 5px 0;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <h1>PDF Splitter</h1>
+  <input type="file" id="pdfUpload" multiple accept="application/pdf" />
+  <button class="button" onclick="splitPDFs()">Split PDFs</button>
+  <div class="output" id="output"></div>
+
+  <!-- PDF-lib -->
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script>
+    async function splitPDFs() {
+      const files = document.getElementById('pdfUpload').files;
+      const outputDiv = document.getElementById('output');
+      outputDiv.innerHTML = '';
+
+      if (!files.length) {
+        alert('Please select at least one PDF file.');
+        return;
+      }
+
+      for (const file of files) {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+
+        for (let i = 0; i < pdfDoc.getPageCount(); i++) {
+          const newPdf = await PDFLib.PDFDocument.create();
+          const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
+          newPdf.addPage(copiedPage);
+          const pdfBytes = await newPdf.save();
+
+          const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = `${file.name.replace(/\.pdf$/, '')}_page_${i + 1}.pdf`;
+          link.textContent = `Download: ${link.download}`;
+          outputDiv.appendChild(link);
+        }
+      }
+    }
+  </script>
+
+<!-- PDF Merger UI -->
+<hr style="margin:40px 0;">
+<h1>PDF Merger</h1>
+<input type="file" id="pdfMergeUpload" multiple accept="application/pdf" style="display:none;" />
+<label for="pdfMergeUpload" class="button" style="display:inline-block;">Choose PDFs to Merge</label>
+<span id="mergeFileCount" style="margin-left:10px;color:#555;"></span>
+<br>
+<button class="button" style="background:#28a745;margin-top:15px;" onclick="mergePDFs()">Merge PDFs</button>
+<div class="output" id="mergeOutput"></div>
+
+<script>
+    const mergeUpload = document.getElementById('pdfMergeUpload');
+    const mergeFileCount = document.getElementById('mergeFileCount');
+    mergeUpload.addEventListener('change', () => {
+        mergeFileCount.textContent = mergeUpload.files.length
+            ? `${mergeUpload.files.length} file(s) selected`
+            : '';
+        document.getElementById('mergeOutput').innerHTML = '';
+    });
+
+    async function mergePDFs() {
+        const files = mergeUpload.files;
+        const outputDiv = document.getElementById('mergeOutput');
+        outputDiv.innerHTML = '';
+
+        if (!files.length) {
+            alert('Please select at least two PDF files to merge.');
+            return;
+        }
+
+        const mergedPdf = await PDFLib.PDFDocument.create();
+
+        for (const file of files) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+            copiedPages.forEach(page => mergedPdf.addPage(page));
+        }
+
+        const pdfBytes = await mergedPdf.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'merged.pdf';
+        link.textContent = 'Download: merged.pdf';
+        link.className = 'button';
+        link.style.background = '#28a745';
+        link.style.display = 'inline-block';
+        link.style.marginTop = '20px';
+        outputDiv.appendChild(link);
+    }
+</script>
+
+</body>
+</html>

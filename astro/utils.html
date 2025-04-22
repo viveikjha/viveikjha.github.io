@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Researcher Toolkit</title>
+    <style>
+        :root {
+            --github-green: #2da44e;
+            --github-green-dark: #238636;
+            --github-green-light: #e6f4ea;
+            --bg: #f6f8fa;
+            --bg-dark: #0d1117;
+            --text: #222;
+            --text-dark: #c9d1d9;
+            --card: #fff;
+            --card-dark: #161b22;
+            --border: #d0d7de;
+            --border-dark: #30363d;
+            --shadow: 0 4px 24px rgba(27,31,35,0.07);
+        }
+        body {
+            font-family: 'Segoe UI', 'Inter', 'Roboto', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+        body.dark {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 40px auto 0 auto;
+            padding: 16px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 36px;
+            font-weight: 800;
+            font-size: 2.3rem;
+            letter-spacing: -1px;
+            color: var(--github-green-dark);
+        }
+        .tools-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .tool {
+            background: var(--card);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 26px 20px 20px 20px;
+            border: 2.5px solid var(--github-green);
+            transition: background 0.3s, border 0.3s;
+            flex: 1 1 340px;
+            min-width: 320px;
+            max-width: 370px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        body.dark .tool {
+            background: var(--card-dark);
+            border: 2.5px solid var(--github-green-dark);
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 1.18rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            color: var(--github-green-dark);
+        }
+        textarea, input, select, button, label.button {
+            font-size: 1rem;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s, border 0.3s;
+            outline: none;
+        }
+        body.dark textarea, 
+        body.dark input, 
+        body.dark select {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+            border: 1.5px solid var(--border-dark);
+        }
+        textarea:focus, input:focus, select:focus {
+            border-color: var(--github-green-dark);
+            box-shadow: 0 0 0 2px var(--github-green-light);
+        }
+        button, label.button {
+            background-color: var(--github-green);
+            color: #fff;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(34,197,94,0.08);
+            margin-bottom: 0;
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+        button:hover, button:focus, label.button:hover, label.button:focus {
+            background-color: var(--github-green-dark);
+        }
+        .output {
+            font-weight: 500;
+            margin-top: 10px;
+            font-family: 'JetBrains Mono', 'Fira Mono', 'Menlo', monospace;
+            font-size: 1.05rem;
+            color: var(--github-green-dark);
+            background: var(--github-green-light);
+            border-radius: 6px;
+            padding: 8px 12px;
+            display: block;
+            word-break: break-all;
+        }
+        /* iOS-style toggle switch */
+        .toggle-switch {
+            position: fixed;
+            top: 28px;
+            right: 32px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            user-select: none;
+        }
+        .toggle-switch input[type="checkbox"] {
+            display: none;
+        }
+        .slider {
+            position: relative;
+            width: 48px;
+            height: 28px;
+            background: var(--border);
+            border-radius: 16px;
+            transition: background 0.3s;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(27,31,35,0.04);
+            margin-left: 10px;
+        }
+        .slider:before {
+            content: "";
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 1px 4px rgba(27,31,35,0.07);
+        }
+        input[type="checkbox"]:checked + .slider {
+            background: var(--github-green);
+        }
+        input[type="checkbox"]:checked + .slider:before {
+            transform: translateX(20px);
+            background: #fff;
+        }
+        .toggle-switch .icon {
+            font-size: 1.2rem;
+            margin-right: 6px;
+            color: var(--github-green-dark);
+            transition: color 0.3s;
+        }
+        body.dark .toggle-switch .icon {
+            color: var(--github-green);
+        }
+        @media (max-width: 1100px) {
+            .tools-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .tool {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 700px) {
+            .container {
+                padding: 6px;
+            }
+            .toggle-switch {
+                top: 16px;
+                right: 12px;
+            }
+            .tool {
+                min-width: 0;
+                padding: 12px 6px 10px 6px;
+            }
+        }
+        /* PDF tool output links */
+        .output a {
+            display: block;
+            margin: 5px 0;
+            color: var(--github-green-dark);
+            text-decoration: underline;
+            font-size: 0.98em;
+        }
+        .output a.button {
+            background: var(--github-green);
+            color: #fff;
+            border-radius: 6px;
+            padding: 8px 0;
+            margin: 10px 0 0 0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        /* Drop area for image to PDF */
+        .drop-area {
+            border: 2px dashed var(--github-green-dark);
+            border-radius: 8px;
+            background: var(--github-green-light);
+            padding: 18px;
+            text-align: center;
+            color: var(--github-green-dark);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: border 0.2s, background 0.2s;
+        }
+        .drop-area.dragover {
+            border-color: var(--github-green);
+            background: #d1fadf;
+        }
+    </style>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+    <div class="toggle-switch" title="Toggle dark mode">
+        <label style="display: flex; align-items: center; cursor: pointer;">
+            <span class="icon" id="themeIcon">🌞</span>
+            <input type="checkbox" id="darkToggle" aria-label="Toggle dark mode">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div class="container">
+        <h1>🧰 Research Utility</h1>
+        <div class="tools-grid">
+            <!-- Word Counter -->
+
+            <div class="tool">
+                <h2>arXiv ID to BibTeX</h2>
+                <label for="arxivId">Enter arXiv ID (e.g., 2301.12345):</label>
+                <input type="text" id="arxivId" placeholder="arXiv ID" />
+                <button onclick="fetchBibtex()">Get BibTeX</button>
+                <textarea id="bibtexOutput" readonly placeholder="BibTeX will appear here..."></textarea>
+              </div>
+
+            <div class="tool">
+                <h2>📝 Word Counter</h2>
+                <textarea id="textInput" rows="5" placeholder="Paste or type your text here..."></textarea>
+                <div class="output" id="wordCount">Words: 0 | Characters: 0</div>
+            </div>
+            <!-- Unit Converter -->
+         
+            <!-- PDF Splitter -->
+            <div class="tool">
+                <h2>📄 PDF Splitter</h2>
+                <input type="file" id="pdfUpload" multiple accept="application/pdf" />
+                <button onclick="splitPDFs()">Split PDFs</button>
+                <div class="output" id="output"></div>
+            </div>
+            <!-- PDF Merger -->
+            <div class="tool">
+                <h2>📑 PDF Merger</h2>
+                <input type="file" id="pdfMergeUpload" multiple accept="application/pdf" style="display:none;" />
+                <label for="pdfMergeUpload" class="button" style="margin-bottom:10px;">Choose PDFs to Merge</label>
+                <span id="mergeFileCount" style="margin-left:0;color:#555;display:block;margin-bottom:8px;"></span>
+                <button onclick="mergePDFs()">Merge PDFs</button>
+                <div class="output" id="mergeOutput"></div>
+            </div>
+           
+            <!-- Image to PDF Converter -->
+            <div class="tool">
+                <h2>🖼️→📄 Image to PDF</h2>
+                <div class="drop-area" id="img2pdfDropArea">
+                    Drag &amp; drop images here or <label for="img2pdfInput" style="color:var(--github-green-dark);text-decoration:underline;cursor:pointer;">browse</label>
+                    <input type="file" id="img2pdfInput" accept="image/png,image/jpeg,image/webp" multiple style="display:none;">
+                </div>
+                <div id="img2pdfFileList" style="font-size:0.97em;margin-bottom:6px;"></div>
+                <input type="text" id="img2pdfFilename" placeholder="Output filename (optional, e.g. myfile.pdf)">
+                <button id="img2pdfBtn">Convert to PDF</button>
+                <div class="output" id="img2pdfOutput"></div>
+            </div>
+       
+        <div class="tool">
+            <h2>🔄 Unit Converter</h2>
+            <input type="number" id="unitInput" placeholder="Enter value">
+            <select id="unitFrom"></select>
+            <span style="text-align:center;margin:4px 0;">to</span>
+            <select id="unitTo"></select>
+            <button id="convertBtn">Convert</button>
+            <div class="output" id="unitOutput">Result: </div>
+        </div>
+    </div>
+    </div>
+    <script>
+
+
+    async function fetchBibtex() {
+      const id = document.getElementById('arxivId').value.trim();
+      const output = document.getElementById('bibtexOutput');
+      output.value = 'Fetching...';
+
+      try {
+        const response = await fetch(`https://export.arxiv.org/api/query?id_list=${id}`);
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, "text/xml");
+
+        const entry = xml.querySelector("entry");
+        if (!entry) throw new Error("Invalid arXiv ID or not found.");
+
+        const title = entry.querySelector("title").textContent.trim().replace(/\s+/g, ' ');
+        const authors = [...entry.querySelectorAll("author > name")].map(a => a.textContent.trim());
+        const year = new Date(entry.querySelector("published").textContent).getFullYear();
+
+        const primaryCategory = entry.querySelector("arxiv\\:primary_category") || entry.querySelector("primary_category");
+        const primaryClass = primaryCategory ? primaryCategory.getAttribute("term") : "unknown";
+
+        const bibtex = `@article{arxiv${id.replace(/\W/g, '')},\n` +
+                       `  title={${title}},\n` +
+                       `  author={${authors.join(" and ")}},\n` +
+                       `  year={${year}},\n` +
+                       `  eprint={${id}},\n` +
+                       `  archivePrefix={arXiv},\n` +
+                       `  primaryClass={${primaryClass}}\n` +
+                       `}`;
+
+        output.value = bibtex;
+      } catch (error) {
+        output.value = 'Error: ' + error.message;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Dark Mode Toggle with iOS Switch
+        const darkToggle = document.getElementById('darkToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        function setTheme(dark) {
+            if (dark) {
+                document.body.classList.add('dark');
+                darkToggle.checked = true;
+                themeIcon.textContent = '🌙';
+            } else {
+                document.body.classList.remove('dark');
+                darkToggle.checked = false;
+                themeIcon.textContent = '🌞';
+            }
+        }
+
+        // On load, check localStorage or system preference
+        let dark = localStorage.getItem('theme');
+        if (dark === null) {
+            dark = prefersDark ? 'dark' : 'light';
+        }
+        setTheme(dark === 'dark');
+
+        darkToggle.addEventListener('change', function() {
+            setTheme(this.checked);
+            localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+        });
+
+        // Word Counter
+        document.getElementById('textInput').addEventListener('input', function() {
+            const text = this.value.trim();
+            const words = text.length ? text.split(/\s+/).length : 0;
+            const chars = text.length;
+            document.getElementById('wordCount').textContent = `Words: ${words} | Characters: ${chars}`;
+        });
+
+        // Unit Converter
+        const units = {
+            // Distance (in meters)
+            m: { name: 'Meter', type: 'Distance', factor: 1 },
+            km: { name: 'Kilometer', type: 'Distance', factor: 1000 },
+            au: { name: 'Astronomical Unit', type: 'Distance', factor: 1.496e+11 },
+            ly: { name: 'Light Year', type: 'Distance', factor: 9.461e+15 },
+            pc: { name: 'Parsec', type: 'Distance', factor: 3.086e+16 },
+
+            // Mass (in kilograms)
+            g: { name: 'Gram', type: 'Mass', factor: 0.001 },
+            kg: { name: 'Kilogram', type: 'Mass', factor: 1 },
+            mg: { name: 'Milligram', type: 'Mass', factor: 0.000001 },
+            Msol: { name: 'Solar Mass', type: 'Mass', factor: 1.989e+30 },
+
+            // Volume (in liters)
+            ml: { name: 'Milliliter', type: 'Volume', factor: 0.001 },
+            l: { name: 'Liter', type: 'Volume', factor: 1 },
+            m3: { name: 'Cubic Meter', type: 'Volume', factor: 1000 },
+
+            // Length (subset for overlap)
+            cm: { name: 'Centimeter', type: 'Distance', factor: 0.01 },
+            mm: { name: 'Millimeter', type: 'Distance', factor: 0.001 }
+        };
+
+        const fromSelect = document.getElementById('unitFrom');
+        const toSelect = document.getElementById('unitTo');
+
+        function populateUnitOptions() {
+            fromSelect.innerHTML = '';
+            toSelect.innerHTML = '';
+            Object.entries(units).forEach(([key, { name }]) => {
+                const opt1 = document.createElement('option');
+                const opt2 = document.createElement('option');
+                opt1.value = key;
+                opt1.textContent = name + ` (${key})`;
+                opt2.value = key;
+                opt2.textContent = name + ` (${key})`;
+                fromSelect.appendChild(opt1);
+                toSelect.appendChild(opt2);
+            });
+            fromSelect.value = 'm';
+            toSelect.value = 'km';
+        }
+
+        function convertUnits() {
+            const input = parseFloat(document.getElementById('unitInput').value);
+            const from = document.getElementById('unitFrom').value;
+            const to = document.getElementById('unitTo').value;
+
+            if (isNaN(input)) {
+                document.getElementById('unitOutput').textContent = "Please enter a valid number.";
+                return;
+            }
+
+            if (units[from].type !== units[to].type) {
+                document.getElementById('unitOutput').textContent = "Cannot convert between different unit types.";
+                return;
+            }
+
+            const result = input * (units[from].factor / units[to].factor);
+            document.getElementById('unitOutput').textContent = `Result: ${result.toPrecision(6)} ${to}`;
+        }
+
+        document.getElementById('convertBtn').addEventListener('click', convertUnits);
+
+        populateUnitOptions();
+
+        // PDF Splitter
+        window.splitPDFs = async function() {
+            const files = document.getElementById('pdfUpload').files;
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            if (!files.length) {
+                alert('Please select at least one PDF file.');
+                return;
+            }
+
+            for (const file of files) {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+
+                for (let i = 0; i < pdfDoc.getPageCount(); i++) {
+                    const newPdf = await PDFLib.PDFDocument.create();
+                    const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
+                    newPdf.addPage(copiedPage);
+                    const pdfBytes = await newPdf.save();
+
+                    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `${file.name.replace(/\.pdf$/, '')}_page_${i + 1}.pdf`;
+                    link.textContent = `Download: ${link.download}`;
+                    outputDiv.appendChild(link);
+                }
+            }
+        };
+
+        // PDF Merger
+        const mergeUpload = document.getElementById('pdfMergeUpload');
+        const mergeFileCount = document.getElementById('mergeFileCount');
+        mergeUpload.addEventListener('change', () => {
+            mergeFileCount.textContent = mergeUpload.files.length
+                ? `${mergeUpload.files.length} file(s) selected`
+                : '';
+            document.getElementById('mergeOutput').innerHTML = '';
+        });
+
+        window.mergePDFs = async function() {
+            const files = mergeUpload.files;
+            const outputDiv = document.getElementById('mergeOutput');
+            outputDiv.innerHTML = '';
+
+            if (!files.length) {
+                alert('Please select at least two PDF files to merge.');
+                return;
+            }
+
+            const mergedPdf = await PDFLib.PDFDocument.create();
+
+            for (const file of files) {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                copiedPages.forEach(page => mergedPdf.addPage(page));
+            }
+
+            const pdfBytes = await mergedPdf.save();
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'merged.pdf';
+            link.textContent = 'Download: merged.pdf';
+            link.className = 'button';
+            outputDiv.appendChild(link);
+        };
+
+        // =========================
+        // Image to PDF Converter
+        // =========================
+        const img2pdfInput = document.getElementById('img2pdfInput');
+        const img2pdfDropArea = document.getElementById('img2pdfDropArea');
+        const img2pdfFileList = document.getElementById('img2pdfFileList');
+        const img2pdfBtn = document.getElementById('img2pdfBtn');
+        const img2pdfOutput = document.getElementById('img2pdfOutput');
+        const img2pdfFilename = document.getElementById('img2pdfFilename');
+        let img2pdfFiles = [];
+
+        function updateImg2pdfFileList() {
+            img2pdfFileList.innerHTML = img2pdfFiles.length
+                ? img2pdfFiles.map(f=>`<span>${f.name}</span>`).join(', ')
+                : '<span style="color:#888;">No images selected.</span>';
+        }
+
+        img2pdfInput.addEventListener('change', function() {
+            img2pdfFiles = Array.from(img2pdfInput.files);
+            updateImg2pdfFileList();
+        });
+
+        img2pdfDropArea.addEventListener('dragover', e => {
+            e.preventDefault();
+            img2pdfDropArea.classList.add('dragover');
+        });
+        img2pdfDropArea.addEventListener('dragleave', e => {
+            img2pdfDropArea.classList.remove('dragover');
+        });
+        img2pdfDropArea.addEventListener('drop', e => {
+            e.preventDefault();
+            img2pdfDropArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files)
+                .filter(f=>/^image\/(png|jpeg|webp)$/i.test(f.type));
+            img2pdfFiles = img2pdfFiles.concat(files);
+            updateImg2pdfFileList();
+        });
+        img2pdfDropArea.addEventListener('click', () => img2pdfInput.click());
+
+        img2pdfBtn.addEventListener('click', async function() {
+            img2pdfOutput.textContent = '';
+            if (!img2pdfFiles.length) {
+                img2pdfOutput.textContent = 'Please select at least one image.';
+                return;
+            }
+            img2pdfOutput.textContent = 'Converting...';
+            const pdfDoc = await PDFLib.PDFDocument.create();
+            for (const file of img2pdfFiles) {
+                const imgBytes = await file.arrayBuffer();
+                let imgEmbed, dims;
+                if (file.type === 'image/png') {
+                    imgEmbed = await pdfDoc.embedPng(imgBytes);
+                } else {
+                    imgEmbed = await pdfDoc.embedJpg(imgBytes);
+                }
+                dims = imgEmbed.scale(1);
+                const page = pdfDoc.addPage([dims.width, dims.height]);
+                page.drawImage(imgEmbed, {x:0, y:0, width:dims.width, height:dims.height});
+            }
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], {type:'application/pdf'});
+            const link = document.createElement('a');
+            let fname = img2pdfFilename.value.trim() || 'images2pdf.pdf';
+            if (!fname.toLowerCase().endsWith('.pdf')) fname += '.pdf';
+            link.href = URL.createObjectURL(blob);
+            link.download = fname;
+            link.textContent = `Download: ${fname}`;
+            link.className = 'button';
+            img2pdfOutput.innerHTML = '';
+            img2pdfOutput.appendChild(link);
+        });
+    });
+    </script>
+</body>
+</html>
