@@ -297,16 +297,15 @@
                 <button id="img2pdfBtn">Convert to PDF</button>
                 <div class="output" id="img2pdfOutput"></div>
             </div>
+
+            <div class="tool">
+            <h2>🗜️ Compress PDF File </h2>
+  <input type="file" id="pdfInput" accept="application/pdf" />
+  <button onclick="compressPDF()">Compress</button>
+  <p id="status">Select a PDF to compress.</p>
+</div>
+
        
-        <div class="tool">
-            <h2>🔄 Unit Converter</h2>
-            <input type="number" id="unitInput" placeholder="Enter value">
-            <select id="unitFrom"></select>
-            <span style="text-align:center;margin:4px 0;">to</span>
-            <select id="unitTo"></select>
-            <button id="convertBtn">Convert</button>
-            <div class="output" id="unitOutput">Result: </div>
-        </div>
     </div>
     </div>
     <script>
@@ -384,74 +383,6 @@
             const chars = text.length;
             document.getElementById('wordCount').textContent = `Words: ${words} | Characters: ${chars}`;
         });
-
-        // Unit Converter
-        const units = {
-            // Distance (in meters)
-            m: { name: 'Meter', type: 'Distance', factor: 1 },
-            km: { name: 'Kilometer', type: 'Distance', factor: 1000 },
-            au: { name: 'Astronomical Unit', type: 'Distance', factor: 1.496e+11 },
-            ly: { name: 'Light Year', type: 'Distance', factor: 9.461e+15 },
-            pc: { name: 'Parsec', type: 'Distance', factor: 3.086e+16 },
-
-            // Mass (in kilograms)
-            g: { name: 'Gram', type: 'Mass', factor: 0.001 },
-            kg: { name: 'Kilogram', type: 'Mass', factor: 1 },
-            mg: { name: 'Milligram', type: 'Mass', factor: 0.000001 },
-            Msol: { name: 'Solar Mass', type: 'Mass', factor: 1.989e+30 },
-
-            // Volume (in liters)
-            ml: { name: 'Milliliter', type: 'Volume', factor: 0.001 },
-            l: { name: 'Liter', type: 'Volume', factor: 1 },
-            m3: { name: 'Cubic Meter', type: 'Volume', factor: 1000 },
-
-            // Length (subset for overlap)
-            cm: { name: 'Centimeter', type: 'Distance', factor: 0.01 },
-            mm: { name: 'Millimeter', type: 'Distance', factor: 0.001 }
-        };
-
-        const fromSelect = document.getElementById('unitFrom');
-        const toSelect = document.getElementById('unitTo');
-
-        function populateUnitOptions() {
-            fromSelect.innerHTML = '';
-            toSelect.innerHTML = '';
-            Object.entries(units).forEach(([key, { name }]) => {
-                const opt1 = document.createElement('option');
-                const opt2 = document.createElement('option');
-                opt1.value = key;
-                opt1.textContent = name + ` (${key})`;
-                opt2.value = key;
-                opt2.textContent = name + ` (${key})`;
-                fromSelect.appendChild(opt1);
-                toSelect.appendChild(opt2);
-            });
-            fromSelect.value = 'm';
-            toSelect.value = 'km';
-        }
-
-        function convertUnits() {
-            const input = parseFloat(document.getElementById('unitInput').value);
-            const from = document.getElementById('unitFrom').value;
-            const to = document.getElementById('unitTo').value;
-
-            if (isNaN(input)) {
-                document.getElementById('unitOutput').textContent = "Please enter a valid number.";
-                return;
-            }
-
-            if (units[from].type !== units[to].type) {
-                document.getElementById('unitOutput').textContent = "Cannot convert between different unit types.";
-                return;
-            }
-
-            const result = input * (units[from].factor / units[to].factor);
-            document.getElementById('unitOutput').textContent = `Result: ${result.toPrecision(6)} ${to}`;
-        }
-
-        document.getElementById('convertBtn').addEventListener('click', convertUnits);
-
-        populateUnitOptions();
 
         // PDF Splitter
         window.splitPDFs = async function() {
@@ -596,5 +527,69 @@
         });
     });
     </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<script>
+  async function compressPDF() {
+    const fileInput = document.getElementById('pdfInput');
+    const status = document.getElementById('status');
+    if (!fileInput.files.length) return alert("Please select a PDF file.");
+
+    status.textContent = "Processing...";
+
+    const file = fileInput.files[0];
+    const arrayBuffer = await file.arrayBuffer();
+
+    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+    const pdf = await loadingTask.promise;
+    const newPdf = await PDFLib.PDFDocument.create();
+
+    const scale = 1.5; // 👈 Higher = sharper output
+    const quality = 0.85; // 👈 Higher = better quality
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      const context = canvas.getContext('2d');
+      const renderContext = {
+        canvasContext: context,
+        viewport,
+      };
+      await page.render(renderContext).promise;
+
+      const imageData = canvas.toDataURL('image/jpeg', quality);
+
+      const jpgImage = await newPdf.embedJpg(imageData);
+      const newPage = newPdf.addPage([canvas.width, canvas.height]);
+      newPage.drawImage(jpgImage, {
+        x: 0,
+        y: 0,
+        width: canvas.width,
+        height: canvas.height,
+      });
+
+      status.textContent = `Compressed page ${i} of ${pdf.numPages}`;
+    }
+
+    const pdfBytes = await newPdf.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "compressed.pdf";
+    a.click();
+
+    status.textContent = "✅ Done. Compressed PDF downloaded.";
+  }
+</script>
+
+
 </body>
 </html>
