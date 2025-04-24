@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Markdown Editor</title>
+    <style>
+        :root {
+            --primary: #24292f;
+            --primary-dark: #1b1f23;
+            --bg: #f6f8fa;
+            --editor-bg: #fff;
+            --preview-bg: #f6f8fa;
+            --text: #24292f;
+            --border: #d1d5da;
+            --accent: #24292f;
+            --link: #0366d6;
+            --action-text: #17643b;
+            --action-hover: #218c5a;
+            --action-bg: transparent;
+            --switch-bg: #e1e4e8;
+            --switch-thumb: #fff;
+            --switch-border: #d1d5da;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.2s, color 0.2s;
+        }
+        header {
+            padding: 0 24px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+            box-shadow: 0 1.5px 0 var(--border);
+        }
+        .header-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .action-link {
+            background: var(--action-bg);
+            color: var(--action-text);
+            border: none;
+            font-size: 1.08rem;
+            font-weight: 600;
+            padding: 0 8px;
+            margin: 0;
+            cursor: pointer;
+            transition: color 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 40px;
+            border-radius: 6px;
+            outline: none;
+            letter-spacing: 0.2px;
+            text-decoration: none;
+            box-shadow: none;
+            user-select: none;
+        }
+        .action-link:hover, .action-link:focus {
+            color: var(--action-hover);
+            background: rgba(23,100,59,0.04);
+        }
+        #fileInput {
+            display: none;
+        }
+        main {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+        }
+        .editor, .preview {
+            width: 50%;
+            height: 100%;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .editor {
+            background: var(--editor-bg);
+            border-right: 1.5px solid var(--border);
+        }
+        .preview {
+            background: var(--preview-bg);
+        }
+        textarea {
+            width: 100%;
+            height: 100%;
+            font-size: 1.05rem;
+            border: none;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: 'Fira Mono', 'Consolas', monospace;
+            font-weight: 500;
+            background: transparent;
+            color: var(--accent);
+            outline: none;
+            resize: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .preview h2 {
+            margin: 20px 20px 0 20px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            letter-spacing: 0.2px;
+        }
+        #markdownPreview {
+            padding: 20px;
+            font-size: 1.01rem;
+            line-height: 1.7;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        #markdownPreview pre, #markdownPreview code {
+            background: #f6f8fa;
+            color: #24292f;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: 'Fira Mono', 'Consolas', monospace;
+            font-size: 0.98em;
+        }
+        #markdownPreview pre {
+            padding: 10px;
+            overflow-x: auto;
+        }
+        #markdownPreview blockquote {
+            border-left: 4px solid var(--primary);
+            background: #eaecef;
+            margin: 1em 0;
+            padding: 0.5em 1em;
+            color: #586069;
+            font-style: italic;
+        }
+        #markdownPreview table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        #markdownPreview th, #markdownPreview td {
+            border: 1px solid #d1d5da;
+            padding: 6px 12px;
+        }
+        #markdownPreview th {
+            background: #f6f8fa;
+        }
+        #markdownPreview a {
+            color: var(--link);
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 10px 18px 10px;
+            background: transparent;
+            color: #888;
+            font-size: 1rem;
+            letter-spacing: 0.2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer-note {
+            margin-top: 6px;
+            font-size: 0.98rem;
+            color: #666;
+            letter-spacing: 0.1px;
+        }
+        /* iOS-style dark mode toggle switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            vertical-align: middle;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--switch-bg);
+            border: 1.5px solid var(--switch-border);
+            border-radius: 24px;
+            transition: background 0.2s;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: var(--switch-thumb);
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        input:checked + .slider {
+            background-color: #2d333b;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        .switch .slider svg {
+            position: absolute;
+            top: 2px;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+        }
+        .switch .sun {
+            left: 2px;
+            color: #f9d71c;
+            opacity: 1;
+            transition: opacity 0.2s;
+        }
+        .switch .moon {
+            right: 2px;
+            color: #58a6ff;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        input:checked + .slider .sun {
+            opacity: 0;
+        }
+        input:checked + .slider .moon {
+            opacity: 1;
+        }
+        /* Dark Theme */
+        body.dark {
+            --primary: #161b22;
+            --primary-dark: #0d1117;
+            --bg: #0d1117;
+            --editor-bg: #161b22;
+            --preview-bg: #161b22;
+            --text: #c9d1d9;
+            --border: #30363d;
+            --accent: #c9d1d9;
+            --link: #58a6ff;
+            --action-text: #5be584;
+            --action-hover: #7fffb2;
+            --action-bg: transparent;
+            --switch-bg: #21262d;
+            --switch-thumb: #c9d1d9;
+            --switch-border: #30363d;
+        }
+        body.dark header {
+            background: var(--primary);
+            color: #c9d1d9;
+        }
+        body.dark .preview h2 {
+            color: #58a6ff;
+        }
+        body.dark #markdownPreview pre, 
+        body.dark #markdownPreview code {
+            background: #21262d;
+            color: #c9d1d9;
+        }
+        body.dark #markdownPreview blockquote {
+            background: #21262d;
+            color: #8b949e;
+            border-left: 4px solid #58a6ff;
+        }
+        body.dark #markdownPreview th, 
+        body.dark #markdownPreview td {
+            border: 1px solid #30363d;
+        }
+        body.dark #markdownPreview th {
+            background: #161b22;
+        }
+        body.dark textarea {
+            background: transparent;
+            color: #c9d1d9;
+        }
+        body.dark #markdownPreview a {
+            color: #58a6ff;
+        }
+        body.dark footer, body.dark .footer-note {
+            color: #8b949e;
+        }
+        /* Responsive */
+        @media (max-width: 900px) {
+            main {
+                flex-direction: column;
+            }
+            .editor, .preview {
+                width: 100%;
+                min-height: 200px;
+                height: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">
+            <svg height="24" viewBox="0 0 16 16" width="24" aria-hidden="true" style="fill:white;vertical-align:middle;"></svg>
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.1 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.09.16 1.9.08 2.1.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+            </svg>
+            Markdown Editor
+        </div>
+        <div class="header-actions">
+            <a href="#" class="action-link" id="openLink" title="Open Markdown File">
+                <span>Open</span>
+            </a>
+            <input type="file" id="fileInput" accept=".md" />
+            <a href="#" class="action-link" id="saveLink" title="Save Markdown File">
+                <span>Save</span>
+            </a>
+            <!-- iOS-style dark mode toggle -->
+            <label class="switch" title="Toggle dark mode" style="margin-left:10px;">
+                <input type="checkbox" id="themeToggle" aria-label="Toggle dark mode">
+                <span class="slider"></span>
+                </span>
+            </label>
+        </div>
+    </header>
+    <main>
+        <div class="editor">
+            <textarea id="markdownInput" placeholder="Edit your markdown here..."></textarea>
+        </div>
+        <div class="preview">
+            <h2>Preview</h2>
+            <div id="markdownPreview"></div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-note">
+            Developed and maintained by Vivek Kumar Jha.
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const markdownInput = document.getElementById('markdownInput');
+        const markdownPreview = document.getElementById('markdownPreview');
+        const themeToggle = document.getElementById('themeToggle');
+        const openLink = document.getElementById('openLink');
+        const saveLink = document.getElementById('saveLink');
+
+        // Theme toggle logic
+        function setTheme(dark) {
+            document.body.classList.toggle('dark', dark);
+            themeToggle.checked = dark;
+            localStorage.setItem('md_theme', dark ? 'dark' : 'light');
+        }
+        // Load theme from localStorage
+        const savedTheme = localStorage.getItem('md_theme');
+        setTheme(savedTheme === 'dark');
+        themeToggle.addEventListener('change', () => {
+            setTheme(themeToggle.checked);
+        });
+
+        // Open file logic
+        openLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.name.endsWith('.md')) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    markdownInput.value = event.target.result;
+                    updatePreview();
+                };
+                reader.readAsText(file);
+            } else {
+                alert('Please select a valid markdown file (.md)');
+            }
+        });
+
+        markdownInput.addEventListener('input', updatePreview);
+
+        function updatePreview() {
+            const markdownText = markdownInput.value;
+            markdownPreview.innerHTML = marked.parse(markdownText);
+        }
+
+        // Initialize preview on page load
+        window.addEventListener('DOMContentLoaded', updatePreview);
+
+        // Save file logic
+        saveLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const blob = new Blob([markdownInput.value], { type: 'text/markdown' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'edited_markdown.md';
+            link.click();
+        });
+    </script>
+</body>
+</html>
