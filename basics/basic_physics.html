@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core Physics Refresher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Crimson Text', Georgia, serif;
+      background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+      min-height: 100vh;
+      position: relative;
+      color: #2c1810;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="35" r="0.5" fill="%23d4af8c" opacity="0.4"/><circle cx="80" cy="65" r="0.3" fill="%23c19a6b" opacity="0.3"/><circle cx="45" cy="80" r="0.4" fill="%23b8935f" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .book-container {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .book-spine {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 8px;
+      height: 100vh;
+      background: linear-gradient(180deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+      box-shadow: inset -2px 0 4px rgba(0,0,0,0.3);
+      z-index: 3;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 4rem;
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, #8B4513 50%, transparent 100%);
+    }
+
+    .title {
+      font-family: 'Source Serif Pro', serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 300;
+      color: #2c1810;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(139, 69, 19, 0.1);
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+
+    .title::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -20px;
+      right: -20px;
+      bottom: -10px;
+      border: 2px solid rgba(139, 69, 19, 0.1);
+      border-radius: 4px;
+      z-index: -1;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      color: #8B4513;
+      font-style: italic;
+      font-weight: 400;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .chapter {
+      background: linear-gradient(135deg, #faf8f5 0%, #f0ebe2 100%);
+      border-radius: 8px;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      box-shadow: 
+        0 2px 8px rgba(139, 69, 19, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      animation: fadeInPage 0.8s ease-out;
+      animation-fill-mode: both;
+      height: fit-content;
+    }
+
+    .chapter:nth-child(odd) {
+      animation-delay: 0.1s;
+    }
+
+    .chapter:nth-child(even) {
+      animation-delay: 0.2s;
+    }
+
+    .chapter:hover {
+      transform: translateY(-4px);
+      box-shadow: 
+        0 12px 32px rgba(139, 69, 19, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      background: linear-gradient(135deg, #ffffff 0%, #f8f5f0 100%);
+    }
+
+    .chapter-header {
+      padding: 1.5rem 1.5rem 1rem;
+      border-bottom: 1px solid rgba(139, 69, 19, 0.08);
+      position: relative;
+    }
+
+    .chapter-number {
+      position: absolute;
+      top: 0.5rem;
+      right: 1rem;
+      font-family: 'Source Serif Pro', serif;
+      font-size: 2rem;
+      font-weight: 200;
+      color: rgba(139, 69, 19, 0.2);
+      line-height: 1;
+    }
+
+    .chapter-title {
+      font-family: 'Source Serif Pro', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #2c1810;
+      line-height: 1.3;
+      padding-right: 3rem;
+    }
+
+    .chapter-title a {
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .chapter-title a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: linear-gradient(90deg, #8B4513, #A0522D);
+      transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .chapter:hover .chapter-title a::after {
+      width: 100%;
+    }
+
+    .chapter-description {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #4a3728;
+      margin-bottom: 0;
+    }
+
+    .chapter-content {
+      padding: 1rem 1.5rem 1.5rem;
+    }
+
+    .recommended-reading {
+      margin-bottom: 1rem;
+    }
+
+    .recommended-reading h4 {
+      font-family: 'Source Serif Pro', serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #8B4513;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: relative;
+      padding-left: 1.2rem;
+    }
+
+    .recommended-reading h4::before {
+      content: '📚';
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .book-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .book-item {
+      padding: 0.5rem 0;
+      color: #4a3728;
+      position: relative;
+      padding-left: 1.2rem;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .book-item::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: #8B4513;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+
+    .chapter:hover .book-item::before {
+      transform: translateX(4px);
+    }
+
+    .book-item:hover {
+      color: #2c1810;
+      padding-left: 2rem;
+    }
+
+    .page-footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding: 2rem;
+      border-top: 1px solid rgba(139, 69, 19, 0.1);
+      font-style: italic;
+      color: #8B4513;
+    }
+
+    /* Decorative elements */
+    .ornament {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      opacity: 0.1;
+      background: radial-gradient(circle, #8B4513 30%, transparent 30%);
+      background-size: 8px 8px;
+      border-radius: 50%;
+    }
+
+    .ornament-1 {
+      top: 20%;
+      left: 5%;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .ornament-2 {
+      top: 60%;
+      right: 8%;
+      animation: float 6s ease-in-out infinite reverse;
+    }
+
+    @keyframes fadeInPage {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-15px) rotate(180deg);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .chapters-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .book-container {
+        padding: 2rem 1rem;
+      }
+      
+      .chapters-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .chapter-header,
+      .chapter-content {
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+      }
+      
+      .chapter-number {
+        font-size: 1.5rem;
+        right: 0.8rem;
+      }
+      
+      .chapter-title {
+        font-size: 1.2rem;
+        padding-right: 2.5rem;
+      }
+
+      .book-spine {
+        width: 4px;
+      }
+    }
+
+    /* Special styling for different subjects */
+    .chapter:nth-child(1) .chapter-number::after { content: 'I'; }
+    .chapter:nth-child(2) .chapter-number::after { content: 'II'; }
+    .chapter:nth-child(3) .chapter-number::after { content: 'III'; }
+    .chapter:nth-child(4) .chapter-number::after { content: 'IV'; }
+    .chapter:nth-child(5) .chapter-number::after { content: 'V'; }
+    .chapter:nth-child(6) .chapter-number::after { content: 'VI'; }
+    .chapter:nth-child(7) .chapter-number::after { content: 'VII'; }
+    .chapter:nth-child(8) .chapter-number::after { content: 'VIII'; }
+    .chapter:nth-child(9) .chapter-number::after { content: 'IX'; }
+  </style>
+</head>
+<body>
+  <div class="book-spine"></div>
+  <div class="ornament ornament-1"></div>
+  <div class="ornament ornament-2"></div>
+
+  <div class="book-container">
+    <div class="header">
+      <h1 class="title">Core Physics Refresher</h1>
+      <p class="subtitle">A Comprehensive Guide to Fundamental Concepts</p>
+    </div>
+
+    <div class="chapters-grid">
+      <div class="chapter">
+        <div class="chapter-header">
+          <div class="chapter-number"></div>
+          <h2 class="chapter-title">
+            <a href="classical_mechanics.html">Classical Mechanics</a>
+          </h2>
+          <p class="chapter-description">
+            An exploration of Newtonian and Lagrangian formulations, encompassing central force problems, rigid body dynamics, and the elegant mathematics of small oscillations.
+          </p>
+        </div>
+        <div class="chapter-content">
+          <div class="recommended-reading">
+            <h4>Recommended Texts</h4>
+            <ul class="book-list">
+              <li class="book-item">Goldstein – Classical Mechanics</li>
+              <li class="book-item">Landau & Lifshitz – Mechanics</li>
+              <li class="book-item">Symon – Mechanics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-header">
+          <div class="chapter-number"></div>
+          <h2 class="chapter-title">
+            <a href="elctromagnetic_theory.html">Electrodynamics</a>
+          </h2>
+          <p class="chapter-description">
+            The fundamental theory of electric and magnetic phenomena, from static fields through Maxwell's revolutionary equations to the propagation of electromagnetic waves and radiation theory.
+          </p>
+        </div>
+        <div class="chapter-content">
+          <div class="recommended-reading">
+            <h4>Recommended Texts</h4>
+            <ul class="book-list">
+              <li class="book-item">Griffiths – Introduction to Electrodynamics</li>
+              <li class="book-item">Jackson – Classical Electrodynamics</li>
+              <li class="book-item">Panofsky & Phillips – Classical Electricity and Magnetism</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-header">
+          <div class="chapter-number"></div>
+          <h2 class="chapter-title">
+            <a href="quantum_mechanics.html">Quantum Mechanics</a>
+          </h2>
+          <p class="chapter-description">
+            The revolutionary framework that governs the microscopic world, from Schrödinger's equation through angular momentum theory, perturbation methods, and the profound implications of spin and statistics.
+          </p>
+        </div>
+        <div class="chapter-content">
+          <div class="recommended-reading">
+            <h4>Recommended Texts</h4>
+            <ul class="book-list">
+              <li class="book-item">Griffiths – Introduction to Quantum Mechanics</li>
+              <li class="book-item">Sakurai – Modern Quantum Mechanics</li>
+              <li class="book-item">Shankar – Principles of Quantum Mechanics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-header">
+          <div class="chapter-number"></div>
+          <h2 class="chapter-title">
+            <a href="statistical_mechanics.html">Statistical Mechanics</a>
+          </h2>
+          <p class="chapter-description">
+            The bridge between microscopic and macroscopic physics, exploring microcanonical, canonical, and grand canonical ensembles through the powerful formalism of partition functions and quantum statistics.
+          </p>
+        </div>
+        <div class="chapter-content">
+          <div class="recommended-reading">
+            <h4>Recommended Texts</h4>
+            <ul class="book-list">
+              <li class="book-item">Pathria – Statistical Mechanics</li>
+              <li class="book-item">Reif – Fundamentals of Statistical and Thermal Physics</li>
+              <li class="book-item">Landau & Lifshitz – Statistical Physics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-header">
+          <div class="chapter-number"></div>
+          <h2 class="chapter-title">
+            <a href="mathematical_physics.html">Mathematical Physics</a>
+          </h2>
+          <p class="chapter-description">
+            The mathematical foundations underlying physical theory, including differential equations, special functions, Fourier analysis, complex variables, and the geometric language of tensors.
+          </p>
+        </div>
+        <div class="chapter-content">
+          <div class="recommended-reading">
+            <h4>Recommended Texts</h4>
+            <ul class="book-list">
+              <li class="book-item">Arfken & Weber – Mathematical Methods for Physicists</li>
+              <li class="book-item">Boas – Mathematical Methods in the Physical Sciences</li>
+              <li class="book-item">Churchill – Complex Variables and Applications</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-header">
+          <div class="chapter-number"></div>
+          <h2 class="chapter-title">
+            <a href="radiative_transfer.html">Radiative Transfer</a>
+          </h2>
+          <p class="chapter-description">
+            The physics of light propagation through matter, examining the radiative transfer equation, absorption and emission processes, optical depth concepts, and the complexities of stellar atmospheres.
+          </p>
+        </div>
+        <div class="chapter-content">
+          <div class="recommended-reading">
+            <h4>Recommended Texts</h4>
+            <ul class="book-list">
+              <li class="book-item">Rybicki & Lightman – Radiative Processes in Astrophysics</li>
+              <li class="book-item">Mihalas – Stellar Atmospheres</li>
+              <li class="book-item">Chandrasekhar – Radiative Transfer</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-header">
+          <div class="chapter-number"></div>
+          <h2 class="chapter-title">
+            <a href="basic_astrophysics.html">Basics of Astrophysics</a>
+          </h2>
+          <p class="chapter-description">
+            The fundamental principles governing celestial objects, from stellar structure and evolution through the Hertzsprung-Russell diagram to distance measurements and blackbody radiation in cosmic contexts.
+          </p>
+        </div>
+        <div class="chapter-content">
+          <div class="recommended-reading">
+            <h4>Recommended Texts</h4>
+            <ul class="book-list">
+              <li class="book-item">Carroll & Ostlie – An Introduction to Modern Astrophysics</li>
+              <li class="book-item">Padmanabhan – Theoretical Astrophysics Vol. 1</li>
+              <li class="book-item">Phillips – The Physics of Stars</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-header">
+          <div class="chapter-number"></div>
+          <h2 class="chapter-title">
+            <a href="agn_physics.html">AGN Physics</a>
+          </h2>
+          <p class="chapter-description">
+            The exotic physics of active galactic nuclei, exploring accretion disk dynamics, relativistic effects near black holes, reverberation mapping techniques, and the feedback mechanisms that shape galaxy evolution.
+          </p>
+        </div>
+        <div class="chapter-content">
+          <div class="recommended-reading">
+            <h4>Recommended Texts</h4>
+            <ul class="book-list">
+              <li class="book-item">Krolik – Active Galactic Nuclei</li>
+              <li class="book-item">Peterson – An Introduction to Active Galactic Nuclei</li>
+              <li class="book-item">Netzer – The Physics and Evolution of Active Galactic Nuclei</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-header">
+          <div class="chapter-number"></div>
+          <h2 class="chapter-title">
+            <a href="galaxy_evolution.html">Galaxy Evolution</a>
+          </h2>
+          <p class="chapter-description">
+            The cosmic story of galactic formation and transformation, tracing star formation histories, morphological evolution, merger dynamics, chemical enrichment processes, and fundamental scaling relationships.
+          </p>
+        </div>
+        <div class="chapter-content">
+          <div class="recommended-reading">
+            <h4>Recommended Texts</h4>
+            <ul class="book-list">
+              <li class="book-item">Mo, van den Bosch & White – Galaxy Formation and Evolution</li>
+              <li class="book-item">Binney & Merrifield – Galactic Astronomy</li>
+              <li class="book-item">Longair – Galaxy Formation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      "The book of nature is written in the language of mathematics" — Galileo Galilei
+    </div>
+  </div>
+</body>
+</html>
