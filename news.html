@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Recommended News & Periodical Sources</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.6;
+    color: #222222;
+    background: #f9f9f9;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 1.5rem 2rem;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    font-family: "Palatino Linotype", Palatino, serif;
+  }
+  
+  .subtitle {
+    color: #555555;
+    font-size: 1.05rem;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .section {
+    margin-bottom: 2.5rem;
+  }
+  
+  .section-title {
+    color: #2c3e50;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 0.3rem;
+    font-family: "Palatino Linotype", Palatino, serif;
+    text-align: center;
+  }
+  
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 80px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card-image img {
+    max-height: 60px;
+    max-width: 90%;
+    object-fit: contain;
+    filter: grayscale(0.1);
+    transition: filter 0.3s ease;
+  }
+  
+  .card:hover .card-image img {
+    filter: grayscale(0);
+  }
+  
+  .card-content {
+    flex-grow: 1;
+  }
+  
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.4rem;
+  }
+  
+  .card-link {
+    text-decoration: none;
+    color: #2c3e50;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+  
+  .card-link:hover {
+    border-color: #2c3e50;
+  }
+  
+  .card-description {
+    color: #555555;
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+  
+  .logo-fallback {
+    width: 80px;
+    height: 60px;
+    background: #2c3e50;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: "Palatino Linotype", Palatino, serif;
+  }
+  
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-style: italic;
+    color: #666;
+    font-family: Georgia, serif;
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      padding: 1rem;
+    }
+    
+    h1 {
+      font-size: 1.9rem;
+    }
+    
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Recommended News & Periodical Sources</h1>
+    <p class="subtitle">A curated list top foster a discerning, well-rounded media diet.</p>
+  </header>
+
+  <section class="section">
+    <h2 class="section-title">News Outlets</h2>
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Aljazeera_eng.svg/400px-Aljazeera_eng.svg.png" alt="Al Jazeera English" onerror="this.parentElement.innerHTML='<div class=logo-fallback>AJ</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.aljazeera.com" target="_blank" rel="noopener" class="card-link">Al Jazeera English</a>
+          </h3>
+          <p class="card-description">Global South perspective with bold investigative journalism offering unique insights into international affairs.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/CNA_new_logo.svg/320px-CNA_new_logo.svg.png" alt="Channel NewsAsia" onerror="this.parentElement.innerHTML='<div class=logo-fallback>CNA</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.channelnewsasia.com" target="_blank" rel="noopener" class="card-link">Channel NewsAsia</a>
+          </h3>
+          <p class="card-description">Balanced, measured reportage with a strong Asia-Pacific focus and comprehensive regional coverage.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/The_Hindu_logo.svg/420px-The_Hindu_logo.svg.png" alt="The Hindu" onerror="this.parentElement.innerHTML='<div class=logo-fallback>TH</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.thehindu.com" target="_blank" rel="noopener" class="card-link">The Hindu</a>
+          </h3>
+          <p class="card-description">India's leading national newspaper providing comprehensive South Asia coverage and analysis.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Guardian_2018.svg/500px-The_Guardian_2018.svg.png" alt="The Guardian" onerror="this.parentElement.innerHTML='<div class=logo-fallback>G</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.theguardian.com" target="_blank" rel="noopener" class="card-link">The Guardian</a>
+          </h3>
+          <p class="card-description">Thoughtful editorial voice with award-winning investigative journalism and opinion analysis.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/BBC_Logo_2021.svg/500px-BBC_Logo_2021.svg.png" alt="BBC News" onerror="this.parentElement.innerHTML='<div class=logo-fallback>BBC</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.bbc.com/news" target="_blank" rel="noopener" class="card-link">BBC News</a>
+          </h3>
+          <p class="card-description">Broad international coverage with high editorial standards and in-depth analysis sections.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Reuters_logo_2024.svg/500px-Reuters_logo_2024.svg.png" alt="Reuters" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Reuters</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.reuters.com" target="_blank" rel="noopener" class="card-link">Reuters</a>
+          </h3>
+          <p class="card-description">A globally respected news agency offering timely, impartial, and free access to international news and financial markets coverage.</p>
+        </div>
+      </div>
+      
+
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Scientific & Academic</h2>
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Nature_journal_logo.svg/2880px-Nature_journal_logo.svg.png" alt="Nature" onerror="this.parentElement.innerHTML='<div class=logo-fallback>N</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.nature.com" target="_blank" rel="noopener" class="card-link">Nature</a>
+          </h3>
+          <p class="card-description">Premier scientific journal with authoritative coverage of cutting-edge research across all scientific disciplines.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Science_AAAS_logo.svg/460px-Science_AAAS_logo.svg.png" onerror="this.parentElement.innerHTML='<div class=logo-fallback>SM</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.science.org" target="_blank" rel="noopener" class="card-link">Science Magazine</a>
+          </h3>
+          <p class="card-description">Leading journal publishing significant scientific discoveries across a broad spectrum of disciplines.</p>
+        </div>
+      </div>
+
+
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Scientific_American_logo.svg/250px-Scientific_American_logo.svg.png" alt="Scientific American" onerror="this.parentElement.innerHTML='<div class=logo-fallback>SA</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.scientificamerican.com" target="_blank" rel="noopener" class="card-link">Scientific American</a>
+          </h3>
+          <p class="card-description">Accessible yet precise science and technology coverage, making complex research understandable.</p>
+        </div>
+      </div>
+      
+     
+
+      <div class="card">
+        <div class="card-image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Physics_World_red_logo.svg/500px-Physics_World_red_logo.svg.png" alt="Physics World" onerror="this.parentElement.innerHTML='<div class=logo-fallback>PW</div>'" />
+          
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://physicsworld.com" target="_blank" rel="noopener" class="card-link">Physics World</a>
+          </h3>
+          <p class="card-description">Specialized focus on physics news, research breakthroughs, and developments in the field.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Quanta_Magazine_Logo_05.2022.svg/550px-Quanta_Magazine_Logo_05.2022.svg.png" alt="Quanta Magazine" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Quanta</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.quantamagazine.org" target="_blank" rel="noopener" class="card-link">Quanta Magazine</a>
+          </h3>
+          <p class="card-description">Rigorous, artfully written explorations at the frontiers of mathematics, theoretical physics, biology, and computer science—free from hype, rich in substance.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Logo_for_The_Public_Domain_Review.jpg" alt="The Public Domain Review" onerror="this.parentElement.innerHTML='<div class=logo-fallback>PDR</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://publicdomainreview.org" target="_blank" rel="noopener" class="card-link">The Public Domain Review</a>
+          </h3>
+          <p class="card-description">
+            A distinguished online journal dedicated to the celebration and exploration of cultural and historical treasures in the public domain, offering erudite essays on forgotten manuscripts, art, and literature—free and accessible to all.
+          </p>
+        </div>
+      </div>
+      
+
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Intellectual & Cultural Commentary</h2>
+    <div class="cards-grid">
+
+        <div class="card">
+            <div class="card-image">
+              <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/The_Conversation_website_text_logo.svg/500px-The_Conversation_website_text_logo.svg.png" alt="The Conversation" onerror="this.parentElement.innerHTML='<div class=logo-fallback>The Conversation</div>'" />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">
+                <a href="https://theconversation.com" target="_blank" rel="noopener" class="card-link">The Conversation</a>
+              </h3>
+              <p class="card-description">Free, expert-written essays and analyses on global current affairs, science, and the humanities, authored by scholars and academics.</p>
+            </div>
+          </div>
+          
+      
+      <div class="card">
+        <div class="card-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/The-Atlantic-logo-vector.svg/500px-The-Atlantic-logo-vector.svg.png" alt="The Atlantic" onerror="this.parentElement.innerHTML='<div class=logo-fallback>TA</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.theatlantic.com" target="_blank" rel="noopener" class="card-link">The Atlantic</a>
+          </h3>
+          <p class="card-description">Long-form journalism expertly blending politics, science, technology, and society.</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Aeon_logo.svg/500px-Aeon_logo.svg.png" alt="The New Yorker" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Aeon</div>'" />
+       
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://aeon.co" target="_blank" rel="noopener" class="card-link">Aeon</a>
+          </h3>
+          <p class="card-description">Philosophy, culture, and big ideas explored with remarkable intellectual depth and clarity.</p>
+        </div>
+      </div>
+      
+      
+  </section>
+
+
+</div>
+</body>
+</html>
