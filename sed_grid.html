@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>SED Grid Plot with Filters</title>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+    <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/fflate/umd/index.min.js"></script>
     <style>
         body { font-family: sans-serif; margin: 0; padding: 20px; }
@@ -102,10 +103,27 @@
         .then(buf => {
             const decompressed = fflate.decompressSync(new Uint8Array(buf));
             const jsonStr = new TextDecoder().decode(decompressed);
-            allData = JSON.parse(jsonStr);
+            let parsedData = JSON.parse(jsonStr);
+
+            if (Array.isArray(parsedData)) {
+                allData = parsedData;
+            } else {
+                console.error("Fetched SED data is not an array. Defaulting to empty. Received:", parsedData);
+                allData = []; // Ensure allData is an array to prevent downstream errors
+            }
 
             setupUI();
-            updatePlot(allData.slice(0, 5)); // show first 5 SEDs on load
+            // Display initial SEDs only if data is available
+            if (allData.length > 0) {
+                updatePlot(allData.slice(0, 5));
+            } else {
+                updatePlot([]); // Show "No SEDs to display"
+                // Optionally, inform the user in the param-values div as well
+                const paramValuesDiv = document.getElementById('param-values');
+                if (paramValuesDiv) {
+                    paramValuesDiv.innerHTML = '<p><b>SED data successfully loaded, but it appears to be empty.</b></p>';
+                }
+            }
         })
         .catch(err => {
             console.error("Failed to load or parse SED data:", err);
