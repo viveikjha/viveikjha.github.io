@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Galaxy Evolution — Physics Refresher Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2c1810;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="35" r="0.5" fill="%23d4af8c" opacity="0.4"/><circle cx="80" cy="65" r="0.3" fill="%23c19a6b" opacity="0.3"/><circle cx="45" cy="80" r="0.4" fill="%23b8935f" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #2c1810;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B4513;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        nav a.active {
+            color: #2c1810;
+            border-bottom: 2px solid #8B4513;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            color: #2c1810;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Equation Styles */
+        .equation-box {
+            background: rgba(255, 252, 249, 0.9);
+            border-left: 4px solid #8B4513;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .equation-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Interactive Elements */
+        .interactive-element {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .interactive-element img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Practice Problems */
+        .problem {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .problem-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+        }
+
+        .solution {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ddd;
+        }
+
+        .solution-toggle {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        /* Related Topics */
+        .related-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .related-topic {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #8B4513;
+            transition: all 0.3s ease;
+        }
+
+        .related-topic:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 69, 19, 0.1);
+            font-style: italic;
+            color: #8B4513;
+        }
+
+        .footer-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #8B4513;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Physics Refresher Course</h1>
+            <h2 class="page-title">Galaxy Evolution</h2>
+            <p class="subtitle">Understanding how galaxies form, grow, and change over cosmic time through the interplay of gravity, gas dynamics, star formation, and feedback processes.</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="basic_astrophysics_enhanced.html">Basic Astrophysics</a></li>
+                <li><a href="radiative_transfer_enhanced.html">Radiative Transfer</a></li>
+                <li><a href="agn_physics_enhanced.html">AGN Physics</a></li>
+                <li><a href="galaxy_evolution_enhanced.html" class="active">Galaxy Evolution</a></li>
+                <li><a href="classical_mechanics_enhanced.html">Classical Mechanics</a></li>
+            </ul>
+        </nav>
+
+        <section class="content-section">
+            <h2>Introduction to Galaxy Evolution</h2>
+            <p>Galaxy evolution is the study of how galaxies form and change over cosmic time. It seeks to understand the physical processes that shape the observed properties of galaxies, including their morphologies, stellar populations, gas content, chemical composition, and scaling relations. As the fundamental building blocks of the large-scale structure of the universe, galaxies provide crucial insights into cosmology, star formation, and the interplay between baryonic matter and dark matter.</p>
+            
+            <p>The historical development of galaxy evolution studies began with the classification of galaxy morphologies by Edwin Hubble in the 1920s and 1930s. Early models focused on monolithic collapse scenarios, where galaxies formed rapidly in the early universe. However, the discovery of the cosmic microwave background and the development of the Cold Dark Matter (CDM) cosmological model in the 1980s led to the modern paradigm of hierarchical structure formation, where galaxies grow through the gradual accretion of smaller structures and gas.</p>
+            
+            <p>This module follows the comprehensive approach of Mo, van den Bosch, and White, complemented by the observational perspective of Conselice and the theoretical insights of Somerville and Davé, to provide a thorough understanding of galaxy evolution. We will explore the key physical processes involved, including dark matter halo formation, gas accretion and cooling, star formation, feedback, mergers, and environmental effects, emphasizing both theoretical models and observational constraints across cosmic time.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Cosmological Framework and Dark Matter Halos</h2>
+            <p>Galaxy evolution takes place within the framework of the standard ΛCDM cosmological model, which describes a universe dominated by dark energy (Λ) and cold dark matter (CDM).</p>
+            
+            <h3>Hierarchical Structure Formation</h3>
+            <p>In the ΛCDM model, structure forms hierarchically: small density fluctuations in the early universe grow through gravitational instability, forming small dark matter halos first. These halos then merge over time to form larger halos, creating a cosmic web of filaments, sheets, and voids. Galaxies are thought to form and reside within these dark matter halos.</p>
+            
+            <p>The growth of dark matter halos can be described by analytical models like the Press-Schechter formalism and its extensions, or simulated numerically using N-body simulations. These simulations show that dark matter halos have characteristic density profiles, often described by the Navarro-Frenk-White (NFW) profile:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\rho(r) = \frac{\rho_s}{(r/r_s)(1+r/r_s)^2}</p>
+                <p class="equation-caption">NFW density profile, where ρ<sub>s</sub> is a characteristic density and r<sub>s</sub> is a scale radius</p>
+            </div>
+            
+            <p>The mass function of dark matter halos—the number density of halos as a function of mass—is a key prediction of the ΛCDM model and provides a fundamental link between cosmology and galaxy formation.</p>
+            
+            <h3>Halo Assembly History</h3>
+            <p>The assembly history of a dark matter halo—the sequence of mergers and accretion events that built it up—plays a crucial role in determining the properties of the galaxy it hosts. Halos that assemble earlier tend to host older, redder galaxies, while halos that assemble later tend to host younger, bluer galaxies. This concept is known as "assembly bias."</p>
+            
+            <p>Merger trees, extracted from N-body simulations or generated using semi-analytical methods, provide a statistical description of halo assembly histories and are a key input for models of galaxy formation.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Cosmic Web</h3>
+                <p>This image shows the large-scale structure of the universe as predicted by cosmological simulations, illustrating the cosmic web of dark matter filaments and voids where galaxies form and evolve.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Cosmic_web_simulation.jpg/800px-Cosmic_web_simulation.jpg" alt="Cosmic web simulation">
+                <p><em>Image: Simulation of the cosmic web, showing the distribution of dark matter and the formation of halos at the intersections of filaments.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 1: Halo Mass Function</p>
+                <p>The Press-Schechter mass function gives the comoving number density of dark matter halos with mass M at redshift z. Qualitatively describe how the halo mass function changes with redshift. At a fixed mass (e.g., 10<sup>12</sup> M<sub>☉</sub>), are there more halos at high redshift or low redshift? At a fixed redshift (e.g., z = 0), are there more low-mass halos or high-mass halos?</p>
+                
+                <div class="solution" id="solution1">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The Press-Schechter mass function describes the abundance of dark matter halos as a function of mass and redshift.</p>
+                    
+                    <p>2. Change with redshift: Due to hierarchical structure formation, halos grow over time through mergers. Therefore, at higher redshifts, massive halos are rarer, and the mass function is steeper (more low-mass halos relative to high-mass halos). At lower redshifts, halos have had more time to merge and grow, so massive halos become more common, and the mass function flattens at the high-mass end.</p>
+                    
+                    <p>3. Abundance at fixed mass: For a fixed mass like 10<sup>12</sup> M<sub>☉</sub> (typical mass of a Milky Way-like halo), these halos are relatively common at low redshift (z = 0) but become increasingly rare at higher redshifts because they haven't had enough time to assemble. Thus, there are more 10<sup>12</sup> M<sub>☉</sub> halos at low redshift than at high redshift.</p>
+                    
+                    <p>4. Abundance at fixed redshift: At any given redshift, the mass function is always a steeply declining function of mass. This means there are always far more low-mass halos than high-mass halos. For example, at z = 0, there are vastly more dwarf galaxy-sized halos (10<sup>9</sup>-10<sup>10</sup> M<sub>☉</sub>) than cluster-sized halos (10<sup>14</sup>-10<sup>15</sup> M<sub>☉</sub>).</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution("solution1")">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Baryonic Processes: Gas Accretion and Cooling</h2>
+            <p>While dark matter dominates the gravitational dynamics, the visible components of galaxies are made of baryonic matter (protons, neutrons, electrons). The evolution of this baryonic component, primarily gas, is crucial for understanding galaxy formation.</p>
+            
+            <h3>Gas Accretion</h3>
+            <p>Galaxies acquire gas from the surrounding intergalactic medium (IGM) through several mechanisms:</p>
+            <ul>
+                <li><strong>Hot mode accretion:</strong> In massive halos (M<sub>halo</sub> > 10<sup>12</sup> M<sub>☉</sub>), gas falling into the halo is shock-heated to the virial temperature (T<sub>vir</sub> ~ 10<sup>6</sup>-10<sup>7</sup> K) and forms a hot, quasi-static halo. Gas then cools radiatively from this hot halo and accretes onto the central galaxy.</li>
+                <li><strong>Cold mode accretion:</strong> In low-mass halos (M<sub>halo</sub> < 10<sup>12</sup> M<sub>☉</sub>) or along dense filaments feeding massive halos, gas can radiate its energy efficiently and flow directly onto the central galaxy without being shock-heated to the virial temperature. This is thought to be the dominant mode of gas accretion at high redshifts.</li>
+                <li><strong>Mergers:</strong> Gas can be brought into galaxies through mergers with other gas-rich galaxies.</li>
+            </ul>
+            
+            <h3>Gas Cooling</h3>
+            <p>For gas to form stars, it must cool and lose pressure support. The primary cooling mechanisms depend on temperature:</p>
+            <ul>
+                <li><strong>T > 10<sup>7</sup> K:</strong> Bremsstrahlung (free-free emission) dominates.</li>
+                <li><strong>10<sup>4</sup> K < T < 10<sup>7</sup> K:</strong> Line emission from collisionally excited ions of heavy elements (metals) dominates. Cooling is highly sensitive to metallicity.</li>
+                <li><strong>T < 10<sup>4</sup> K:</strong> Line emission from neutral atoms and molecules (e.g., H₂, CO) and cooling by dust grains become important.</li>
+            </ul>
+            
+            <p>The cooling time t<sub>cool</sub> is the time it takes for gas to radiate away its thermal energy. It depends on the gas density, temperature, and metallicity. Comparing the cooling time to the halo dynamical time t<sub>dyn</sub> determines whether gas can cool efficiently:</p>
+            
+            <div class="equation-box">
+                <p class="equation">t_{cool} = \frac{3/2 n k_B T}{n_e n_H \Lambda(T, Z)}</p>
+                <p class="equation-caption">Cooling time, where n is the total number density, T is temperature, n<sub>e</sub> and n<sub>H</sub> are electron and hydrogen densities, and Λ(T, Z) is the cooling function</p>
+            </div>
+            
+            <p>If t<sub>cool</sub> < t<sub>dyn</sub>, gas can cool rapidly and collapse to form stars. If t<sub>cool</sub> > t<sub>dyn</sub>, cooling is inefficient, and gas remains hot and pressure-supported.</p>
+            
+            <h3>Angular Momentum</h3>
+            <p>Gas accreting onto halos typically possesses angular momentum acquired from tidal torques during the large-scale structure formation process. As the gas cools and collapses, it conserves angular momentum, leading to the formation of rotationally supported disks, which are characteristic features of spiral galaxies.</p>
+            
+            <p>The specific angular momentum j of the gas is related to the halo spin parameter λ:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\lambda = \frac{J |E|^{1/2}}{G M^{5/2}}</p>
+                <p class="equation-caption">Halo spin parameter, where J is the total angular momentum, E is the total energy, and M is the halo mass</p>
+            </div>
+            
+            <p>Simulations show that λ typically has a value around 0.04, leading to disk sizes that are roughly consistent with observations, although the detailed distribution of angular momentum remains a challenge for models.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Gas Cooling Function</h3>
+                <p>This diagram shows the radiative cooling function Λ(T, Z) for astrophysical plasmas as a function of temperature for different metallicities. Note the prominent peaks due to line emission from different elements.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Cooling_function.svg/800px-Cooling_function.svg.png" alt="Gas cooling function">
+                <p><em>Image: Radiative cooling function for astrophysical gas, showing the cooling rate as a function of temperature for different metallicities.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 2: Virial Temperature</p>
+                <p>Estimate the virial temperature T<sub>vir</sub> for a dark matter halo with mass M = 10<sup>12</sup> M<sub>☉</sub> collapsing at redshift z = 0. Assume the halo has virialized, meaning its kinetic energy is related to its potential energy by the virial theorem.</p>
+                
+                <div class="solution" id="solution2">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The virial temperature is defined as the temperature at which the thermal energy per particle equals the gravitational potential energy per particle:</p>
+                    <p>(3/2) k<sub>B</sub> T<sub>vir</sub> ≈ G M m<sub>p</sub> / R<sub>vir</sub></p>
+                    <p>where k<sub>B</sub> is Boltzmann's constant, M is the halo mass, m<sub>p</sub> is the proton mass, and R<sub>vir</sub> is the virial radius.</p>
+                    
+                    <p>2. The virial radius is the radius within which the mean density is Δ<sub>vir</sub> times the critical density of the universe ρ<sub>crit</sub>(z). For a flat ΛCDM universe at z = 0, Δ<sub>vir</sub> ≈ 200.</p>
+                    <p>M = (4/3)π R<sub>vir</sub>³ × Δ<sub>vir</sub> × ρ<sub>crit</sub>(0)</p>
+                    
+                    <p>3. The critical density at z = 0 is:</p>
+                    <p>ρ<sub>crit</sub>(0) = 3 H₀² / (8πG) ≈ 9.2 × 10⁻³⁰ g/cm³ (for H₀ = 70 km/s/Mpc)</p>
+                    
+                    <p>4. Solve for R<sub>vir</sub>:</p>
+                    <p>R<sub>vir</sub> = [3M / (4π Δ<sub>vir</sub> ρ<sub>crit</sub>(0))]<sup>1/3</sup></p>
+                    <p>R<sub>vir</sub> = [3 × 10<sup>12</sup> × 1.99 × 10<sup>33</sup> g / (4π × 200 × 9.2 × 10⁻³⁰ g/cm³)]<sup>1/3</sup></p>
+                    <p>R<sub>vir</sub> = [5.97 × 10<sup>45</sup> / 2.31 × 10⁻²⁶]<sup>1/3</sup> cm</p>
+                    <p>R<sub>vir</sub> = (2.58 × 10<sup>71</sup>)<sup>1/3</sup> cm = 6.37 × 10<sup>23</sup> cm ≈ 206 kpc</p>
+                    
+                    <p>5. Now calculate the virial temperature:</p>
+                    <p>T<sub>vir</sub> ≈ (2/3) × (G M m<sub>p</sub>) / (k<sub>B</sub> R<sub>vir</sub>)</p>
+                    <p>T<sub>vir</sub> ≈ (2/3) × (6.67 × 10⁻⁸ × 10<sup>12</sup> × 1.99 × 10<sup>33</sup> × 1.67 × 10⁻²⁴) / (1.38 × 10⁻¹⁶ × 6.37 × 10<sup>23</sup>) K</p>
+                    <p>T<sub>vir</sub> ≈ (2/3) × (2.22 × 10<sup>35</sup>) / (8.79 × 10<sup>7</sup>) K</p>
+                    <p>T<sub>vir</sub> ≈ 1.68 × 10<sup>27</sup> K</p>
+                    
+                    <p>6. Wait, there must be a mistake in the calculation. Let's re-evaluate the virial temperature formula. It's often expressed in terms of the circular velocity V<sub>c</sub> = √(GM/R):</p>
+                    <p>k<sub>B</sub> T<sub>vir</sub> ≈ μ m<sub>p</sub> V<sub>c</sub>²</p>
+                    <p>where μ is the mean molecular weight (≈ 0.6 for ionized primordial gas).</p>
+                    
+                    <p>7. Calculate V<sub>c</sub>:</p>
+                    <p>V<sub>c</sub>² = G M / R<sub>vir</sub> = 6.67 × 10⁻⁸ × 10<sup>12</sup> × 1.99 × 10<sup>33</sup> / 6.37 × 10<sup>23</sup> (cm/s)²</p>
+                    <p>V<sub>c</sub>² = 2.08 × 10<sup>14</sup> (cm/s)²</p>
+                    <p>V<sub>c</sub> = 1.44 × 10<sup>7</sup> cm/s = 144 km/s</p>
+                    
+                    <p>8. Calculate T<sub>vir</sub>:</p>
+                    <p>T<sub>vir</sub> ≈ (μ m<sub>p</sub> V<sub>c</sub>²) / k<sub>B</sub></p>
+                    <p>T<sub>vir</sub> ≈ (0.6 × 1.67 × 10⁻²⁴ g × 2.08 × 10<sup>14</sup> (cm/s)²) / (1.38 × 10⁻¹⁶ erg/K)</p>
+                    <p>T<sub>vir</sub> ≈ 2.09 × 10⁻¹⁰ erg / 1.38 × 10⁻¹⁶ erg/K</p>
+                    <p>T<sub>vir</sub> ≈ 1.5 × 10<sup>6</sup> K</p>
+                    
+                    <p>9. This result (T<sub>vir</sub> ≈ 1.5 million K) is much more reasonable. Halos with masses around 10<sup>12</sup> M<sub>☉</sub> have virial temperatures of ~10<sup>6</sup> K, which marks the transition between efficient cooling (cold mode accretion) and inefficient cooling (hot mode accretion).</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution2')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Star Formation and Chemical Evolution</h2>
+            <p>Star formation is the process by which cold, dense gas clouds collapse under gravity to form stars. It is a key process in galaxy evolution, converting gas into stars and enriching the interstellar medium (ISM) with heavy elements.</p>
+            
+            <h3>Conditions for Star Formation</h3>
+            <p>Star formation occurs primarily in giant molecular clouds (GMCs), which are cold (T ~ 10-20 K) and dense (n > 100 cm⁻³) regions of the ISM. The conditions for gravitational collapse are determined by the Jeans criterion:</p>
+            
+            <div class="equation-box">
+                <p class="equation">M_J = \left(\frac{5 k_B T}{G \mu m_p}\right)^{3/2} \left(\frac{3}{4\pi\rho}\right)^{1/2}</p>
+                <p class="equation-caption">Jeans mass, the minimum mass required for a cloud to collapse under its own gravity</p>
+            </div>
+            
+            <p>Regions within GMCs that exceed the Jeans mass can collapse to form stars. However, star formation is generally inefficient, with only a few percent of the gas in a GMC typically converted into stars per dynamical time. This inefficiency is attributed to factors like turbulence, magnetic fields, and feedback from young stars.</p>
+            
+            <h3>Star Formation Rate (SFR)</h3>
+            <p>The star formation rate (SFR) is the rate at which gas is converted into stars in a galaxy, typically measured in M<sub>☉</sub>/yr. Empirical relations connect the SFR to the properties of the gas reservoir:</p>
+            <ul>
+                <li><strong>Kennicutt-Schmidt law:</strong> Relates the surface density of star formation (Σ<sub>SFR</sub>) to the surface density of gas (Σ<sub>gas</sub>):
+                    <div class="equation-box">
+                        <p class="equation">\Sigma_{SFR} \propto \Sigma_{gas}^N</p>
+                        <p class="equation-caption">Kennicutt-Schmidt law, with N ≈ 1.4</p>
+                    </div>
+                </li>
+                <li><strong>Molecular gas relation:</strong> The SFR correlates more tightly with the surface density of molecular gas (Σ<sub>H₂</sub>) than with the total gas density.</li>
+            </ul>
+            
+            <p>The cosmic star formation history—the evolution of the average SFR density of the universe over time—shows a peak at z ~ 2-3 and declines toward the present day.</p>
+            
+            <h3>Initial Mass Function (IMF)</h3>
+            <p>The initial mass function (IMF) describes the distribution of stellar masses at birth. It is typically parameterized as a power law or a series of power laws:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\xi(M) = dN/dM \propto M^{-\alpha}</p>
+                <p class="equation-caption">IMF power law, where ξ(M) is the number of stars per unit mass interval</p>
+            </div>
+            
+            <p>Commonly used IMFs include the Salpeter IMF (α = 2.35 for M > 0.5 M<sub>☉</sub>), the Kroupa IMF, and the Chabrier IMF. The IMF is remarkably universal, showing little variation across different environments in the local universe, although its form in the early universe remains uncertain.</p>
+            
+            <h3>Chemical Evolution</h3>
+            <p>Stars synthesize heavy elements (metals) through nuclear fusion and release them into the ISM through stellar winds and supernova explosions. This process, known as chemical enrichment, gradually increases the metallicity of gas and subsequent generations of stars over cosmic time.</p>
+            
+            <p>Key aspects of chemical evolution include:</p>
+            <ul>
+                <li><strong>Yields:</strong> The amount of different elements produced and ejected by stars of different masses and types of supernovae (Type Ia and core-collapse).</li>
+                <li><strong>Gas flows:</strong> Inflows of metal-poor gas from the IGM dilute the metallicity, while outflows of enriched gas (driven by feedback) remove metals from the galaxy.</li>
+                <li><strong>Mass-metallicity relation:</strong> More massive galaxies tend to have higher metallicities, likely due to their deeper gravitational potential wells, which retain enriched gas more effectively.</li>
+            </ul>
+            
+            <p>Simple closed-box models provide a basic framework for understanding chemical evolution, but realistic models must account for gas flows and the detailed yields from different stellar populations.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Cosmic Star Formation History</h3>
+                <p>This diagram shows the evolution of the cosmic star formation rate density as a function of redshift, illustrating the peak of star formation activity at z ~ 2-3.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Cosmic_Star_Formation_History.svg/800px-Cosmic_Star_Formation_History.svg.png" alt="Cosmic star formation history">
+                <p><em>Image: The cosmic star formation rate density as a function of lookback time and redshift, showing the peak around z=2.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 3: Kennicutt-Schmidt Law</p>
+                <p>A spiral galaxy disk has an average gas surface density of Σ<sub>gas</sub> = 10 M<sub>☉</sub>/pc². Using the Kennicutt-Schmidt law Σ<sub>SFR</sub> = 2.5 × 10⁻⁴ (Σ<sub>gas</sub> / (M<sub>☉</sub>/pc²))<sup>1.4</sup> M<sub>☉</sub>/yr/kpc², estimate the average star formation rate surface density in the disk.</p>
+                
+                <div class="solution" id="solution3">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The Kennicutt-Schmidt law relates the star formation rate surface density to the gas surface density:</p>
+                    <p>Σ<sub>SFR</sub> = A × (Σ<sub>gas</sub>)<sup>N</sup></p>
+                    <p>where A = 2.5 × 10⁻⁴ M<sub>☉</sub>/yr/kpc² / (M<sub>☉</sub>/pc²)<sup>1.4</sup> and N = 1.4.</p>
+                    
+                    <p>2. Substitute the given gas surface density Σ<sub>gas</sub> = 10 M<sub>☉</sub>/pc²:</p>
+                    <p>Σ<sub>SFR</sub> = 2.5 × 10⁻⁴ × (10)<sup>1.4</sup> M<sub>☉</sub>/yr/kpc²</p>
+                    
+                    <p>3. Calculate 10<sup>1.4</sup>:</p>
+                    <p>10<sup>1.4</sup> = 10<sup>1</sup> × 10<sup>0.4</sup> ≈ 10 × 2.51 = 25.1</p>
+                    
+                    <p>4. Calculate Σ<sub>SFR</sub>:</p>
+                    <p>Σ<sub>SFR</sub> = 2.5 × 10⁻⁴ × 25.1 M<sub>☉</sub>/yr/kpc²</p>
+                    <p>Σ<sub>SFR</sub> = 6.28 × 10⁻³ M<sub>☉</sub>/yr/kpc²</p>
+                    
+                    <p>5. Therefore, the estimated average star formation rate surface density in the disk is about 6.3 × 10⁻³ M<sub>☉</sub>/yr/kpc².</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution3')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Feedback Processes</h2>
+            <p>Feedback refers to the processes by which energy and momentum injected by stars and active galactic nuclei (AGN) affect the surrounding gas, regulating star formation and galaxy growth.</p>
+            
+            <h3>Stellar Feedback</h3>
+            <p>Feedback from massive stars (M > 8 M<sub>☉</sub>) plays a crucial role in shaping the ISM and regulating star formation on galactic scales. Key mechanisms include:</p>
+            <ul>
+                <li><strong>Photoionization:</strong> Ultraviolet radiation from young, massive stars ionizes the surrounding gas, creating HII regions and heating the gas to ~10<sup>4</sup> K.</li>
+                <li><strong>Stellar winds:</strong> Massive stars lose mass through powerful winds, injecting energy and momentum into the ISM.</li>
+                <li><strong>Supernovae:</strong> Core-collapse supernovae at the end of massive stars' lives inject enormous amounts of energy (~10<sup>51</sup> erg) and heavy elements into the ISM, driving shocks and creating hot bubbles.</li>
+            </ul>
+            
+            <p>Collectively, these processes can drive galactic winds—large-scale outflows of gas from galaxies—which remove gas and metals from the galaxy, suppressing subsequent star formation and enriching the circumgalactic medium (CGM) and IGM.</p>
+            
+            <h3>AGN Feedback</h3>
+            <p>Feedback from AGN, powered by accretion onto supermassive black holes, is thought to be particularly important in regulating the growth of massive galaxies. Key mechanisms include:</p>
+            <ul>
+                <li><strong>Radiative (quasar) mode:</strong> Radiation pressure and winds from luminous AGN (L/L<sub>Edd</sub> > 0.01) can expel gas from the host galaxy.</li>
+                <li><strong>Kinetic (radio) mode:</strong> Jets from radio-loud AGN (typically in low-accretion-rate systems) can inflate cavities in the surrounding hot gas (e.g., in galaxy clusters), preventing gas cooling and accretion.</li>
+            </ul>
+            
+            <p>AGN feedback is invoked to explain several key observations:</p>
+            <ul>
+                <li>The tight correlation between black hole mass and host galaxy bulge properties (M-σ relation).</li>
+                <li>The quenching of star formation in massive galaxies, leading to the observed red sequence.</li>
+                <li>The prevention of catastrophic cooling in galaxy clusters (the cooling flow problem).</li>
+            </ul>
+            
+            <h3>Impact on Galaxy Properties</h3>
+            <p>Feedback processes have profound effects on galaxy properties:</p>
+            <ul>
+                <li><strong>Regulation of star formation:</strong> Feedback limits the efficiency of star formation, preventing galaxies from converting all their gas into stars rapidly.</li>
+                <li><strong>Galactic winds:</strong> Outflows driven by feedback remove gas and metals, shaping the mass-metallicity relation and enriching the CGM/IGM.</li>
+                <li><strong>Morphology:</strong> Feedback can influence the structure of galaxies, potentially contributing to the formation of bulges or disrupting disks.</li>
+                <li><strong>Galaxy bimodality:</strong> The combination of stellar and AGN feedback is thought to be responsible for the observed bimodality of galaxy properties, separating blue, star-forming galaxies from red, quiescent galaxies.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Galactic Wind Simulation</h3>
+                <p>This image shows a simulation of a galactic wind driven by supernova feedback, illustrating how energy injected by stars can expel gas from a galaxy.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Galactic_superwind_in_galaxy_M82.jpg/800px-Galactic_superwind_in_galaxy_M82.jpg" alt="Galactic wind simulation">
+                <p><em>Image: Hubble Space Telescope image of the starburst galaxy M82, showing prominent galactic winds driven by intense star formation.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 4: Supernova Energy Injection</p>
+                <p>A galaxy forms stars at a rate of 10 M<sub>☉</sub>/yr. Assuming a standard IMF (e.g., Kroupa), approximately one core-collapse supernova occurs for every 100 M<sub>☉</sub> of stars formed. If each supernova injects 10<sup>51</sup> erg of energy, calculate the total energy injection rate from supernovae in this galaxy. If only 10% of this energy effectively couples to the ISM to drive winds, what is the power available for feedback?</p>
+                
+                <div class="solution" id="solution4">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The star formation rate is SFR = 10 M<sub>☉</sub>/yr.</p>
+                    
+                    <p>2. The rate of core-collapse supernovae (SN) is:</p>
+                    <p>Rate<sub>SN</sub> = SFR / (Mass per SN)</p>
+                    <p>Rate<sub>SN</sub> = (10 M<sub>☉</sub>/yr) / (100 M<sub>☉</sub>/SN) = 0.1 SN/yr</p>
+                    
+                    <p>3. The energy injected per supernova is E<sub>SN</sub> = 10<sup>51</sup> erg.</p>
+                    
+                    <p>4. The total energy injection rate from supernovae is:</p>
+                    <p>P<sub>SN</sub> = Rate<sub>SN</sub> × E<sub>SN</sub></p>
+                    <p>P<sub>SN</sub> = (0.1 SN/yr) × (10<sup>51</sup> erg/SN)</p>
+                    <p>P<sub>SN</sub> = 10<sup>50</sup> erg/yr</p>
+                    
+                    <p>5. Convert the power to erg/s:</p>
+                    <p>P<sub>SN</sub> = 10<sup>50</sup> erg/yr / (3.15 × 10<sup>7</sup> s/yr) ≈ 3.17 × 10<sup>42</sup> erg/s</p>
+                    
+                    <p>6. If the coupling efficiency is 10%, the power available for feedback is:</p>
+                    <p>P<sub>feedback</sub> = 0.1 × P<sub>SN</sub></p>
+                    <p>P<sub>feedback</sub> = 0.1 × 3.17 × 10<sup>42</sup> erg/s = 3.17 × 10<sup>41</sup> erg/s</p>
+                    
+                    <p>7. This feedback power (≈ 3 × 10<sup>41</sup> erg/s) is substantial and can significantly impact the ISM, potentially driving galactic winds, especially in lower-mass galaxies with shallower potential wells.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution4')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Galaxy Mergers and Environmental Effects</h2>
+            <p>Galaxies do not evolve in isolation. Interactions and mergers with other galaxies, as well as the influence of the large-scale environment, play crucial roles in shaping their properties.</p>
+            
+            <h3>Galaxy Mergers</h3>
+            <p>Galaxy mergers are collisions between two or more galaxies. They are a fundamental aspect of hierarchical structure formation and can dramatically alter galaxy properties:</p>
+            <ul>
+                <li><strong>Major mergers:</strong> Mergers between galaxies of comparable mass (mass ratio > 1:4). These are thought to be responsible for:
+                    <ul>
+                        <li>Transforming spiral galaxies into elliptical galaxies by destroying disks and building bulges.</li>
+                        <li>Triggering intense bursts of star formation (starbursts) by compressing gas.</li>
+                        <li>Fueling AGN activity by driving gas toward the central black hole.</li>
+                        <li>Growing the masses of supermassive black holes through mergers.</li>
+                    </ul>
+                </li>
+                <li><strong>Minor mergers:</strong> Mergers between galaxies with large mass ratios (mass ratio < 1:4). These are more common than major mergers and can:
+                    <ul>
+                        <li>Thicken existing disks.</li>
+                        <li>Add stars and gas to the halo.</li>
+                        <li>Contribute to bulge growth over time.</li>
+                        <li>Trigger moderate levels of star formation or AGN activity.</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <p>The frequency and importance of mergers evolve with cosmic time, being more common at higher redshifts when the universe was denser.</p>
+            
+            <h3>Secular Evolution</h3>
+            <p>Secular evolution refers to the slow, gradual changes in galaxy structure driven by internal processes, such as:</p>
+            <ul>
+                <li><strong>Bars:</strong> Non-axisymmetric structures in disk galaxies that can redistribute angular momentum, drive gas inflows, fuel central star formation (pseudo-bulges), and potentially trigger AGN activity.</li>
+                <li><strong>Spiral arms:</strong> Density waves that can trigger star formation and influence the structure of disks.</li>
+                <li><strong>Disk instabilities:</strong> Gravitational instabilities that can lead to clump formation and migration, particularly in gas-rich disks at high redshift.</li>
+            </ul>
+            
+            <p>Secular processes are thought to be important in shaping the properties of disk galaxies, particularly at lower redshifts when major mergers are less frequent.</p>
+            
+            <h3>Environmental Effects</h3>
+            <p>The evolution of a galaxy can be significantly influenced by its environment, particularly in dense regions like galaxy groups and clusters:</p>
+            <ul>
+                <li><strong>Ram pressure stripping:</strong> As a galaxy moves through the hot, dense intracluster medium (ICM), the ram pressure can strip gas from the galaxy's disk, quenching star formation.</li>
+                <li><strong>Strangulation (starvation):</strong> The removal of the galaxy's hot gas halo by the cluster environment prevents further gas accretion, gradually shutting off star formation as the existing gas reservoir is consumed.</li>
+                <li><strong>Tidal interactions:</strong> Gravitational interactions with the cluster potential or nearby galaxies can distort the galaxy's structure and trigger star formation or AGN activity (harassment).</li>
+                <li><strong>Mergers:</strong> The high density of galaxies in clusters increases the likelihood of mergers, although the high relative velocities can make mergers less efficient than in the field.</li>
+            </ul>
+            
+            <p>These environmental processes contribute to the observed morphology-density relation, where elliptical and S0 galaxies are more common in dense environments, while spiral galaxies dominate in the field.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Galaxy Merger Simulation</h3>
+                <p>This sequence of images shows a simulation of two spiral galaxies merging, illustrating the tidal tails, starburst activity, and eventual formation of an elliptical galaxy.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Antennae_Galaxies_simulation.ogv/800px--Antennae_Galaxies_simulation.ogv.jpg" alt="Galaxy merger simulation">
+                <p><em>Image: Simulation showing the merger of two spiral galaxies, leading to the formation of tidal tails and eventually an elliptical galaxy (similar to the Antennae Galaxies).</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 5: Ram Pressure Stripping</p>
+                <p>A spiral galaxy with a gas surface density Σ<sub>gas</sub> = 10 M<sub>☉</sub>/pc² is moving at v = 1000 km/s through an intracluster medium (ICM) with density ρ<sub>ICM</sub> = 10⁻²⁷ g/cm³. Estimate the ram pressure P<sub>ram</sub> exerted on the galaxy. Compare this to the gravitational restoring force per unit area F<sub>grav</sub>/A ≈ 2πG Σ<sub>*</sub> Σ<sub>gas</sub>, assuming a stellar surface density Σ<sub>*</sub> = 100 M<sub>☉</sub>/pc². Will the gas be stripped?</p>
+                
+                <div class="solution" id="solution5">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The ram pressure is given by:</p>
+                    <p>P<sub>ram</sub> = ρ<sub>ICM</sub> v²</p>
+                    
+                    <p>2. Substitute the values:</p>
+                    <p>P<sub>ram</sub> = (10⁻²⁷ g/cm³) × (1000 km/s)²</p>
+                    <p>P<sub>ram</sub> = 10⁻²⁷ g/cm³ × (10⁸ cm/s)²</p>
+                    <p>P<sub>ram</sub> = 10⁻²⁷ × 10¹⁶ dyne/cm² = 10⁻¹¹ dyne/cm²</p>
+                    
+                    <p>3. The gravitational restoring force per unit area is approximately:</p>
+                    <p>F<sub>grav</sub>/A ≈ 2πG Σ<sub>*</sub> Σ<sub>gas</sub></p>
+                    
+                    <p>4. Convert surface densities to g/cm²:</p>
+                    <p>Σ<sub>gas</sub> = 10 M<sub>☉</sub>/pc² = 10 × 1.99 × 10<sup>33</sup> g / (3.086 × 10<sup>18</sup> cm)² = 2.09 × 10⁻³ g/cm²</p>
+                    <p>Σ<sub>*</sub> = 100 M<sub>☉</sub>/pc² = 2.09 × 10⁻² g/cm²</p>
+                    
+                    <p>5. Calculate the restoring force per unit area:</p>
+                    <p>F<sub>grav</sub>/A ≈ 2π × (6.67 × 10⁻⁸ cm³ g⁻¹ s⁻²) × (2.09 × 10⁻² g/cm²) × (2.09 × 10⁻³ g/cm²)</p>
+                    <p>F<sub>grav</sub>/A ≈ 1.83 × 10⁻¹¹ dyne/cm²</p>
+                    
+                    <p>6. Compare ram pressure and restoring force:</p>
+                    <p>P<sub>ram</sub> = 10⁻¹¹ dyne/cm²</p>
+                    <p>F<sub>grav</sub>/A ≈ 1.83 × 10⁻¹¹ dyne/cm²</p>
+                    
+                    <p>7. In this case, P<sub>ram</sub> is comparable to, but slightly less than, the gravitational restoring force per unit area at this gas surface density. Gas stripping occurs when P<sub>ram</sub> > F<sub>grav</sub>/A. Therefore, gas at this surface density might be partially stripped or significantly disturbed, but perhaps not completely removed. Gas at lower surface densities (e.g., in the outer disk) would be more easily stripped.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution5')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Observational Probes and Techniques</h2>
+            <p>Studying galaxy evolution relies on observations across cosmic time, using various techniques to probe different aspects of galaxy properties.</p>
+            
+            <h3>Deep Surveys</h3>
+            <p>Deep surveys use long exposures with powerful telescopes to detect faint, distant galaxies, providing snapshots of the galaxy population at different epochs. Key surveys include:</p>
+            <ul>
+                <li><strong>Hubble Deep Fields (HDF, HUDF, CANDELS):</strong> Deep optical and near-infrared imaging with the Hubble Space Telescope, revealing galaxies out to z ~ 10.</li>
+                <li><strong>Sloan Digital Sky Survey (SDSS):</strong> Large-area optical imaging and spectroscopy of millions of galaxies in the local universe.</li>
+                <li><strong>Subaru Deep Fields, VLT Deep Fields:</strong> Deep imaging from ground-based telescopes.</li>
+                <li><strong>ALMA and VLA deep fields:</strong> Probing gas content and star formation in distant galaxies at submillimeter and radio wavelengths.</li>
+            </ul>
+            
+            <h3>Measuring Galaxy Properties</h3>
+            <p>Various techniques are used to measure key galaxy properties:</p>
+            <ul>
+                <li><strong>Redshifts:</strong> Measured from spectroscopy (spectroscopic redshift) or multi-band photometry (photometric redshift), providing distance estimates.</li>
+                <li><strong>Stellar masses:</strong> Estimated by fitting stellar population synthesis (SPS) models to observed photometry or spectra.</li>
+                <li><strong>Star formation rates:</strong> Measured using various indicators calibrated to the UV continuum (from young, massive stars), recombination lines (e.g., Hα), or infrared emission (from dust heated by young stars).</li>
+                <li><strong>Morphologies:</strong> Classified visually or using quantitative measures like concentration, asymmetry, and smoothness (CAS parameters) or Sérsic profiles.</li>
+                <li><strong>Gas content:</strong> Measured from emission lines of neutral hydrogen (HI 21cm line) or molecular gas tracers (e.g., CO rotational lines).</li>
+                <li><strong>Metallicities:</strong> Estimated from emission line ratios in HII regions or absorption lines in stellar spectra.</li>
+            </ul>
+            
+            <h3>Connecting Galaxies Across Time</h3>
+            <p>Understanding galaxy evolution requires connecting galaxy populations observed at different redshifts. Methods include:</p>
+            <ul>
+                <li><strong>Evolution of number densities:</strong> Tracking the abundance of galaxies with specific properties (e.g., mass, SFR) over time.</li>
+                <li><strong>Progenitor bias:</strong> Accounting for the fact that galaxies observed at high redshift are not necessarily the direct progenitors of galaxies with similar properties observed today.</li>
+                <li><strong>Semi-analytical models and simulations:</strong> Using theoretical models constrained by observations to track the evolution of individual galaxies and populations over time.</li>
+                <li><strong>Archaeological approach:</strong> Studying the resolved stellar populations in nearby galaxies to reconstruct their past star formation and assembly histories.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Hubble Ultra Deep Field</h3>
+                <p>This image shows the Hubble Ultra Deep Field, one of the deepest images of the universe ever taken, revealing thousands of distant galaxies at various stages of evolution.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Hubble_Ultra_Deep_Field_part_of_NIRCam_image_from_JWST.jpg/800px-Hubble_Ultra_Deep_Field_part_of_NIRCam_image_from_JWST.jpg" alt="Hubble Ultra Deep Field">
+                <p><em>Image: The Hubble Ultra Deep Field, showcasing the vast number and diversity of galaxies across cosmic time. (Portion of JWST NIRCam image shown)</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 6: Stellar Mass Estimation</p>
+                <p>A galaxy at redshift z = 1 has an observed K-band magnitude of K = 21. Assuming a mass-to-light ratio in the K-band of (M/L)<sub>K</sub> = 0.5 M<sub>☉</sub>/L<sub>☉,K</sub> (typical for a moderately old stellar population), estimate the stellar mass of the galaxy. The absolute magnitude of the Sun in the K-band is M<sub>K,☉</sub> = 3.28.</p>
+                
+                <div class="solution" id="solution6">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. First, calculate the absolute K-band magnitude M<sub>K</sub> of the galaxy using the distance modulus formula:</p>
+                    <p>M<sub>K</sub> = m<sub>K</sub> - 5 log₁₀(d<sub>L</sub>/10 pc)</p>
+                    <p>where m<sub>K</sub> = 21 is the apparent magnitude and d<sub>L</sub> is the luminosity distance.</p>
+                    
+                    <p>2. The luminosity distance to z = 1 in a standard ΛCDM cosmology is approximately d<sub>L</sub> ≈ 6600 Mpc ≈ 2.15 × 10<sup>28</sup> cm ≈ 6.97 × 10<sup>9</sup> pc.</p>
+                    
+                    <p>3. Calculate the distance modulus:</p>
+                    <p>DM = 5 log₁₀(6.97 × 10<sup>9</sup> / 10) = 5 log₁₀(6.97 × 10<sup>8</sup>)</p>
+                    <p>DM = 5 × (log₁₀(6.97) + 8) = 5 × (0.843 + 8) = 5 × 8.843 = 44.22</p>
+                    
+                    <p>4. Calculate the absolute magnitude:</p>
+                    <p>M<sub>K</sub> = 21 - 44.22 = -23.22</p>
+                    
+                    <p>5. The luminosity L<sub>K</sub> relative to the Sun's K-band luminosity L<sub>☉,K</sub> is related to the absolute magnitudes by:</p>
+                    <p>M<sub>K</sub> - M<sub>K,☉</sub> = -2.5 log₁₀(L<sub>K</sub> / L<sub>☉,K</sub>)</p>
+                    
+                    <p>6. Solve for the luminosity ratio:</p>
+                    <p>log₁₀(L<sub>K</sub> / L<sub>☉,K</sub>) = (M<sub>K,☉</sub> - M<sub>K</sub>) / 2.5</p>
+                    <p>log₁₀(L<sub>K</sub> / L<sub>☉,K</sub>) = (3.28 - (-23.22)) / 2.5 = 26.5 / 2.5 = 10.6</p>
+                    <p>L<sub>K</sub> / L<sub>☉,K</sub> = 10<sup>10.6</sup> ≈ 3.98 × 10<sup>10</sup></p>
+                    
+                    <p>7. The stellar mass M<sub>*</sub> is given by:</p>
+                    <p>M<sub>*</sub> = (M/L)<sub>K</sub> × L<sub>K</sub></p>
+                    <p>M<sub>*</sub> = (0.5 M<sub>☉</sub>/L<sub>☉,K</sub>) × (3.98 × 10<sup>10</sup> L<sub>☉,K</sub>)</p>
+                    <p>M<sub>*</sub> = 1.99 × 10<sup>10</sup> M<sub>☉</sub></p>
+                    
+                    <p>8. Therefore, the estimated stellar mass of the galaxy is approximately 2 × 10<sup>10</sup> M<sub>☉</sub>. Note that this estimate is sensitive to the assumed mass-to-light ratio, which depends on the age and metallicity of the stellar population, and requires careful modeling in practice.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution6')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Current Frontiers and Open Questions</h2>
+            <p>Galaxy evolution remains a vibrant field of research with many fundamental questions still unanswered.</p>
+            
+            <h3>The First Galaxies and Reionization</h3>
+            <p>Understanding the formation and properties of the first galaxies during the epoch of reionization (z > 6) is a major frontier:</p>
+            <ul>
+                <li>When and how did the first stars and galaxies form?</li>
+                <li>What were the properties of these first galaxies (masses, sizes, SFRs, metallicities)?</li>
+                <li>What sources were responsible for reionizing the universe?</li>
+                <li>How did the first supermassive black holes form and grow?</li>
+            </ul>
+            <p>The James Webb Space Telescope (JWST) is poised to revolutionize this field by directly observing these early galaxies.</p>
+            
+            <h3>The Baryon Cycle</h3>
+            <p>Understanding the flow of baryons (gas) into, through, and out of galaxies—the baryon cycle—is crucial:</p>
+            <ul>
+                <li>How do galaxies accrete gas from the cosmic web, and what are the relative roles of hot and cold mode accretion?</li>
+                <li>What are the physical mechanisms driving galactic winds, and how do their properties depend on galaxy mass and redshift?</li>
+                <li>What is the structure and composition of the circumgalactic medium (CGM), the interface between galaxies and the IGM?</li>
+                <li>How efficiently is gas recycled back into galaxies after being ejected in winds?</li>
+            </ul>
+            
+            <h3>The Regulation of Star Formation</h3>
+            <p>Despite decades of research, the processes that regulate star formation efficiency remain debated:</p>
+            <ul>
+                <li>What sets the slope and normalization of the Kennicutt-Schmidt law?</li>
+                <li>What is the relative importance of different feedback mechanisms (supernovae, radiation pressure, AGN) in regulating star formation?</li>
+                <li>How does star formation efficiency vary with galaxy properties and environment?</li>
+                <li>What processes quench star formation in massive galaxies?</li>
+            </ul>
+            
+            <h3>The Nature of Dark Matter</h3>
+            <p>While the ΛCDM model is successful on large scales, challenges remain on small scales, potentially hinting at new dark matter physics:</p>
+            <ul>
+                <li><strong>Cusp-core problem:</strong> Simulations predict cuspy central density profiles for dark matter halos, while observations often suggest cored profiles in dwarf galaxies.</li>
+                <li><strong>Missing satellites problem:</strong> Simulations predict many more small subhalos around Milky Way-like galaxies than are observed.</li>
+                <li><strong>Too-big-to-fail problem:</strong> The most massive subhalos predicted by simulations seem inconsistent with the properties of observed dwarf spheroidal galaxies.</li>
+            </ul>
+            <p>These challenges may be resolved by baryonic physics (feedback) or could indicate deviations from the standard CDM model (e.g., warm or self-interacting dark matter).</p>
+            
+            <h3>Future Observational Facilities</h3>
+            <p>Upcoming facilities will provide transformative data for galaxy evolution studies:</p>
+            <ul>
+                <li><strong>JWST:</strong> Probing the first galaxies and reionization.</li>
+                <li><strong>Roman Space Telescope:</strong> Large-area near-infrared surveys to study galaxy evolution over wide fields.</li>
+                <li><strong>Euclid:</strong> Mapping the large-scale structure and weak lensing to constrain cosmology and galaxy clustering.</li>
+                <li><strong>Vera C. Rubin Observatory (LSST):</strong> Deep, wide-field optical survey to study galaxy evolution, transients, and dark energy.</li>
+                <li><strong>SKA and ngVLA:</strong> Next-generation radio arrays to map neutral hydrogen and star formation across cosmic time.</li>
+                <li><strong>30-meter class telescopes (ELT, GMT, TMT):</strong> Providing unprecedented sensitivity and resolution for detailed studies of distant galaxies.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Galaxy Evolution Timeline</h3>
+                <p>This diagram provides a schematic overview of key events and processes in galaxy evolution from the early universe to the present day.</p>
+                <img src="https://www.eso.org/public/archives/images/screen/eso1338b.jpg" alt="Galaxy evolution timeline">
+                <p><em>Image: Artist's impression illustrating the timeline of galaxy evolution, from the formation of the first galaxies to the complex structures observed today. (Credit: ESO/M. Kornmesser)</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Resources</h2>
+            <h3>Authoritative Textbooks</h3>
+            <ul>
+                <li><strong>Galaxy Formation and Evolution</strong> by Houjun Mo, Frank van den Bosch, and Simon White — The standard graduate-level textbook on galaxy formation theory.</li>
+                <li><strong>Galaxy Formation</strong> by Malcolm S. Longair — Comprehensive overview with emphasis on physical processes.</li>
+                <li><strong>Extragalactic Astronomy and Cosmology</strong> by Peter Schneider — Broad coverage of extragalactic astronomy, including galaxy evolution.</li>
+                <li><strong>The Physics of Galaxy Formation</strong> by Claudia Maraston — Focuses on stellar populations and their role in galaxy evolution.</li>
+            </ul>
+            
+            <h3>Review Articles</h3>
+            <ul>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2015ARA%26A..53...51S/abstract" target="_blank" rel="noopener noreferrer">Somerville, R. S., & Davé, R. (2015). "Physical Models of Galaxy Formation in a Cosmological Context." Annual Review of Astronomy and Astrophysics, 53, 51-113.</a></li>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2014ARA%26A..52..415M/abstract" target="_blank" rel="noopener noreferrer">Madau, P., & Dickinson, M. (2014). "Cosmic Star-Formation History." Annual Review of Astronomy and Astrophysics, 52, 415-486.</a></li>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2017ARA%26A..55...59N/abstract" target="_blank" rel="noopener noreferrer">Naab, T., & Ostriker, J. P. (2017). "Theoretical Challenges in the Formation of Galactic Disks." Annual Review of Astronomy and Astrophysics, 55, 59-109.</a></li>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2018ARA%26A..56..435W/abstract" target="_blank" rel="noopener noreferrer">Wechsler, R. H., & Tinker, J. L. (2018). "The Connection Between Galaxies and Their Dark Matter Halos." Annual Review of Astronomy and Astrophysics, 56, 435-487.</a></li>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2017ARA%26A..55..389P/abstract" target="_blank" rel="noopener noreferrer">Conselice, C. J. (2014). "The Evolution of Galaxy Structure Over Cosmic Time." Annual Review of Astronomy and Astrophysics, 52, 291-337.</a></li>
+            </ul>
+            
+            <h3>Online Resources and Simulations</h3>
+            <ul>
+                <li><a href="https://www.illustris-project.org/" target="_blank" rel="noopener noreferrer">IllustrisTNG Simulation</a> — State-of-the-art cosmological hydrodynamical simulation suite.</li>
+                <li><a href="http://eagle.strw.leidenuniv.nl/" target="_blank" rel="noopener noreferrer">EAGLE Simulation</a> — Another major cosmological simulation project.</li>
+                <li><a href="https://yt-project.org/" target="_blank" rel="noopener noreferrer">yt Project</a> — Widely used Python package for analyzing and visualizing astrophysical simulation data.</li>
+                <li><a href="https://galformod.mpa-garching.mpg.de/" target="_blank" rel="noopener noreferrer">Semi-Analytic Models Database</a> — Repository of results from various semi-analytic models of galaxy formation.</li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Related Topics</h2>
+            <div class="related-topics">
+                <a href="basic_astrophysics_enhanced.html" class="related-topic">Basic Astrophysics</a>
+                <a href="agn_physics_enhanced.html" class="related-topic">AGN Physics</a>
+                <a href="radiative_transfer_enhanced.html" class="related-topic">Radiative Transfer</a>
+                <a href="classical_mechanics_enhanced.html" class="related-topic">Classical Mechanics</a>
+                <a href="statistical_mechanics_enhanced.html" class="related-topic">Statistical Mechanics</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-nav">
+                <a href="index.html">Home</a> |
+                <a href="classical_mechanics_enhanced.html">Classical Mechanics</a> |
+                <a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a> |
+                <a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a> |
+                <a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a> |
+                <a href="mathematical_physics_enhanced.html">Mathematical Physics</a>
+            </div>
+            <p>"We are a way for the cosmos to know itself." — Carl Sagan</p>
+            <p>© 2025 Physics Refresher Course | Last Updated: May 2025</p>
+        </footer>
+    </div>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+        
+        // Convert equation content to proper MathJax format when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const equations = document.querySelectorAll('.equation');
+            equations.forEach(function(equation) {
+                // Preserve the original text
+                const originalText = equation.textContent;
+                // Replace with properly delimited math
+                equation.innerHTML = '\\[' + originalText + '\\]';
+            });
+        });
+    </script>
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            if (solution.style.display === "none" || solution.style.display === "") {
+                solution.style.display = "block";
+            } else {
+                solution.style.display = "none";
+            }
+        }
+        
+        // Hide all solutions initially
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutions = document.querySelectorAll('.solution');
+            solutions.forEach(function(solution) {
+                solution.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

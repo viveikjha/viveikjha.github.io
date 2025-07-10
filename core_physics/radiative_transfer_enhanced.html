@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Radiative Transfer — Physics Refresher Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2c1810;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="35" r="0.5" fill="%23d4af8c" opacity="0.4"/><circle cx="80" cy="65" r="0.3" fill="%23c19a6b" opacity="0.3"/><circle cx="45" cy="80" r="0.4" fill="%23b8935f" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #2c1810;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B4513;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        nav a.active {
+            color: #2c1810;
+            border-bottom: 2px solid #8B4513;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            color: #2c1810;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Equation Styles */
+        .equation-box {
+            background: rgba(255, 252, 249, 0.9);
+            border-left: 4px solid #8B4513;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .equation-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Interactive Elements */
+        .interactive-element {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .interactive-element img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Practice Problems */
+        .problem {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .problem-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+        }
+
+        .solution {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ddd;
+        }
+
+        .solution-toggle {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        /* Related Topics */
+        .related-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .related-topic {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #8B4513;
+            transition: all 0.3s ease;
+        }
+
+        .related-topic:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 69, 19, 0.1);
+            font-style: italic;
+            color: #8B4513;
+        }
+
+        .footer-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #8B4513;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Physics Refresher Course</h1>
+            <h2 class="page-title">Radiative Transfer</h2>
+            <p class="subtitle">The theory of how radiation propagates through matter, describing the complex interactions between light and its environment across the electromagnetic spectrum.</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a></li>
+                <li><a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a></li>
+                <li><a href="radiative_transfer_enhanced.html" class="active">Radiative Transfer</a></li>
+                <li><a href="basic_astrophysics_enhanced.html">Basic Astrophysics</a></li>
+                <li><a href="galaxy_evolution_enhanced.html">Galaxy Evolution</a></li>
+            </ul>
+        </nav>
+
+        <section class="content-section">
+            <h2>Introduction to Radiative Transfer</h2>
+            <p>Radiative transfer is the physical process by which electromagnetic radiation propagates through matter, accounting for absorption, emission, and scattering phenomena. This theory forms the foundation for understanding how light interacts with various media, from stellar atmospheres and interstellar clouds to planetary atmospheres and laboratory plasmas. The development of radiative transfer theory has been crucial for interpreting astronomical observations, modeling climate systems, designing optical devices, and understanding energy transport in diverse physical systems.</p>
+            
+            <p>The historical development of radiative transfer theory began with the work of Gustav Kirchhoff in the 19th century on blackbody radiation and spectroscopy. Significant advances were made by Arthur Schuster, Karl Schwarzschild, and Edward Arthur Milne in the early 20th century, who formulated the basic equations of radiative transfer in stellar atmospheres. Subrahmanyan Chandrasekhar's seminal work in the 1940s and 1950s provided a comprehensive mathematical treatment of the subject, particularly for scattering problems. Modern computational methods have further extended our ability to solve complex radiative transfer problems in multiple dimensions with realistic physics.</p>
+            
+            <p>This module follows the rigorous approach of Chandrasekhar's classic text, enriched by the practical insights of Rybicki and Lightman, to provide a comprehensive understanding of how radiation interacts with matter across different physical regimes and applications, with particular emphasis on astrophysical contexts.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Fundamental Concepts and Definitions</h2>
+            <p>Before delving into the radiative transfer equation, it is essential to establish the fundamental quantities and concepts that describe radiation fields and their interaction with matter.</p>
+            
+            <h3>Specific Intensity and Its Properties</h3>
+            <p>The specific intensity (or radiance) I<sub>ν</sub> is the fundamental quantity in radiative transfer, defined as the energy dE passing through an area dA, within a solid angle dΩ, in a frequency range dν, during a time interval dt:</p>
+            
+            <div class="equation-box">
+                <p class="equation">I_\nu = \frac{dE}{dA \cos\theta \, d\Omega \, d\nu \, dt}</p>
+                <p class="equation-caption">Definition of specific intensity (units: erg s⁻¹ cm⁻² Hz⁻¹ sr⁻¹)</p>
+            </div>
+            
+            <p>Where θ is the angle between the direction of propagation and the normal to the area dA. The specific intensity has several important properties:</p>
+            <ul>
+                <li><strong>Conservation along a ray:</strong> In the absence of emission, absorption, or scattering, the specific intensity remains constant along a ray in vacuum.</li>
+                <li><strong>Relation to energy density:</strong> The energy density u<sub>ν</sub> of radiation is related to the specific intensity by integrating over all solid angles:</li>
+            </ul>
+            
+            <div class="equation-box">
+                <p class="equation">u_\nu = \frac{1}{c} \int I_\nu \, d\Omega</p>
+                <p class="equation-caption">Relation between specific intensity and energy density</p>
+            </div>
+            
+            <h3>Moments of the Radiation Field</h3>
+            <p>The moments of the specific intensity provide a useful way to characterize the radiation field:</p>
+            
+            <div class="equation-box">
+                <p class="equation">J_\nu = \frac{1}{4\pi} \int I_\nu \, d\Omega</p>
+                <p class="equation-caption">Mean intensity (zeroth moment)</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">\mathbf{H}_\nu = \frac{1}{4\pi} \int I_\nu \, \mathbf{\hat{n}} \, d\Omega</p>
+                <p class="equation-caption">Radiation flux vector (first moment)</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">K_\nu = \frac{1}{4\pi} \int I_\nu \, \cos^2\theta \, d\Omega</p>
+                <p class="equation-caption">Radiation pressure (second moment)</p>
+            </div>
+            
+            <h3>Emission, Absorption, and Scattering Coefficients</h3>
+            <p>The interaction of radiation with matter is characterized by several coefficients:</p>
+            <ul>
+                <li><strong>Absorption coefficient (κ<sub>ν</sub>):</strong> The fractional decrease in intensity per unit path length due to absorption.</li>
+                <li><strong>Emission coefficient (j<sub>ν</sub>):</strong> The energy emitted per unit volume, per unit solid angle, per unit frequency, per unit time.</li>
+                <li><strong>Scattering coefficient (σ<sub>ν</sub>):</strong> The fractional decrease in intensity per unit path length due to scattering out of the beam.</li>
+                <li><strong>Extinction coefficient (α<sub>ν</sub>):</strong> The total fractional decrease in intensity per unit path length, α<sub>ν</sub> = κ<sub>ν</sub> + σ<sub>ν</sub>.</li>
+            </ul>
+            
+            <p>The optical depth τ<sub>ν</sub> is a dimensionless measure of the opacity of a medium:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\tau_\nu = \int \alpha_\nu \, ds</p>
+                <p class="equation-caption">Definition of optical depth</p>
+            </div>
+            
+            <p>A medium is considered optically thick if τ<sub>ν</sub> >> 1 and optically thin if τ<sub>ν</sub> << 1.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Optical Depth</h3>
+                <p>This diagram illustrates how radiation intensity decreases exponentially with optical depth in an absorbing medium, according to Beer's law: I(τ) = I(0)e<sup>-τ</sup>.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Beer_lambert.svg/800px-Beer_lambert.svg.png" alt="Beer's Law illustration">
+                <p><em>Image: Illustration of Beer's law showing the exponential attenuation of radiation with optical depth.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 1: Mean Intensity and Flux</p>
+                <p>Consider an isotropic radiation field where I<sub>ν</sub> = I<sub>0</sub> (constant) in all directions. Calculate the mean intensity J<sub>ν</sub> and the radiation flux vector H<sub>ν</sub>.</p>
+                
+                <div class="solution" id="solution1">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. For an isotropic radiation field, I<sub>ν</sub> = I<sub>0</sub> in all directions.</p>
+                    
+                    <p>2. The mean intensity is:</p>
+                    <p>J<sub>ν</sub> = (1/4π) ∫ I<sub>ν</sub> dΩ = (1/4π) ∫ I<sub>0</sub> dΩ = (1/4π) · I<sub>0</sub> · 4π = I<sub>0</sub></p>
+                    
+                    <p>3. The radiation flux vector is:</p>
+                    <p>H<sub>ν</sub> = (1/4π) ∫ I<sub>ν</sub> n̂ dΩ = (1/4π) ∫ I<sub>0</sub> n̂ dΩ</p>
+                    
+                    <p>4. In spherical coordinates, n̂ = (sin θ cos φ, sin θ sin φ, cos θ), and dΩ = sin θ dθ dφ.</p>
+                    
+                    <p>5. For each component of H<sub>ν</sub>, we have integrals of the form:</p>
+                    <p>(1/4π) ∫<sub>0</sub><sup>2π</sup> ∫<sub>0</sub><sup>π</sup> I<sub>0</sub> sin θ cos φ · sin θ dθ dφ</p>
+                    
+                    <p>6. Due to the symmetry of the isotropic radiation field, these integrals vanish:</p>
+                    <p>∫<sub>0</sub><sup>2π</sup> cos φ dφ = 0</p>
+                    <p>∫<sub>0</sub><sup>2π</sup> sin φ dφ = 0</p>
+                    <p>∫<sub>0</sub><sup>π</sup> cos θ sin θ dθ = 0</p>
+                    
+                    <p>7. Therefore, H<sub>ν</sub> = 0, which means there is no net flow of radiation in any direction for an isotropic radiation field.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution1')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>The Radiative Transfer Equation</h2>
+            <p>The radiative transfer equation (RTE) describes how the specific intensity changes along a ray due to emission, absorption, and scattering processes.</p>
+            
+            <h3>Derivation and Physical Interpretation</h3>
+            <p>Consider a beam of radiation passing through a medium. The change in specific intensity along a path length ds is given by:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{dI_\nu}{ds} = -\alpha_\nu I_\nu + j_\nu</p>
+                <p class="equation-caption">Radiative transfer equation in differential form</p>
+            </div>
+            
+            <p>Where α<sub>ν</sub> is the extinction coefficient and j<sub>ν</sub> is the emission coefficient. The first term represents the loss of intensity due to absorption and scattering, while the second term represents the gain due to emission.</p>
+            
+            <p>It is often convenient to express the RTE in terms of optical depth τ<sub>ν</sub>:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{dI_\nu}{d\tau_\nu} = -I_\nu + S_\nu</p>
+                <p class="equation-caption">Radiative transfer equation in terms of optical depth</p>
+            </div>
+            
+            <p>Where S<sub>ν</sub> = j<sub>ν</sub>/α<sub>ν</sub> is the source function, representing the ratio of emission to extinction.</p>
+            
+            <h3>Formal Solution</h3>
+            <p>The formal solution to the RTE for a ray traveling from τ<sub>ν</sub> = 0 to τ<sub>ν</sub> = τ<sub>ν,0</sub> is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">I_\nu(\tau_{\nu,0}) = I_\nu(0) e^{-\tau_{\nu,0}} + \int_0^{\tau_{\nu,0}} S_\nu(\tau_\nu) e^{-(\tau_{\nu,0} - \tau_\nu)} d\tau_\nu</p>
+                <p class="equation-caption">Formal solution to the radiative transfer equation</p>
+            </div>
+            
+            <p>This solution has a clear physical interpretation: the first term represents the attenuated incident radiation, and the second term represents the contribution from emission within the medium, attenuated by the optical depth between the emission point and the observer.</p>
+            
+            <h3>Special Cases</h3>
+            <p><strong>1. Constant Source Function:</strong> If S<sub>ν</sub> is constant throughout the medium, the solution simplifies to:</p>
+            
+            <div class="equation-box">
+                <p class="equation">I_\nu(\tau_{\nu,0}) = I_\nu(0) e^{-\tau_{\nu,0}} + S_\nu (1 - e^{-\tau_{\nu,0}})</p>
+                <p class="equation-caption">Solution for constant source function</p>
+            </div>
+            
+            <p><strong>2. Optically Thin Limit (τ<sub>ν,0</sub> << 1):</strong> In this limit, the solution becomes:</p>
+            
+            <div class="equation-box">
+                <p class="equation">I_\nu(\tau_{\nu,0}) \approx I_\nu(0) (1 - \tau_{\nu,0}) + S_\nu \tau_{\nu,0}</p>
+                <p class="equation-caption">Solution in the optically thin limit</p>
+            </div>
+            
+            <p><strong>3. Optically Thick Limit (τ<sub>ν,0</sub> >> 1):</strong> In this limit, the solution approaches:</p>
+            
+            <div class="equation-box">
+                <p class="equation">I_\nu(\tau_{\nu,0}) \approx S_\nu</p>
+                <p class="equation-caption">Solution in the optically thick limit</p>
+            </div>
+            
+            <p>This result is known as the diffusion approximation, where the radiation field approaches local thermodynamic equilibrium (LTE) with the medium.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 2: Radiative Transfer in a Homogeneous Medium</p>
+                <p>A beam of radiation with initial intensity I<sub>ν</sub>(0) = 10 erg s⁻¹ cm⁻² Hz⁻¹ sr⁻¹ passes through a homogeneous medium with constant absorption coefficient κ<sub>ν</sub> = 0.2 cm⁻¹ and emission coefficient j<sub>ν</sub> = 1.0 erg s⁻¹ cm⁻³ Hz⁻¹ sr⁻¹. Calculate the emerging intensity I<sub>ν</sub>(L) after the beam traverses a distance L = 10 cm.</p>
+                
+                <div class="solution" id="solution2">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. First, calculate the optical depth τ<sub>ν</sub> = κ<sub>ν</sub> · L = 0.2 cm⁻¹ · 10 cm = 2.0</p>
+                    
+                    <p>2. Calculate the source function S<sub>ν</sub> = j<sub>ν</sub>/κ<sub>ν</sub> = 1.0 / 0.2 = 5.0 erg s⁻¹ cm⁻² Hz⁻¹ sr⁻¹</p>
+                    
+                    <p>3. Use the solution for a constant source function:</p>
+                    <p>I<sub>ν</sub>(L) = I<sub>ν</sub>(0) e<sup>-τ<sub>ν</sub></sup> + S<sub>ν</sub> (1 - e<sup>-τ<sub>ν</sub></sup>)</p>
+                    
+                    <p>4. Substitute the values:</p>
+                    <p>I<sub>ν</sub>(L) = 10 · e<sup>-2.0</sup> + 5.0 · (1 - e<sup>-2.0</sup>)</p>
+                    <p>I<sub>ν</sub>(L) = 10 · 0.135 + 5.0 · 0.865</p>
+                    <p>I<sub>ν</sub>(L) = 1.35 + 4.325 = 5.675 erg s⁻¹ cm⁻² Hz⁻¹ sr⁻¹</p>
+                    
+                    <p>5. Note that as τ<sub>ν</sub> = 2.0, the medium is moderately optically thick, and the emerging intensity is approaching the source function value of 5.0.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution2')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Thermal Radiation and Local Thermodynamic Equilibrium</h2>
+            <p>When matter and radiation are in equilibrium, the radiation field takes on specific characteristics that simplify the radiative transfer problem.</p>
+            
+            <h3>Blackbody Radiation</h3>
+            <p>A blackbody is an idealized physical body that absorbs all incident electromagnetic radiation. The spectrum of radiation emitted by a blackbody in thermal equilibrium at temperature T is given by Planck's law:</p>
+            
+            <div class="equation-box">
+                <p class="equation">B_\nu(T) = \frac{2h\nu^3}{c^2} \frac{1}{e^{h\nu/k_B T} - 1}</p>
+                <p class="equation-caption">Planck function (blackbody specific intensity)</p>
+            </div>
+            
+            <p>Where h is Planck's constant, k<sub>B</sub> is Boltzmann's constant, and c is the speed of light.</p>
+            
+            <p>The total energy emitted per unit area per unit time by a blackbody is given by the Stefan-Boltzmann law:</p>
+            
+            <div class="equation-box">
+                <p class="equation">F = \sigma T^4</p>
+                <p class="equation-caption">Stefan-Boltzmann law</p>
+            </div>
+            
+            <p>Where σ = 5.67 × 10⁻⁵ erg cm⁻² s⁻¹ K⁻⁴ is the Stefan-Boltzmann constant.</p>
+            
+            <h3>Local Thermodynamic Equilibrium (LTE)</h3>
+            <p>In many astrophysical situations, the matter is in local thermodynamic equilibrium (LTE), meaning that the atomic and molecular energy levels are populated according to the Boltzmann distribution at the local temperature T. In LTE, Kirchhoff's law relates the emission and absorption coefficients:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{j_\nu}{\kappa_\nu} = B_\nu(T)</p>
+                <p class="equation-caption">Kirchhoff's law</p>
+            </div>
+            
+            <p>This means that the source function equals the Planck function: S<sub>ν</sub> = B<sub>ν</sub>(T). This greatly simplifies the radiative transfer equation, as the source function is now determined solely by the local temperature.</p>
+            
+            <h3>Non-LTE Effects</h3>
+            <p>In many situations, particularly in low-density environments like stellar atmospheres and interstellar clouds, LTE is not a valid approximation. In these cases, the source function must be determined by solving the statistical equilibrium equations for the atomic level populations, coupled with the radiative transfer equation. This leads to non-local effects, where the radiation field at one point depends on the conditions throughout the medium.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Blackbody Spectra</h3>
+                <p>This diagram shows blackbody spectra for different temperatures. Note how the peak wavelength shifts to shorter wavelengths (higher frequencies) as the temperature increases, in accordance with Wien's displacement law.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Black_body.svg/800px-Black_body.svg.png" alt="Blackbody spectra at different temperatures">
+                <p><em>Image: Blackbody spectra for different temperatures, showing the shift of the peak to higher frequencies with increasing temperature.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 3: Brightness Temperature</p>
+                <p>A radio telescope observes a source at a frequency of 5 GHz and measures a specific intensity of I<sub>ν</sub> = 2 × 10⁻¹⁸ erg s⁻¹ cm⁻² Hz⁻¹ sr⁻¹. Assuming the source emits as a blackbody, calculate its brightness temperature.</p>
+                
+                <div class="solution" id="solution3">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The brightness temperature T<sub>b</sub> is defined as the temperature of a blackbody that would produce the observed specific intensity at the given frequency.</p>
+                    
+                    <p>2. From Planck's law, we have:</p>
+                    <p>I<sub>ν</sub> = B<sub>ν</sub>(T<sub>b</sub>) = (2hν³/c²) · [1/(e<sup>hν/k<sub>B</sub>T<sub>b</sub></sup> - 1)]</p>
+                    
+                    <p>3. At radio frequencies, hν << k<sub>B</sub>T for typical astronomical temperatures, so we can use the Rayleigh-Jeans approximation:</p>
+                    <p>B<sub>ν</sub>(T) ≈ (2ν²k<sub>B</sub>T)/c²</p>
+                    
+                    <p>4. Solving for T<sub>b</sub>:</p>
+                    <p>T<sub>b</sub> = (I<sub>ν</sub>c²)/(2ν²k<sub>B</sub>)</p>
+                    
+                    <p>5. Substitute the values:</p>
+                    <p>ν = 5 × 10⁹ Hz</p>
+                    <p>I<sub>ν</sub> = 2 × 10⁻¹⁸ erg s⁻¹ cm⁻² Hz⁻¹ sr⁻¹</p>
+                    <p>c = 3 × 10¹⁰ cm s⁻¹</p>
+                    <p>k<sub>B</sub> = 1.38 × 10⁻¹⁶ erg K⁻¹</p>
+                    
+                    <p>6. Calculate:</p>
+                    <p>T<sub>b</sub> = (2 × 10⁻¹⁸ · (3 × 10¹⁰)²)/[2 · (5 × 10⁹)² · 1.38 × 10⁻¹⁶]</p>
+                    <p>T<sub>b</sub> = (2 × 10⁻¹⁸ · 9 × 10²⁰)/[2 · 25 × 10¹⁸ · 1.38 × 10⁻¹⁶]</p>
+                    <p>T<sub>b</sub> = (18 × 10²)/[50 · 1.38 × 10⁻¹⁶]</p>
+                    <p>T<sub>b</sub> ≈ 26 K</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution3')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Scattering Processes</h2>
+            <p>Scattering processes redirect radiation without changing its frequency (elastic scattering) or with a change in frequency (inelastic scattering). These processes play a crucial role in determining the radiation field in many astrophysical environments.</p>
+            
+            <h3>Thomson Scattering</h3>
+            <p>Thomson scattering is the elastic scattering of electromagnetic radiation by free electrons. The Thomson scattering cross-section is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\sigma_T = \frac{8\pi}{3} \left( \frac{e^2}{m_e c^2} \right)^2 = 6.65 \times 10^{-25} \text{ cm}^2</p>
+                <p class="equation-caption">Thomson scattering cross-section</p>
+            </div>
+            
+            <p>Where e is the electron charge and m<sub>e</sub> is the electron mass. Thomson scattering is frequency-independent and dominates in high-temperature, low-frequency environments like stellar interiors and the early universe.</p>
+            
+            <h3>Rayleigh Scattering</h3>
+            <p>Rayleigh scattering is the elastic scattering of radiation by particles much smaller than the wavelength of the radiation. The cross-section varies as the fourth power of the frequency:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\sigma_R \propto \nu^4</p>
+                <p class="equation-caption">Frequency dependence of Rayleigh scattering</p>
+            </div>
+            
+            <p>This strong frequency dependence explains why the sky is blue (shorter wavelengths are scattered more efficiently) and sunsets are red (longer wavelengths penetrate the atmosphere more easily).</p>
+            
+            <h3>Compton Scattering</h3>
+            <p>Compton scattering is the inelastic scattering of photons by free electrons, where the photon loses energy to the electron. The change in wavelength is given by:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\Delta \lambda = \frac{h}{m_e c} (1 - \cos\theta)</p>
+                <p class="equation-caption">Compton wavelength shift</p>
+            </div>
+            
+            <p>Where θ is the scattering angle. Compton scattering is important in high-energy astrophysical environments like active galactic nuclei and X-ray binaries.</p>
+            
+            <h3>Mie Scattering</h3>
+            <p>Mie scattering occurs when the scattering particles are comparable in size to the wavelength of the radiation. Unlike Rayleigh scattering, Mie scattering is not strongly wavelength-dependent and tends to scatter radiation more in the forward direction. It is important in understanding the interaction of light with dust grains in the interstellar medium and planetary atmospheres.</p>
+            
+            <h3>Radiative Transfer with Scattering</h3>
+            <p>When scattering is included, the radiative transfer equation becomes an integro-differential equation, as the scattered radiation depends on the radiation field in all directions:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{dI_\nu}{ds} = -(\kappa_\nu + \sigma_\nu) I_\nu + j_\nu + \frac{\sigma_\nu}{4\pi} \int p(\mathbf{\hat{n}}, \mathbf{\hat{n}}') I_\nu(\mathbf{\hat{n}}') d\Omega'</p>
+                <p class="equation-caption">Radiative transfer equation with scattering</p>
+            </div>
+            
+            <p>Where p(n̂, n̂') is the phase function, which describes the probability of scattering from direction n̂' to direction n̂.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Scattering Phase Functions</h3>
+                <p>This diagram shows different scattering phase functions. Isotropic scattering (blue) has equal probability in all directions, while Rayleigh scattering (red) has a characteristic dipole pattern. Mie scattering (green) is strongly forward-peaked.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Mie_scattering.svg/800px-Mie_scattering.svg.png" alt="Scattering phase functions">
+                <p><em>Image: Comparison of different scattering phase functions, showing the angular distribution of scattered radiation.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 4: Optical Depth for Thomson Scattering</p>
+                <p>Calculate the optical depth for Thomson scattering through a cloud of fully ionized hydrogen with electron number density n<sub>e</sub> = 10⁶ cm⁻³ and thickness L = 10¹⁸ cm.</p>
+                
+                <div class="solution" id="solution4">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The optical depth for Thomson scattering is:</p>
+                    <p>τ<sub>T</sub> = n<sub>e</sub> · σ<sub>T</sub> · L</p>
+                    
+                    <p>2. Substitute the values:</p>
+                    <p>n<sub>e</sub> = 10⁶ cm⁻³</p>
+                    <p>σ<sub>T</sub> = 6.65 × 10⁻²⁵ cm²</p>
+                    <p>L = 10¹⁸ cm</p>
+                    
+                    <p>3. Calculate:</p>
+                    <p>τ<sub>T</sub> = 10⁶ · 6.65 × 10⁻²⁵ · 10¹⁸</p>
+                    <p>τ<sub>T</sub> = 6.65 × 10⁻¹</p>
+                    
+                    <p>4. Since τ<sub>T</sub> < 1, the cloud is optically thin to Thomson scattering, meaning that most photons will pass through the cloud without being scattered.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution4')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Radiative Processes in Astrophysics</h2>
+            <p>Various radiative processes play crucial roles in astrophysical environments, producing the electromagnetic radiation we observe across the spectrum.</p>
+            
+            <h3>Bremsstrahlung (Free-Free Emission)</h3>
+            <p>Bremsstrahlung, or free-free emission, occurs when a charged particle (typically an electron) is accelerated in the electric field of another charged particle (typically an ion). The emission coefficient for thermal bremsstrahlung from a plasma with electron temperature T<sub>e</sub> and electron and ion number densities n<sub>e</sub> and n<sub>i</sub> is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">j_\nu^{ff} \propto n_e n_i T_e^{-1/2} e^{-h\nu/k_B T_e}</p>
+                <p class="equation-caption">Bremsstrahlung emission coefficient</p>
+            </div>
+            
+            <p>Bremsstrahlung is the dominant emission mechanism in hot, ionized gases like the intracluster medium in galaxy clusters and the coronae of stars.</p>
+            
+            <h3>Synchrotron Radiation</h3>
+            <p>Synchrotron radiation is emitted by relativistic charged particles spiraling in magnetic fields. The emission coefficient for a power-law distribution of electron energies N(E) ∝ E<sup>-p</sup> is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">j_\nu^{sync} \propto B^{(p+1)/2} \nu^{-(p-1)/2}</p>
+                <p class="equation-caption">Synchrotron emission coefficient</p>
+            </div>
+            
+            <p>Where B is the magnetic field strength. Synchrotron radiation is characterized by a power-law spectrum and strong polarization. It is observed from astrophysical sources like supernova remnants, radio galaxies, and pulsar wind nebulae.</p>
+            
+            <h3>Inverse Compton Scattering</h3>
+            <p>Inverse Compton scattering occurs when low-energy photons are scattered to higher energies by relativistic electrons. The power emitted by a relativistic electron with Lorentz factor γ scattering photons with energy density u<sub>rad</sub> is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">P_{IC} = \frac{4}{3} \sigma_T c \gamma^2 u_{rad}</p>
+                <p class="equation-caption">Inverse Compton power</p>
+            </div>
+            
+            <p>Inverse Compton scattering is important in high-energy astrophysics, producing X-rays and gamma rays in sources like active galactic nuclei and X-ray binaries.</p>
+            
+            <h3>Line Emission and Absorption</h3>
+            <p>Spectral lines arise from transitions between discrete energy levels in atoms and molecules. The emission coefficient for a line transition from upper level u to lower level l is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">j_\nu^{line} = \frac{h\nu_{ul}}{4\pi} n_u A_{ul} \phi(\nu)</p>
+                <p class="equation-caption">Line emission coefficient</p>
+            </div>
+            
+            <p>Where n<sub>u</sub> is the number density of atoms in the upper level, A<sub>ul</sub> is the Einstein coefficient for spontaneous emission, and φ(ν) is the line profile function. Spectral lines provide valuable diagnostics of physical conditions in astrophysical environments.</p>
+            
+            <h3>Dust Emission and Extinction</h3>
+            <p>Dust grains absorb and scatter starlight, particularly at ultraviolet and optical wavelengths, and re-emit the absorbed energy at infrared wavelengths. The extinction curve, which describes the wavelength dependence of dust extinction, varies with the size distribution and composition of the dust grains. In the Milky Way, the extinction curve is often parameterized as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">A_\lambda / A_V = a(x) + b(x) / R_V</p>
+                <p class="equation-caption">Parameterized extinction curve</p>
+            </div>
+            
+            <p>Where x = 1/λ, A<sub>λ</sub> is the extinction at wavelength λ, A<sub>V</sub> is the extinction in the V band, R<sub>V</sub> = A<sub>V</sub>/E(B-V) is the ratio of total to selective extinction, and a(x) and b(x) are empirically determined functions.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Astrophysical Spectra</h3>
+                <p>This diagram shows the spectral energy distributions of various astrophysical sources, illustrating the different radiative processes that dominate in different wavelength regimes.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Atmospheric_electromagnetic_opacity.svg/800px-Atmospheric_electromagnetic_opacity.svg.png" alt="Atmospheric electromagnetic opacity">
+                <p><em>Image: Atmospheric opacity across the electromagnetic spectrum, showing the "windows" where ground-based observations are possible.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 5: Synchrotron Spectrum</p>
+                <p>A radio galaxy has a synchrotron spectrum with a spectral index α = 0.7 (where the flux density S<sub>ν</sub> ∝ ν<sup>-α</sup>). If the flux density at 1.4 GHz is 5 Jy, what is the flux density at 5 GHz? What is the power-law index p of the electron energy distribution?</p>
+                
+                <div class="solution" id="solution5">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. Given information:</p>
+                    <p>- Spectral index α = 0.7</p>
+                    <p>- Flux density at 1.4 GHz: S<sub>1.4</sub> = 5 Jy</p>
+                    <p>- Need to find flux density at 5 GHz: S<sub>5</sub></p>
+                    
+                    <p>2. For a power-law spectrum S<sub>ν</sub> ∝ ν<sup>-α</sup>, we have:</p>
+                    <p>S<sub>5</sub> = S<sub>1.4</sub> · (5/1.4)<sup>-α</sup></p>
+                    
+                    <p>3. Calculate:</p>
+                    <p>S<sub>5</sub> = 5 · (5/1.4)<sup>-0.7</sup></p>
+                    <p>S<sub>5</sub> = 5 · (3.57)<sup>-0.7</sup></p>
+                    <p>S<sub>5</sub> = 5 · 0.41</p>
+                    <p>S<sub>5</sub> = 2.05 Jy</p>
+                    
+                    <p>4. For synchrotron radiation, the spectral index α is related to the electron energy distribution power-law index p by:</p>
+                    <p>α = (p-1)/2</p>
+                    
+                    <p>5. Solving for p:</p>
+                    <p>p = 2α + 1 = 2 · 0.7 + 1 = 2.4</p>
+                    
+                    <p>6. Therefore, the electron energy distribution follows N(E) ∝ E<sup>-2.4</sup>.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution5')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Radiative Transfer in Astrophysical Environments</h2>
+            <p>Radiative transfer plays a crucial role in various astrophysical environments, from stellar atmospheres to the intergalactic medium.</p>
+            
+            <h3>Stellar Atmospheres</h3>
+            <p>The structure of stellar atmospheres is determined by the balance between radiative energy transport and other processes like convection. In the photosphere, where most of the visible light is emitted, the radiative transfer equation must be solved to determine the emergent spectrum, including absorption lines from various elements.</p>
+            
+            <p>The formation of spectral lines in stellar atmospheres depends on the temperature and pressure structure, as well as the abundance of elements. The strength and shape of these lines provide valuable diagnostics of stellar parameters like effective temperature, surface gravity, and chemical composition.</p>
+            
+            <h3>Interstellar Medium</h3>
+            <p>The interstellar medium (ISM) consists of gas and dust between stars. Radiative processes in the ISM include:</p>
+            <ul>
+                <li><strong>Heating:</strong> Photoelectric heating from dust grains, cosmic ray heating, and photoionization.</li>
+                <li><strong>Cooling:</strong> Line emission from atoms, ions, and molecules, particularly fine-structure lines of C+ and O, and rotational lines of CO.</li>
+                <li><strong>Dust extinction and emission:</strong> Dust grains absorb starlight and re-emit in the infrared, shaping the spectral energy distribution of galaxies.</li>
+            </ul>
+            
+            <p>Radiative transfer models of the ISM are essential for interpreting observations and understanding the physical and chemical evolution of interstellar clouds.</p>
+            
+            <h3>Planetary Atmospheres</h3>
+            <p>Radiative transfer in planetary atmospheres determines the temperature structure and the greenhouse effect. Key processes include:</p>
+            <ul>
+                <li><strong>Absorption and scattering of solar radiation:</strong> By gases (e.g., CO₂, H₂O, CH₄) and aerosols.</li>
+                <li><strong>Thermal emission:</strong> Primarily in the infrared, affected by the greenhouse effect.</li>
+                <li><strong>Rayleigh scattering:</strong> Responsible for the blue color of Earth's sky.</li>
+            </ul>
+            
+            <p>Radiative transfer models are crucial for understanding climate systems and the habitability of exoplanets.</p>
+            
+            <h3>Active Galactic Nuclei</h3>
+            <p>Active galactic nuclei (AGN) are powered by accretion onto supermassive black holes. Radiative processes in AGN include:</p>
+            <ul>
+                <li><strong>Thermal emission from the accretion disk:</strong> Primarily in the ultraviolet and optical.</li>
+                <li><strong>Compton scattering in the corona:</strong> Producing X-ray emission.</li>
+                <li><strong>Synchrotron emission from jets:</strong> Dominating at radio wavelengths.</li>
+                <li><strong>Reprocessing by dust:</strong> Producing infrared emission.</li>
+            </ul>
+            
+            <p>Radiative transfer models of AGN are essential for understanding the structure and physics of these powerful objects.</p>
+            
+            <h3>Cosmological Radiative Transfer</h3>
+            <p>Radiative transfer plays a crucial role in cosmology, particularly during the epoch of reionization when the first stars and galaxies ionized the intergalactic medium. Key processes include:</p>
+            <ul>
+                <li><strong>Ionization of hydrogen and helium:</strong> By ultraviolet radiation from stars and quasars.</li>
+                <li><strong>Lyman-alpha scattering:</strong> Producing characteristic features in the spectra of high-redshift galaxies.</li>
+                <li><strong>21-cm emission and absorption:</strong> Tracing the neutral hydrogen distribution during reionization.</li>
+            </ul>
+            
+            <p>Cosmological radiative transfer simulations are essential for interpreting observations of the early universe and understanding the process of reionization.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 6: Stellar Atmosphere Temperature Structure</p>
+                <p>In a simplified model of a stellar atmosphere, the temperature as a function of optical depth is given by T⁴(τ) = T<sub>eff</sub>⁴ · (3/4) · (τ + 2/3), where T<sub>eff</sub> is the effective temperature. For a star with T<sub>eff</sub> = 6000 K, calculate the temperature at optical depths τ = 0, 1, and 10.</p>
+                
+                <div class="solution" id="solution6">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. We use the formula T⁴(τ) = T<sub>eff</sub>⁴ · (3/4) · (τ + 2/3)</p>
+                    <p>2. For T<sub>eff</sub> = 6000 K:</p>
+                    
+                    <p>3. At τ = 0:</p>
+                    <p>T⁴(0) = 6000⁴ · (3/4) · (0 + 2/3)</p>
+                    <p>T⁴(0) = 6000⁴ · (3/4) · (2/3)</p>
+                    <p>T⁴(0) = 6000⁴ · (1/2)</p>
+                    <p>T(0) = 6000 · (1/2)¹/⁴</p>
+                    <p>T(0) = 6000 · 0.84</p>
+                    <p>T(0) ≈ 5040 K</p>
+                    
+                    <p>4. At τ = 1:</p>
+                    <p>T⁴(1) = 6000⁴ · (3/4) · (1 + 2/3)</p>
+                    <p>T⁴(1) = 6000⁴ · (3/4) · (5/3)</p>
+                    <p>T⁴(1) = 6000⁴ · (5/4)</p>
+                    <p>T(1) = 6000 · (5/4)¹/⁴</p>
+                    <p>T(1) = 6000 · 1.05</p>
+                    <p>T(1) ≈ 6300 K</p>
+                    
+                    <p>5. At τ = 10:</p>
+                    <p>T⁴(10) = 6000⁴ · (3/4) · (10 + 2/3)</p>
+                    <p>T⁴(10) = 6000⁴ · (3/4) · (32/3)</p>
+                    <p>T⁴(10) = 6000⁴ · 8</p>
+                    <p>T(10) = 6000 · 8¹/⁴</p>
+                    <p>T(10) = 6000 · 1.68</p>
+                    <p>T(10) ≈ 10080 K</p>
+                    
+                    <p>6. This temperature structure shows that the temperature increases with optical depth, which is typical for stellar atmospheres where energy is transported outward by radiation.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution6')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Numerical Methods in Radiative Transfer</h2>
+            <p>Solving the radiative transfer equation analytically is possible only for simple cases. For realistic problems, numerical methods are essential.</p>
+            
+            <h3>Discrete Ordinates Method</h3>
+            <p>The discrete ordinates method discretizes the angular dependence of the radiation field, replacing the continuous angular variable with a finite set of directions. The radiative transfer equation is then solved along each direction, with appropriate coupling between directions for scattering problems.</p>
+            
+            <h3>Monte Carlo Method</h3>
+            <p>The Monte Carlo method simulates the propagation of individual photons through the medium, tracking their interactions with matter. Each photon is followed from its emission until it escapes the system or is absorbed. By simulating a large number of photons, the statistical properties of the radiation field can be determined.</p>
+            
+            <p>Monte Carlo methods are particularly well-suited for complex geometries and problems with multiple scattering, but can be computationally expensive for optically thick media.</p>
+            
+            <h3>Moment Methods</h3>
+            <p>Moment methods reduce the complexity of the radiative transfer equation by considering the moments of the specific intensity rather than the full angular dependence. The simplest moment method is the diffusion approximation, valid in optically thick media where the radiation field is nearly isotropic.</p>
+            
+            <p>More sophisticated moment methods, like the variable Eddington factor method, use closure relations that adapt to the local radiation field, providing better accuracy in a wider range of conditions.</p>
+            
+            <h3>Accelerated Lambda Iteration</h3>
+            <p>The formal solution to the radiative transfer equation can be written in operator form as I = Λ[S], where Λ is the lambda operator. Simple lambda iteration, where the source function is updated using the previous iteration's radiation field, converges very slowly in optically thick media.</p>
+            
+            <p>Accelerated lambda iteration (ALI) methods use an approximate lambda operator to accelerate convergence, making them efficient for a wide range of problems, particularly in stellar atmosphere modeling.</p>
+            
+            <h3>Computational Challenges and Advances</h3>
+            <p>Modern radiative transfer simulations face several challenges:</p>
+            <ul>
+                <li><strong>Multi-dimensional geometry:</strong> Many astrophysical systems have complex 3D structures that require sophisticated numerical techniques.</li>
+                <li><strong>Frequency coupling:</strong> Processes like line scattering couple different frequencies, requiring simultaneous solution across the spectrum.</li>
+                <li><strong>Non-LTE effects:</strong> In many environments, the assumption of local thermodynamic equilibrium is not valid, requiring simultaneous solution of the radiative transfer equation and statistical equilibrium equations.</li>
+                <li><strong>Computational efficiency:</strong> Radiative transfer calculations can be computationally expensive, particularly for 3D problems with frequency-dependent opacity.</li>
+            </ul>
+            
+            <p>Recent advances in numerical methods, parallel computing, and adaptive techniques have made it possible to tackle increasingly realistic problems in radiative transfer.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Monte Carlo Radiative Transfer</h3>
+                <p>This diagram illustrates the Monte Carlo method for radiative transfer, showing the paths of individual photons as they propagate through a medium, undergoing absorption and scattering events.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Photon_path.svg/800px-Photon_path.svg.png" alt="Monte Carlo photon paths">
+                <p><em>Image: Illustration of photon paths in a Monte Carlo radiative transfer simulation, showing multiple scattering events.</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Resources</h2>
+            <h3>Authoritative Textbooks</h3>
+            <ul>
+                <li><strong>Radiative Transfer</strong> by Subrahmanyan Chandrasekhar — The classic treatise on radiative transfer theory, with a focus on mathematical rigor.</li>
+                <li><strong>Radiative Processes in Astrophysics</strong> by George B. Rybicki and Alan P. Lightman — Excellent introduction to radiative processes and transfer, with clear physical explanations.</li>
+                <li><strong>The Physics of Astrophysics, Volume I: Radiation</strong> by Frank H. Shu — Comprehensive treatment of radiation physics in astrophysical contexts.</li>
+                <li><strong>An Introduction to Radiative Transfer</strong> by Dimitri Mihalas — Thorough coverage of radiative transfer theory and applications, particularly for stellar atmospheres.</li>
+                <li><strong>Stellar Atmospheres</strong> by Dimitri Mihalas — Detailed treatment of radiative transfer in stellar atmospheres, including non-LTE effects.</li>
+            </ul>
+            
+            <h3>Online Lecture Notes & Resources</h3>
+            <ul>
+                <li><a href="https://www.astro.princeton.edu/~draine/book.html" target="_blank" rel="noopener noreferrer">Bruce Draine (Princeton) — Physics of the Interstellar and Intergalactic Medium</a></li>
+                <li><a href="https://www.astro.umd.edu/~miller/teaching/astr680/" target="_blank" rel="noopener noreferrer">University of Maryland — Radiative Processes in Astrophysics</a></li>
+                <li><a href="https://www.astro.uio.no/~matsc/AST5210/AST5210.html" target="_blank" rel="noopener noreferrer">University of Oslo — Radiation Processes in Astrophysics</a></li>
+                <li><a href="https://www.mpia.de/homes/dullemon/lectures/radtrans/" target="_blank" rel="noopener noreferrer">Max Planck Institute for Astronomy — Radiative Transfer Lectures</a></li>
+            </ul>
+            
+            <h3>Numerical Codes and Tools</h3>
+            <ul>
+                <li><a href="https://www.astro.princeton.edu/~draine/dust/dust.html" target="_blank" rel="noopener noreferrer">DUSTY — 1D Radiative Transfer Code for Dust</a></li>
+                <li><a href="https://www.ita.uni-heidelberg.de/~dullemond/software/radmc-3d/" target="_blank" rel="noopener noreferrer">RADMC-3D — 3D Monte Carlo Radiative Transfer Code</a></li>
+                <li><a href="https://github.com/harryhelvajian/MOCASSIN" target="_blank" rel="noopener noreferrer">MOCASSIN — Monte Carlo Simulations of Ionized Nebulae</a></li>
+                <li><a href="https://github.com/agnwinds/python" target="_blank" rel="noopener noreferrer">PYTHON — Radiative Transfer Code for Astrophysical Systems</a></li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Related Topics</h2>
+            <div class="related-topics">
+                <a href="elctromagnetic_theory_enhanced.html" class="related-topic">Electrodynamics</a>
+                <a href="quantum_mechanics_enhanced.html" class="related-topic">Quantum Mechanics</a>
+                <a href="basic_astrophysics_enhanced.html" class="related-topic">Basic Astrophysics</a>
+                <a href="galaxy_evolution_enhanced.html" class="related-topic">Galaxy Evolution</a>
+                <a href="agn_physics_enhanced.html" class="related-topic">AGN Physics</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-nav">
+                <a href="index.html">Home</a> |
+                <a href="classical_mechanics_enhanced.html">Classical Mechanics</a> |
+                <a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a> |
+                <a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a> |
+                <a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a> |
+                <a href="mathematical_physics_enhanced.html">Mathematical Physics</a>
+            </div>
+            <p>"Light brings us the news of the Universe." — William Henry Bragg</p>
+            <p>© 2025 Physics Refresher Course | Last Updated: May 2025</p>
+        </footer>
+    </div>
+</div>
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\\(', '\\)']],
+            displayMath: [['\\[', '\\]']],
+            processEscapes: true
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+        }
+    };
+    
+    // Convert equation content to proper MathJax format when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const equations = document.querySelectorAll('.equation');
+        equations.forEach(function(equation) {
+            // Preserve the original text
+            const originalText = equation.textContent;
+            // Replace with properly delimited math
+            equation.innerHTML = '\\[' + originalText + '\\]';
+        });
+    });
+</script>
+
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            if (solution.style.display === "none" || solution.style.display === "") {
+                solution.style.display = "block";
+            } else {
+                solution.style.display = "none";
+            }
+        }
+        
+        // Hide all solutions initially
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutions = document.querySelectorAll('.solution');
+            solutions.forEach(function(solution) {
+                solution.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

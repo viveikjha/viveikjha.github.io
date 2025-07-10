@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Physics Refresher Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2c1810;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B4513;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        nav a.active {
+            color: #2c1810;
+            border-bottom: 2px solid #8B4513;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            color: #2c1810;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        /* Course Categories */
+        .course-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .category {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .category h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.6rem;
+            color: #2c1810;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        /* Course Topics */
+        .topics {
+            margin-top: 1rem;
+        }
+
+        .topic {
+            display: block;
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            text-decoration: none;
+            color: #2c1810;
+            transition: all 0.3s ease;
+        }
+
+        .topic:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateX(5px);
+        }
+
+        .topic-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .topic-description {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Featured Content */
+        .featured {
+            margin-top: 3rem;
+        }
+
+        .featured-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .featured-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .featured-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .featured-description {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        /* Equation Styles */
+        .equation-box {
+            background: rgba(255, 252, 249, 0.9);
+            border-left: 4px solid #8B4513;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .equation-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 69, 19, 0.1);
+            font-style: italic;
+            color: #8B4513;
+        }
+
+        .footer-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #8B4513;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .site-title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+            
+            .course-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Physics Refresher Course</h1>
+            <p class="subtitle">A comprehensive exploration of fundamental physics principles, from classical mechanics to modern astrophysics, designed to refresh and deepen your understanding of the physical universe.</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="classical_mechanics_enhanced.html">Classical Mechanics</a></li>
+                <li><a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a></li>
+                <li><a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a></li>
+                <li><a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a></li>
+                <li><a href="mathematical_physics_enhanced.html">Mathematical Physics</a></li>
+                <li><a href="basic_astrophysics_enhanced.html">Astrophysics</a></li>
+            </ul>
+        </nav>
+
+        <section class="content-section">
+            <h2>Welcome to the Physics Refresher Course</h2>
+            <p>This comprehensive course is designed to provide a thorough review of fundamental physics concepts, from classical mechanics to modern astrophysics. Whether you're a student looking to strengthen your understanding, a professional seeking to refresh your knowledge, or simply a curious mind exploring the laws that govern our universe, this course offers detailed explanations, interactive elements, and practical problems to deepen your comprehension.</p>
+            
+            <p>Each topic is presented with a focus on conceptual understanding, mathematical formulation, and practical application. The course is structured to build progressively, with each subject connecting to others in a cohesive framework that highlights the unity of physical principles across different domains.</p>
+            
+            <p>Explore the topics below to begin your journey through the fascinating world of physics, from the motion of everyday objects to the evolution of galaxies and the quantum nature of reality.</p>
+        </section>
+
+        <div class="course-categories">
+            <div class="category">
+                <h3>Core Physics</h3>
+                <div class="topics">
+                    <a href="classical_mechanics_enhanced.html" class="topic">
+                        <div class="topic-title">Classical Mechanics</div>
+                        <div class="topic-description">The study of motion, forces, energy, and the fundamental laws governing macroscopic objects.</div>
+                    </a>
+                    <a href="elctromagnetic_theory_enhanced.html" class="topic">
+                        <div class="topic-title">Electrodynamics</div>
+                        <div class="topic-description">The physics of electricity, magnetism, and electromagnetic waves, unified in Maxwell's equations.</div>
+                    </a>
+                    <a href="quantum_mechanics_enhanced.html" class="topic">
+                        <div class="topic-title">Quantum Mechanics</div>
+                        <div class="topic-description">The revolutionary framework describing the behavior of matter and energy at the smallest scales.</div>
+                    </a>
+                    <a href="statistical_mechanics_enhanced.html" class="topic">
+                        <div class="topic-title">Statistical Mechanics</div>
+                        <div class="topic-description">The bridge between microscopic physics and macroscopic thermodynamics.</div>
+                    </a>
+                    <a href="mathematical_physics_enhanced.html" class="topic">
+                        <div class="topic-title">Mathematical Physics</div>
+                        <div class="topic-description">Essential mathematical tools and methods for solving physics problems.</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="category">
+                <h3>Astrophysics</h3>
+                <div class="topics">
+                    <a href="basic_astrophysics_enhanced.html" class="topic">
+                        <div class="topic-title">Basic Astrophysics</div>
+                        <div class="topic-description">Fundamental principles governing celestial objects and the universe as a whole.</div>
+                    </a>
+                    <a href="radiative_transfer_enhanced.html" class="topic">
+                        <div class="topic-title">Radiative Transfer</div>
+                        <div class="topic-description">How radiation propagates through matter, crucial for understanding astronomical observations.</div>
+                    </a>
+                    <a href="agn_physics_enhanced.html" class="topic">
+                        <div class="topic-title">AGN Physics</div>
+                        <div class="topic-description">The physics of active galactic nuclei, powered by supermassive black holes.</div>
+                    </a>
+                    <a href="galaxy_evolution_enhanced.html" class="topic">
+                        <div class="topic-title">Galaxy Evolution</div>
+                        <div class="topic-description">How galaxies form, grow, and change over cosmic time.</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <section class="featured">
+            <h2>Featured Content</h2>
+            <div class="featured-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Aufenthaltswahrscheinlichkeit_harmonischer_Oszillator.png" alt="Quantum Harmonic Oscillator">
+                <div class="featured-title">Quantum Harmonic Oscillator</div>
+                <div class="featured-description">Explore the quantum mechanical treatment of one of physics' most important systems, with detailed explanations of energy levels and wave functions.</div>
+                <a href="quantum_mechanics_enhanced.html" class="topic">Learn More</a>
+            </div>
+            
+            <div class="featured-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Hubble_Tuning_Fork_diagram.svg/1280px-Hubble_Tuning_Fork_diagram.svg.png" alt="Galaxy Evolution">
+                <div class="featured-title">Galaxy Formation and Evolution</div>
+                <div class="featured-description">Discover how galaxies form and evolve over cosmic time, from the first stars to the complex structures we observe today.</div>
+                <a href="galaxy_evolution_enhanced.html" class="topic">Learn More</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-nav">
+                <a href="classical_mechanics_enhanced.html">Classical Mechanics</a> |
+                <a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a> |
+                <a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a> |
+                <a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a> |
+                <a href="mathematical_physics_enhanced.html">Mathematical Physics</a> |
+                <a href="basic_astrophysics_enhanced.html">Basic Astrophysics</a>
+            </div>
+            <p>"The most beautiful thing we can experience is the mysterious. It is the source of all true art and science." — Albert Einstein</p>
+            <p>© 2025 Physics Refresher Course | Last Updated: May 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

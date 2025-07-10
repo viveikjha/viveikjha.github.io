@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AGN Physics — Physics Refresher Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2c1810;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="35" r="0.5" fill="%23d4af8c" opacity="0.4"/><circle cx="80" cy="65" r="0.3" fill="%23c19a6b" opacity="0.3"/><circle cx="45" cy="80" r="0.4" fill="%23b8935f" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #2c1810;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B4513;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        nav a.active {
+            color: #2c1810;
+            border-bottom: 2px solid #8B4513;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            color: #2c1810;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Equation Styles */
+        .equation-box {
+            background: rgba(255, 252, 249, 0.9);
+            border-left: 4px solid #8B4513;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .equation-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Interactive Elements */
+        .interactive-element {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .interactive-element img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Practice Problems */
+        .problem {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .problem-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+        }
+
+        .solution {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ddd;
+        }
+
+        .solution-toggle {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        /* Related Topics */
+        .related-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .related-topic {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #8B4513;
+            transition: all 0.3s ease;
+        }
+
+        .related-topic:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 69, 19, 0.1);
+            font-style: italic;
+            color: #8B4513;
+        }
+
+        .footer-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #8B4513;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Physics Refresher Course</h1>
+            <h2 class="page-title">Active Galactic Nuclei Physics</h2>
+            <p class="subtitle">The physics of the most energetic persistent phenomena in the universe: supermassive black holes at the centers of galaxies and their profound impact on cosmic evolution.</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="basic_astrophysics_enhanced_enhanced.html">Basic Astrophysics</a></li>
+                <li><a href="radiative_transfer_enhanced.html">Radiative Transfer</a></li>
+                <li><a href="agn_physics_enhanced.html" class="active">AGN Physics</a></li>
+                <li><a href="galaxy_evolution_enhanced.html">Galaxy Evolution</a></li>
+                <li><a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a></li>
+            </ul>
+        </nav>
+
+        <section class="content-section">
+            <h2>Introduction to Active Galactic Nuclei</h2>
+            <p>Active Galactic Nuclei (AGN) are among the most luminous and energetic persistent phenomena in the universe. They are powered by accretion of matter onto supermassive black holes (SMBHs) residing at the centers of galaxies. The gravitational potential energy released during this accretion process can outshine the combined light of all stars in the host galaxy, making AGN visible across cosmic distances and providing crucial insights into the physics of extreme environments and the evolution of galaxies.</p>
+            
+            <p>The historical development of AGN research began in the 1940s with the identification of unusual emission lines in the spectra of some galaxies by Carl Seyfert. The discovery of quasars (quasi-stellar radio sources) in the 1960s, initially appearing as star-like objects with large redshifts, revolutionized our understanding of these phenomena. Subsequent decades saw the development of unified models attempting to explain the diverse observational properties of AGN as manifestations of the same fundamental physical process viewed from different angles and under different conditions.</p>
+            
+            <p>This module follows the comprehensive approach of Krolik, Peterson, and Netzer, complemented by the observational perspective of Beckmann and Shrader, to provide a thorough understanding of AGN physics. We will explore the structure, emission mechanisms, variability, and evolution of AGN, emphasizing both theoretical models and observational evidence across the electromagnetic spectrum.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Supermassive Black Holes and Accretion Physics</h2>
+            <p>At the heart of every AGN lies a supermassive black hole (SMBH), typically with a mass ranging from millions to billions of solar masses. These objects are described by general relativity and characterized by just three parameters: mass, spin, and charge (though astrophysical black holes are expected to have negligible charge).</p>
+            
+            <h3>Black Hole Properties and Spacetime</h3>
+            <p>The spacetime around a rotating black hole is described by the Kerr metric. Key features include:</p>
+            <ul>
+                <li><strong>Event horizon:</strong> The boundary beyond which nothing can escape, located at a radius that depends on the black hole's mass and spin.</li>
+                <li><strong>Ergosphere:</strong> A region outside the event horizon where frame-dragging forces all matter and radiation to rotate with the black hole.</li>
+                <li><strong>Innermost stable circular orbit (ISCO):</strong> The smallest radius at which stable circular orbits can exist, marking the inner edge of the accretion disk.</li>
+            </ul>
+            
+            <p>The radius of the event horizon for a non-rotating (Schwarzschild) black hole is given by:</p>
+            
+            <div class="equation-box">
+                <p class="equation">R_S = \frac{2GM}{c^2} \approx 3 \times 10^{13} \left(\frac{M}{10^8 M_\odot}\right) \text{ cm}</p>
+                <p class="equation-caption">Schwarzschild radius, where G is the gravitational constant, M is the black hole mass, and c is the speed of light</p>
+            </div>
+            
+            <p>For a maximally rotating black hole, the event horizon radius can be as small as R<sub>S</sub>/2.</p>
+            
+            <h3>Accretion Disks</h3>
+            <p>Matter falling toward a black hole with angular momentum forms an accretion disk. The standard model for AGN accretion disks is the geometrically thin, optically thick disk described by Shakura and Sunyaev. In this model:</p>
+            <ul>
+                <li>The disk is in hydrostatic equilibrium vertically and in Keplerian rotation.</li>
+                <li>Energy is transported by radiation, and the disk is locally in thermal equilibrium.</li>
+                <li>Angular momentum is transported outward by viscosity, parameterized by the α-parameter.</li>
+            </ul>
+            
+            <p>The effective temperature of the disk as a function of radius is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">T(r) = \left[\frac{3GM\dot{M}}{8\pi\sigma r^3}\left(1-\sqrt{\frac{R_{in}}{r}}\right)\right]^{1/4}</p>
+                <p class="equation-caption">Disk temperature profile, where Ṁ is the mass accretion rate, σ is the Stefan-Boltzmann constant, and R<sub>in</sub> is the inner disk radius</p>
+            </div>
+            
+            <p>The integrated spectrum of a thin disk is a multi-temperature blackbody, with a characteristic shape F<sub>ν</sub> ∝ ν<sup>1/3</sup> at low frequencies and an exponential cutoff at high frequencies.</p>
+            
+            <h3>Eddington Limit and Accretion Efficiency</h3>
+            <p>The Eddington luminosity is the maximum luminosity an accreting object can achieve before radiation pressure exceeds gravity and halts the accretion flow:</p>
+            
+            <div class="equation-box">
+                <p class="equation">L_{Edd} = \frac{4\pi GM m_p c}{\sigma_T} \approx 1.3 \times 10^{46} \left(\frac{M}{10^8 M_\odot}\right) \text{ erg/s}</p>
+                <p class="equation-caption">Eddington luminosity, where m<sub>p</sub> is the proton mass and σ<sub>T</sub> is the Thomson cross-section</p>
+            </div>
+            
+            <p>The accretion efficiency η is the fraction of rest-mass energy converted to radiation:</p>
+            
+            <div class="equation-box">
+                <p class="equation">L = \eta \dot{M} c^2</p>
+                <p class="equation-caption">Luminosity from accretion, where η is the efficiency and Ṁ is the mass accretion rate</p>
+            </div>
+            
+            <p>For a non-rotating black hole, η ≈ 0.057 (5.7%), while for a maximally rotating black hole, η can reach 0.42 (42%). This makes accretion onto black holes one of the most efficient energy-generation mechanisms in the universe, far exceeding nuclear fusion (η ≈ 0.007 or 0.7%).</p>
+            
+            <h3>Alternative Accretion Modes</h3>
+            <p>While the thin disk model applies to luminous AGN accreting at a significant fraction of the Eddington limit, other accretion modes are important in different regimes:</p>
+            <ul>
+                <li><strong>Advection-dominated accretion flows (ADAFs):</strong> At low accretion rates (Ṁ << Ṁ<sub>Edd</sub>), the disk becomes optically thin and radiatively inefficient, with most energy advected into the black hole rather than radiated away.</li>
+                <li><strong>Slim disks:</strong> At super-Eddington accretion rates (Ṁ > Ṁ<sub>Edd</sub>), the disk becomes geometrically thick, and photon trapping reduces the radiative efficiency.</li>
+                <li><strong>Magnetically arrested disks (MADs):</strong> When magnetic flux accumulates near the black hole, it can disrupt the inner accretion flow and enhance energy extraction from the black hole's rotation.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: AGN Structure</h3>
+                <p>This diagram shows the standard model of AGN structure, including the central black hole, accretion disk, broad-line region, dusty torus, narrow-line region, and jets.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Quasar_diagram.svg/800px-Quasar_diagram.svg.png" alt="AGN structure diagram">
+                <p><em>Image: Schematic diagram of AGN structure according to the unified model, showing how different viewing angles result in different observed AGN types.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 1: Black Hole Mass and Accretion Rate</p>
+                <p>A quasar has a bolometric luminosity of L = 10<sup>47</sup> erg/s. Assuming an accretion efficiency of η = 0.1, calculate the mass accretion rate in solar masses per year. If the black hole has a mass of M = 10<sup>9</sup> M<sub>☉</sub>, what fraction of the Eddington limit is this quasar accreting at?</p>
+                
+                <div class="solution" id="solution1">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The luminosity from accretion is related to the mass accretion rate by:</p>
+                    <p>L = η Ṁ c²</p>
+                    
+                    <p>2. Solving for the mass accretion rate:</p>
+                    <p>Ṁ = L / (η c²)</p>
+                    
+                    <p>3. Substitute the values:</p>
+                    <p>Ṁ = 10<sup>47</sup> erg/s / (0.1 × (3 × 10<sup>10</sup> cm/s)²)</p>
+                    <p>Ṁ = 10<sup>47</sup> / (0.1 × 9 × 10<sup>20</sup>) g/s</p>
+                    <p>Ṁ = 1.11 × 10<sup>26</sup> g/s</p>
+                    
+                    <p>4. Convert to solar masses per year:</p>
+                    <p>Ṁ = (1.11 × 10<sup>26</sup> g/s) × (3.15 × 10<sup>7</sup> s/yr) / (1.99 × 10<sup>33</sup> g/M<sub>☉</sub>)</p>
+                    <p>Ṁ = 1.76 M<sub>☉</sub>/yr</p>
+                    
+                    <p>5. The Eddington luminosity for a 10<sup>9</sup> M<sub>☉</sub> black hole is:</p>
+                    <p>L<sub>Edd</sub> = 1.3 × 10<sup>38</sup> × (10<sup>9</sup>) erg/s = 1.3 × 10<sup>47</sup> erg/s</p>
+                    
+                    <p>6. The Eddington ratio is:</p>
+                    <p>L / L<sub>Edd</sub> = 10<sup>47</sup> / (1.3 × 10<sup>47</sup>) = 0.77</p>
+                    
+                    <p>7. Therefore, the quasar is accreting at 77% of the Eddington limit, which is a high but physically plausible accretion rate for a luminous quasar.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution1')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>AGN Structure and Emission Mechanisms</h2>
+            <p>AGN have a complex structure with multiple components, each producing distinctive emission signatures across the electromagnetic spectrum.</p>
+            
+            <h3>The Unified Model</h3>
+            <p>The unified model of AGN proposes that many of the observed differences between AGN types are due to viewing angle and obscuration rather than intrinsic differences. The key components in this model include:</p>
+            <ul>
+                <li><strong>Central engine:</strong> The SMBH and inner accretion disk, with a size of ~10<sup>-5</sup> - 10<sup>-3</sup> pc.</li>
+                <li><strong>Broad-line region (BLR):</strong> A region of high-velocity gas clouds (v ~ 1000-10000 km/s) within ~0.1 pc of the central engine, producing broad emission lines.</li>
+                <li><strong>Dusty torus:</strong> A toroidal structure of dust and gas at ~1-10 pc, obscuring the central engine and BLR when viewed edge-on.</li>
+                <li><strong>Narrow-line region (NLR):</strong> A region of lower-velocity gas clouds (v ~ 300-500 km/s) extending to ~100-1000 pc, producing narrow emission lines.</li>
+                <li><strong>Jets:</strong> Collimated outflows of relativistic plasma, present in some AGN, extending from pc to Mpc scales.</li>
+            </ul>
+            
+            <p>According to this model, Type 1 AGN (with both broad and narrow emission lines) are viewed face-on, allowing direct observation of the central engine and BLR, while Type 2 AGN (with only narrow emission lines) are viewed edge-on, with the central engine and BLR obscured by the dusty torus.</p>
+            
+            <h3>Continuum Emission</h3>
+            <p>AGN produce continuum emission across the electromagnetic spectrum through various mechanisms:</p>
+            <ul>
+                <li><strong>Radio:</strong> Synchrotron emission from relativistic electrons in magnetic fields, primarily in jets and lobes.</li>
+                <li><strong>Infrared:</strong> Thermal emission from dust heated by the central engine, primarily in the torus.</li>
+                <li><strong>Optical/UV:</strong> Thermal emission from the accretion disk, producing the "big blue bump" in the spectral energy distribution.</li>
+                <li><strong>X-ray:</strong> Inverse Compton scattering of lower-energy photons by hot electrons in the corona above the accretion disk.</li>
+                <li><strong>Gamma-ray:</strong> Inverse Compton scattering and hadronic processes in jets, observed primarily in blazars.</li>
+            </ul>
+            
+            <p>The spectral energy distribution (SED) of AGN typically shows several distinctive features:</p>
+            <ul>
+                <li>A power-law continuum in the optical/UV (F<sub>ν</sub> ∝ ν<sup>-α</sup> with α ~ 0.5).</li>
+                <li>The "big blue bump" in the UV, attributed to thermal emission from the accretion disk.</li>
+                <li>A soft X-ray excess above the power-law continuum.</li>
+                <li>A hard X-ray power law (α ~ 0.9) with a high-energy cutoff at ~100 keV.</li>
+                <li>A reflection component, including the Fe Kα line at 6.4 keV.</li>
+            </ul>
+            
+            <h3>Line Emission</h3>
+            <p>AGN spectra show a rich variety of emission lines, providing valuable diagnostics of physical conditions:</p>
+            <ul>
+                <li><strong>Broad emission lines:</strong> Produced in the BLR, with widths of 1000-10000 km/s, including permitted lines like Hα, Hβ, Mg II, and C IV.</li>
+                <li><strong>Narrow emission lines:</strong> Produced in the NLR, with widths of 300-500 km/s, including both permitted and forbidden lines like [O III], [N II], and [S II].</li>
+                <li><strong>Iron emission:</strong> A complex of Fe II emission lines in the UV and optical, particularly strong in some AGN types.</li>
+                <li><strong>X-ray lines:</strong> The Fe Kα line at 6.4 keV, often showing relativistic broadening from the inner accretion disk.</li>
+            </ul>
+            
+            <p>The relative strengths of emission lines are used for AGN classification and diagnostics. For example, the Baldwin-Phillips-Terlevich (BPT) diagram uses the ratios of [O III]/Hβ and [N II]/Hα to distinguish AGN from star-forming galaxies.</p>
+            
+            <h3>Jets and Radio Emission</h3>
+            <p>About 10% of AGN are radio-loud, with powerful jets that can extend far beyond the host galaxy. These jets are thought to be launched by magnetic fields threading the accretion disk and/or the black hole's ergosphere (the Blandford-Znajek mechanism).</p>
+            
+            <p>Key features of AGN jets include:</p>
+            <ul>
+                <li><strong>Relativistic motion:</strong> Bulk Lorentz factors of Γ ~ 10-20, leading to apparent superluminal motion when viewed at small angles.</li>
+                <li><strong>Doppler boosting:</strong> Enhancement of observed flux when the jet is pointed toward the observer, by a factor of δ<sup>3-4</sup>, where δ is the Doppler factor.</li>
+                <li><strong>Synchrotron emission:</strong> The primary emission mechanism in radio, producing a power-law spectrum with spectral index α ~ 0.7.</li>
+                <li><strong>Inverse Compton scattering:</strong> Upscattering of synchrotron photons (synchrotron self-Compton, SSC) or external photons (external Compton, EC) to X-ray and gamma-ray energies.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: AGN Spectral Energy Distribution</h3>
+                <p>This diagram shows a typical AGN spectral energy distribution (SED) from radio to gamma-ray wavelengths, highlighting the contributions from different components.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/AGN_SED.png/800px-AGN_SED.png" alt="AGN spectral energy distribution">
+                <p><em>Image: Schematic spectral energy distribution of an AGN, showing the contributions from different emission mechanisms and components.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 2: Relativistic Beaming in AGN Jets</p>
+                <p>A radio jet in a blazar has a bulk Lorentz factor Γ = 10 and is oriented at an angle θ = 5° to our line of sight. Calculate the Doppler factor δ and the apparent transverse velocity β<sub>app</sub> (in units of c) of a feature moving along the jet. By what factor is the observed flux enhanced due to Doppler boosting, assuming the emission is synchrotron radiation with a spectral index α = 0.7?</p>
+                
+                <div class="solution" id="solution2">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The Doppler factor for a source moving at an angle θ to the line of sight with a Lorentz factor Γ is:</p>
+                    <p>δ = [Γ(1 - β cos θ)]<sup>-1</sup></p>
+                    <p>where β = v/c = √(1 - 1/Γ²)</p>
+                    
+                    <p>2. Calculate β for Γ = 10:</p>
+                    <p>β = √(1 - 1/10²) = √(1 - 0.01) = √0.99 = 0.995</p>
+                    
+                    <p>3. Calculate the Doppler factor for θ = 5° = 0.0873 radians:</p>
+                    <p>δ = [10(1 - 0.995 × cos(0.0873))]<sup>-1</sup></p>
+                    <p>δ = [10(1 - 0.995 × 0.9962)]<sup>-1</sup></p>
+                    <p>δ = [10(1 - 0.9912)]<sup>-1</sup></p>
+                    <p>δ = [10 × 0.0088]<sup>-1</sup></p>
+                    <p>δ = [0.088]<sup>-1</sup></p>
+                    <p>δ = 11.36</p>
+                    
+                    <p>4. The apparent transverse velocity is given by:</p>
+                    <p>β<sub>app</sub> = β sin θ / (1 - β cos θ)</p>
+                    
+                    <p>5. Substitute the values:</p>
+                    <p>β<sub>app</sub> = 0.995 × sin(0.0873) / (1 - 0.995 × cos(0.0873))</p>
+                    <p>β<sub>app</sub> = 0.995 × 0.0872 / (1 - 0.995 × 0.9962)</p>
+                    <p>β<sub>app</sub> = 0.0868 / 0.0088</p>
+                    <p>β<sub>app</sub> = 9.86</p>
+                    
+                    <p>6. The apparent transverse velocity is 9.86c, which is superluminal motion.</p>
+                    
+                    <p>7. For synchrotron radiation with spectral index α, the observed flux is enhanced by a factor of δ<sup>3+α</sup> relative to the emitted flux in the source frame:</p>
+                    <p>S<sub>obs</sub> / S<sub>emit</sub> = δ<sup>3+α</sup></p>
+                    
+                    <p>8. For α = 0.7:</p>
+                    <p>S<sub>obs</sub> / S<sub>emit</sub> = 11.36<sup>3.7</sup> = 11.36<sup>3+0.7</sup> = 11.36³ × 11.36<sup>0.7</sup></p>
+                    <p>S<sub>obs</sub> / S<sub>emit</sub> = 1466 × 5.8 = 8503</p>
+                    
+                    <p>9. Therefore, the observed flux is enhanced by a factor of about 8500 due to Doppler boosting, which explains the extreme apparent luminosities of blazars.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution2')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>AGN Classification and Diversity</h2>
+            <p>AGN exhibit a remarkable diversity of observational properties, leading to a complex classification scheme. While the unified model explains many of these differences as orientation effects, intrinsic differences in physical parameters like black hole mass, accretion rate, and jet power also play important roles.</p>
+            
+            <h3>Radio-Quiet AGN</h3>
+            <p>Radio-quiet AGN have weak or no radio jets and constitute about 90% of the AGN population. Major types include:</p>
+            <ul>
+                <li><strong>Seyfert galaxies:</strong> Relatively low-luminosity AGN in spiral galaxies, further divided into:
+                    <ul>
+                        <li>Type 1: Show both broad and narrow emission lines.</li>
+                        <li>Type 2: Show only narrow emission lines.</li>
+                        <li>Intermediate types (1.2, 1.5, 1.8, 1.9): Show varying strengths of broad emission lines.</li>
+                    </ul>
+                </li>
+                <li><strong>Radio-quiet quasars (QSOs):</strong> High-luminosity AGN that outshine their host galaxies, with properties similar to Seyfert 1 galaxies but higher luminosities.</li>
+                <li><strong>Low-ionization nuclear emission-line regions (LINERs):</strong> Very low-luminosity AGN with low-ionization emission lines, possibly representing the low-accretion-rate end of the AGN sequence.</li>
+            </ul>
+            
+            <h3>Radio-Loud AGN</h3>
+            <p>Radio-loud AGN have strong radio jets and constitute about 10% of the AGN population. Major types include:</p>
+            <ul>
+                <li><strong>Radio galaxies:</strong> AGN in elliptical galaxies with prominent radio jets and lobes, divided into:
+                    <ul>
+                        <li>Fanaroff-Riley Type I (FR I): Lower-luminosity radio galaxies with jets that decelerate and flare near the core.</li>
+                        <li>Fanaroff-Riley Type II (FR II): Higher-luminosity radio galaxies with jets that remain collimated until terminating in bright hotspots.</li>
+                    </ul>
+                </li>
+                <li><strong>Radio-loud quasars:</strong> High-luminosity AGN with strong radio emission, showing both broad emission lines and powerful jets.</li>
+                <li><strong>Blazars:</strong> AGN with jets pointed close to our line of sight, showing extreme variability, high polarization, and strong gamma-ray emission. Subdivided into:
+                    <ul>
+                        <li>BL Lacertae objects (BL Lacs): Weak or no emission lines, thought to be beamed FR I radio galaxies.</li>
+                        <li>Flat-spectrum radio quasars (FSRQs): Strong emission lines, thought to be beamed FR II radio galaxies or radio-loud quasars.</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <h3>Obscured and Low-Luminosity AGN</h3>
+            <p>Beyond the classical AGN types, there are populations that challenge simple classification:</p>
+            <ul>
+                <li><strong>Heavily obscured AGN:</strong> AGN obscured by large amounts of gas and dust, detectable primarily in hard X-rays or infrared.</li>
+                <li><strong>Changing-look AGN:</strong> AGN that transition between Type 1 and Type 2 on timescales of years, challenging simple geometric unification models.</li>
+                <li><strong>Low-luminosity AGN (LLAGN):</strong> AGN with luminosities << 10<sup>44</sup> erg/s, often accreting in radiatively inefficient modes.</li>
+                <li><strong>Ultra-luminous infrared galaxies (ULIRGs):</strong> Galaxies with extreme infrared luminosities, often hosting dust-enshrouded AGN and/or intense star formation.</li>
+            </ul>
+            
+            <h3>Physical Parameters and Scaling Relations</h3>
+            <p>The diversity of AGN can be understood in terms of a few key physical parameters:</p>
+            <ul>
+                <li><strong>Black hole mass (M<sub>BH</sub>):</strong> Ranging from ~10<sup>6</sup> to 10<sup>10</sup> M<sub>☉</sub>, determining the overall energy scale.</li>
+                <li><strong>Accretion rate (Ṁ):</strong> Often expressed as the Eddington ratio L/L<sub>Edd</sub>, ranging from << 0.01 (LLAGN) to > 1 (super-Eddington accretors).</li>
+                <li><strong>Black hole spin (a):</strong> Ranging from 0 (non-rotating) to 1 (maximally rotating), affecting the accretion efficiency and jet production.</li>
+                <li><strong>Orientation (θ):</strong> The angle between our line of sight and the AGN axis, affecting the observed properties due to obscuration and relativistic beaming.</li>
+            </ul>
+            
+            <p>Important scaling relations include:</p>
+            <ul>
+                <li><strong>M-σ relation:</strong> The correlation between black hole mass and the velocity dispersion of the host galaxy's bulge, suggesting co-evolution of black holes and galaxies.</li>
+                <li><strong>Fundamental plane of black hole activity:</strong> A correlation between radio luminosity, X-ray luminosity, and black hole mass, spanning from stellar-mass to supermassive black holes.</li>
+                <li><strong>Eigenvector 1:</strong> A correlation between the Fe II/Hβ ratio, the width of the Hβ line, and the strength of the [O III] line, possibly related to the Eddington ratio.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: AGN Classification</h3>
+                <p>This diagram illustrates the unified model of AGN, showing how different viewing angles result in different observed AGN types.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/AGN_unified_model_scheme.png/800px-AGN_unified_model_scheme.png" alt="AGN unified model">
+                <p><em>Image: The unified model of AGN, showing how the observed classification depends on the viewing angle and the presence or absence of a jet.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 3: Black Hole Mass Estimation</p>
+                <p>A Type 1 AGN shows a broad Hβ emission line with a full width at half maximum (FWHM) of 5000 km/s. The continuum luminosity at 5100 Å is measured to be L<sub>5100</sub> = 10<sup>44</sup> erg/s. Using the virial method and the R-L relationship, estimate the mass of the central black hole.</p>
+                
+                <div class="solution" id="solution3">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The virial method for estimating black hole masses in AGN is based on the assumption that the broad-line region (BLR) gas is in virial equilibrium, with its motion dominated by the gravitational potential of the black hole:</p>
+                    <p>M<sub>BH</sub> = f × R<sub>BLR</sub> × (FWHM)² / G</p>
+                    <p>where f is a scale factor that depends on the geometry and kinematics of the BLR, R<sub>BLR</sub> is the radius of the BLR, FWHM is the full width at half maximum of the broad emission line, and G is the gravitational constant.</p>
+                    
+                    <p>2. The radius of the BLR can be estimated from the continuum luminosity using the R-L relationship:</p>
+                    <p>R<sub>BLR</sub> = 10 × (L<sub>5100</sub> / 10<sup>44</sup> erg/s)<sup>0.5</sup> light-days</p>
+                    
+                    <p>3. Calculate the BLR radius for L<sub>5100</sub> = 10<sup>44</sup> erg/s:</p>
+                    <p>R<sub>BLR</sub> = 10 × (10<sup>44</sup> / 10<sup>44</sup>)<sup>0.5</sup> light-days = 10 light-days</p>
+                    
+                    <p>4. Convert the BLR radius to centimeters:</p>
+                    <p>R<sub>BLR</sub> = 10 light-days × (86400 s/day) × (3 × 10<sup>10</sup> cm/s) = 2.59 × 10<sup>16</sup> cm</p>
+                    
+                    <p>5. Convert the FWHM from km/s to cm/s:</p>
+                    <p>FWHM = 5000 km/s = 5 × 10<sup>7</sup> cm/s</p>
+                    
+                    <p>6. The scale factor f is typically taken to be f = 1 for FWHM measurements, assuming a spherical BLR geometry.</p>
+                    
+                    <p>7. Calculate the black hole mass:</p>
+                    <p>M<sub>BH</sub> = 1 × (2.59 × 10<sup>16</sup> cm) × (5 × 10<sup>7</sup> cm/s)² / (6.67 × 10<sup>-8</sup> cm³ g<sup>-1</sup> s<sup>-2</sup>)</p>
+                    <p>M<sub>BH</sub> = 2.59 × 10<sup>16</sup> × 2.5 × 10<sup>15</sup> / 6.67 × 10<sup>-8</sup> g</p>
+                    <p>M<sub>BH</sub> = 9.7 × 10<sup>38</sup> g</p>
+                    
+                    <p>8. Convert to solar masses (1 M<sub>☉</sub> = 1.99 × 10<sup>33</sup> g):</p>
+                    <p>M<sub>BH</sub> = 9.7 × 10<sup>38</sup> / 1.99 × 10<sup>33</sup> M<sub>☉</sub> = 4.9 × 10<sup>5</sup> M<sub>☉</sub></p>
+                    
+                    <p>9. This is a relatively low mass for an AGN black hole, suggesting either a low-mass AGN or potential issues with the measurement or assumptions. Typical AGN black hole masses range from 10<sup>6</sup> to 10<sup>10</sup> M<sub>☉</sub>.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution3')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>AGN Variability and Feedback</h2>
+            <p>AGN exhibit variability across all wavelengths and timescales, providing valuable insights into their physical processes and structure. Additionally, AGN can significantly influence their host galaxies and surrounding environment through various feedback mechanisms.</p>
+            
+            <h3>Variability Characteristics</h3>
+            <p>AGN variability shows several key characteristics:</p>
+            <ul>
+                <li><strong>Timescales:</strong> From minutes to decades, with faster variability generally observed at higher energies.</li>
+                <li><strong>Amplitude:</strong> Typically larger at higher energies, with X-rays showing variations of factors of 2-3 on timescales of days, while optical variations are usually limited to tens of percent.</li>
+                <li><strong>Power spectrum:</strong> Often described as a red noise process, with power spectral density P(f) ∝ f<sup>-α</sup> where α ~ 1-2.</li>
+                <li><strong>Correlation between wavelengths:</strong> Variations at different wavelengths are often correlated, with time lags providing information about the structure and emission mechanisms.</li>
+            </ul>
+            
+            <p>Extreme variability is observed in blazars due to relativistic beaming, with flux changes of factors of 10 or more on timescales of days or even hours.</p>
+            
+            <h3>Reverberation Mapping</h3>
+            <p>Reverberation mapping is a powerful technique that uses the time delay between variations in the continuum emission and the response of the broad emission lines to map the structure of the BLR and measure black hole masses.</p>
+            
+            <p>The basic principle is that changes in the ionizing continuum from the central engine propagate outward at the speed of light, causing delayed changes in the emission line flux as different parts of the BLR respond. The time delay τ between continuum and line variations gives the characteristic radius of the BLR:</p>
+            
+            <div class="equation-box">
+                <p class="equation">R_{BLR} = c\tau</p>
+                <p class="equation-caption">BLR radius from reverberation mapping, where c is the speed of light and τ is the measured time delay</p>
+            </div>
+            
+            <p>Combined with the width of the emission lines (which reflects the velocity dispersion of the BLR gas), this allows a direct measurement of the black hole mass using the virial theorem:</p>
+            
+            <div class="equation-box">
+                <p class="equation">M_{BH} = f \frac{R_{BLR} \Delta V^2}{G}</p>
+                <p class="equation-caption">Virial black hole mass, where f is a scale factor, ΔV is the velocity dispersion of the BLR gas, and G is the gravitational constant</p>
+            </div>
+            
+            <h3>AGN Feedback Mechanisms</h3>
+            <p>AGN feedback refers to the influence of the AGN on its host galaxy and surrounding environment. This feedback can be either negative (suppressing star formation) or positive (enhancing star formation) and operates through several mechanisms:</p>
+            <ul>
+                <li><strong>Radiative (quasar) mode:</strong> Radiation pressure and winds from luminous AGN can heat and expel gas from the host galaxy, suppressing star formation. This mode is most effective in high-accretion-rate AGN (L/L<sub>Edd</sub> > 0.01).</li>
+                <li><strong>Kinetic (radio) mode:</strong> Jets from radio-loud AGN can heat the surrounding gas through shocks and turbulence, preventing cooling flows in galaxy clusters and suppressing star formation. This mode dominates in low-accretion-rate AGN (L/L<sub>Edd</sub> < 0.01).</li>
+                <li><strong>Positive feedback:</strong> AGN outflows can compress gas clouds, triggering star formation in some circumstances.</li>
+            </ul>
+            
+            <p>AGN feedback is thought to play a crucial role in:</p>
+            <ul>
+                <li>Establishing the observed correlation between black hole mass and host galaxy properties (M-σ relation).</li>
+                <li>Quenching star formation in massive galaxies, explaining the observed bimodality in galaxy colors.</li>
+                <li>Preventing overcooling in galaxy clusters, solving the "cooling flow problem."</li>
+                <li>Regulating the growth of both the black hole and its host galaxy through a self-regulated feedback loop.</li>
+            </ul>
+            
+            <h3>AGN Evolution and Cosmic History</h3>
+            <p>The cosmic evolution of AGN activity provides important insights into the growth of black holes and their relationship with galaxy evolution:</p>
+            <ul>
+                <li><strong>Cosmic evolution:</strong> The space density of luminous quasars peaks at z ~ 2-3 and declines rapidly at both higher and lower redshifts, roughly tracking the cosmic star formation history.</li>
+                <li><strong>Downsizing:</strong> More massive black holes formed and grew earlier in cosmic history, while less massive black holes are more active at later times.</li>
+                <li><strong>Duty cycle:</strong> Most massive galaxies are thought to have experienced AGN activity at some point in their history, with the AGN "on" for only a fraction of the time (the duty cycle).</li>
+                <li><strong>Triggering mechanisms:</strong> AGN activity can be triggered by various processes, including galaxy mergers, secular processes (bars, disk instabilities), and cold gas accretion from the cosmic web.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: AGN Feedback</h3>
+                <p>This diagram illustrates the feedback mechanisms by which AGN influence their host galaxies and surrounding environment.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Artist%27s_impression_of_galaxy_with_outflows.jpg/800px-Artist%27s_impression_of_galaxy_with_outflows.jpg" alt="AGN feedback">
+                <p><em>Image: Artist's impression of AGN feedback, showing outflows from the central black hole affecting the surrounding galaxy.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 4: AGN Variability Timescale</p>
+                <p>An AGN shows X-ray variability on a timescale of 3 hours. Assuming that the variability is produced in the innermost regions of the accretion disk and that the minimum variability timescale is set by the light-crossing time of the emitting region, estimate the maximum size of the X-ray emitting region. If the black hole has a mass of 10<sup>8</sup> M<sub>☉</sub>, how does this size compare to the Schwarzschild radius?</p>
+                
+                <div class="solution" id="solution4">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The light-crossing time of a region with size R is:</p>
+                    <p>t<sub>lc</sub> = R/c</p>
+                    <p>where c is the speed of light.</p>
+                    
+                    <p>2. If the variability timescale is 3 hours, the maximum size of the emitting region is:</p>
+                    <p>R = c × t<sub>lc</sub> = 3 × 10<sup>10</sup> cm/s × 3 hours × 3600 s/hour = 3.24 × 10<sup>14</sup> cm</p>
+                    
+                    <p>3. The Schwarzschild radius for a black hole with mass M is:</p>
+                    <p>R<sub>S</sub> = 2GM/c² = 2 × 6.67 × 10<sup>-8</sup> cm³ g<sup>-1</sup> s<sup>-2</sup> × 10<sup>8</sup> × 1.99 × 10<sup>33</sup> g / (3 × 10<sup>10</sup> cm/s)²</p>
+                    <p>R<sub>S</sub> = 2 × 6.67 × 10<sup>-8</sup> × 1.99 × 10<sup>41</sup> / 9 × 10<sup>20</sup> cm</p>
+                    <p>R<sub>S</sub> = 2.96 × 10<sup>13</sup> cm</p>
+                    
+                    <p>4. Compare the size of the X-ray emitting region to the Schwarzschild radius:</p>
+                    <p>R / R<sub>S</sub> = 3.24 × 10<sup>14</sup> / 2.96 × 10<sup>13</sup> = 10.9</p>
+                    
+                    <p>5. The X-ray emitting region is about 11 times larger than the Schwarzschild radius, which is consistent with emission from the inner accretion disk or corona. This is a reasonable result, as X-ray emission in AGN is thought to originate from regions within ~10-20 Schwarzschild radii of the black hole.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution4')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Observational Techniques and Multi-wavelength Studies</h2>
+            <p>Studying AGN requires a multi-wavelength approach, as different components and physical processes dominate at different wavelengths. Modern observational techniques have revolutionized our understanding of AGN structure, emission mechanisms, and evolution.</p>
+            
+            <h3>Radio Observations</h3>
+            <p>Radio observations are crucial for studying jets, lobes, and other extended structures in radio-loud AGN. Key techniques and instruments include:</p>
+            <ul>
+                <li><strong>Very Long Baseline Interferometry (VLBI):</strong> Provides sub-milliarcsecond resolution, allowing detailed studies of jet structure and kinematics on parsec scales.</li>
+                <li><strong>Radio interferometers:</strong> Arrays like the Very Large Array (VLA), LOFAR, and ALMA provide high-sensitivity imaging of radio emission from AGN.</li>
+                <li><strong>Spectral index mapping:</strong> Measures the variation of the radio spectral index across extended structures, providing insights into the age and energy distribution of relativistic electrons.</li>
+                <li><strong>Polarization measurements:</strong> Reveal the structure of magnetic fields in jets and lobes.</li>
+            </ul>
+            
+            <h3>Infrared Observations</h3>
+            <p>Infrared observations probe the dusty torus and host galaxy, providing insights into the obscured components of AGN. Key techniques and instruments include:</p>
+            <ul>
+                <li><strong>Mid-infrared spectroscopy:</strong> Reveals the composition and temperature of dust in the torus through features like the 9.7 μm silicate feature.</li>
+                <li><strong>Near-infrared imaging:</strong> Allows studies of the host galaxy structure even for luminous AGN where the optical emission is dominated by the nucleus.</li>
+                <li><strong>Infrared interferometry:</strong> Provides direct constraints on the size and structure of the dusty torus.</li>
+                <li><strong>Space-based observatories:</strong> Facilities like the James Webb Space Telescope (JWST) provide unprecedented sensitivity and resolution in the infrared.</li>
+            </ul>
+            
+            <h3>Optical/UV Observations</h3>
+            <p>Optical and ultraviolet observations probe the accretion disk, broad-line region, and narrow-line region. Key techniques and instruments include:</p>
+            <ul>
+                <li><strong>Spectroscopy:</strong> Reveals emission lines from the BLR and NLR, providing diagnostics of physical conditions and kinematics.</li>
+                <li><strong>Reverberation mapping:</strong> Measures the size of the BLR and black hole masses through time delays between continuum and line variations.</li>
+                <li><strong>Polarimetry:</strong> Reveals hidden broad-line regions in Type 2 AGN through scattered light.</li>
+                <li><strong>Integral field spectroscopy:</strong> Provides spatially resolved spectroscopy of the NLR and host galaxy.</li>
+            </ul>
+            
+            <h3>X-ray Observations</h3>
+            <p>X-ray observations probe the innermost regions of the accretion flow and the corona. Key techniques and instruments include:</p>
+            <ul>
+                <li><strong>Imaging spectroscopy:</strong> Measures the X-ray continuum shape, absorption, and emission features.</li>
+                <li><strong>Timing analysis:</strong> Studies variability on timescales from seconds to years, constraining the size and structure of the X-ray emitting regions.</li>
+                <li><strong>Fe Kα line studies:</strong> The profile of the 6.4 keV iron line provides information about the inner accretion disk and black hole spin.</li>
+                <li><strong>X-ray polarimetry:</strong> Emerging technique that will provide new constraints on the geometry of the X-ray emitting regions.</li>
+            </ul>
+            
+            <h3>Gamma-ray Observations</h3>
+            <p>Gamma-ray observations probe the most energetic processes in AGN, particularly in blazars. Key techniques and instruments include:</p>
+            <ul>
+                <li><strong>Space-based observatories:</strong> Facilities like Fermi-LAT detect gamma rays from ~20 MeV to >300 GeV.</li>
+                <li><strong>Ground-based Cherenkov telescopes:</strong> Arrays like H.E.S.S., MAGIC, and VERITAS detect very high energy gamma rays (>100 GeV) through the Cherenkov light produced when they interact with the atmosphere.</li>
+                <li><strong>Multi-wavelength campaigns:</strong> Coordinated observations across the electromagnetic spectrum to study the broadband spectral energy distribution and variability.</li>
+            </ul>
+            
+            <h3>Multi-messenger Astronomy</h3>
+            <p>Beyond electromagnetic radiation, AGN are potential sources of other cosmic messengers:</p>
+            <ul>
+                <li><strong>Neutrinos:</strong> High-energy neutrinos detected by facilities like IceCube may originate from hadronic processes in AGN jets. The blazar TXS 0506+056 was identified as the first likely source of high-energy neutrinos.</li>
+                <li><strong>Gravitational waves:</strong> The mergers of supermassive black holes in galaxy mergers are expected to produce gravitational waves detectable by future space-based interferometers like LISA.</li>
+                <li><strong>Ultra-high-energy cosmic rays:</strong> AGN are among the candidate sources for cosmic rays with energies >10<sup>18</sup> eV, though direct association remains challenging.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Multi-wavelength AGN</h3>
+                <p>This composite image shows the active galaxy Centaurus A as observed across the electromagnetic spectrum, revealing different components of the AGN.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Centaurus_A.jpg/800px-Centaurus_A.jpg" alt="Multi-wavelength image of Centaurus A">
+                <p><em>Image: Composite multi-wavelength image of the active galaxy Centaurus A, showing the radio jets (orange), X-ray emission (blue), and optical/infrared emission from the host galaxy.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 5: X-ray Spectral Analysis</p>
+                <p>The X-ray spectrum of an AGN can be modeled as a power law with photon index Γ = 1.8, modified by absorption from a column density N<sub>H</sub> = 10<sup>22</sup> cm<sup>-2</sup> of neutral hydrogen. Calculate the ratio of the observed flux at 1 keV to the intrinsic (unabsorbed) flux. If the observed 2-10 keV flux is 10<sup>-11</sup> erg cm<sup>-2</sup> s<sup>-1</sup>, what is the intrinsic 2-10 keV luminosity for a source at redshift z = 0.1?</p>
+                
+                <div class="solution" id="solution5">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The observed X-ray spectrum with absorption is given by:</p>
+                    <p>F(E) = F<sub>0</sub>(E) × exp(-σ(E) × N<sub>H</sub>)</p>
+                    <p>where F<sub>0</sub>(E) is the intrinsic spectrum, σ(E) is the photoelectric absorption cross-section, and N<sub>H</sub> is the hydrogen column density.</p>
+                    
+                    <p>2. At 1 keV, the photoelectric absorption cross-section is approximately σ(1 keV) ≈ 2.5 × 10<sup>-22</sup> cm².</p>
+                    
+                    <p>3. Calculate the ratio of observed to intrinsic flux at 1 keV:</p>
+                    <p>F(1 keV) / F<sub>0</sub>(1 keV) = exp(-σ(1 keV) × N<sub>H</sub>)</p>
+                    <p>F(1 keV) / F<sub>0</sub>(1 keV) = exp(-2.5 × 10<sup>-22</sup> cm² × 10<sup>22</sup> cm<sup>-2</sup>)</p>
+                    <p>F(1 keV) / F<sub>0</sub>(1 keV) = exp(-2.5) = 0.082</p>
+                    
+                    <p>4. Therefore, the observed flux at 1 keV is about 8.2% of the intrinsic flux due to absorption.</p>
+                    
+                    <p>5. To calculate the intrinsic 2-10 keV luminosity, we first need to determine the intrinsic 2-10 keV flux. For a power-law spectrum with significant absorption, we need to integrate the absorbed spectrum over the energy range and compare it to the intrinsic spectrum.</p>
+                    
+                    <p>6. For simplicity, we can approximate the correction factor for the 2-10 keV band. With N<sub>H</sub> = 10<sup>22</sup> cm<sup>-2</sup>, the absorption is significant at the lower end of the band but minimal at higher energies. A typical correction factor for this column density and photon index is about 1.2-1.3.</p>
+                    
+                    <p>7. Using a correction factor of 1.25:</p>
+                    <p>F<sub>0</sub>(2-10 keV) = 1.25 × F(2-10 keV) = 1.25 × 10<sup>-11</sup> erg cm<sup>-2</sup> s<sup>-1</sup> = 1.25 × 10<sup>-11</sup> erg cm<sup>-2</sup> s<sup>-1</sup></p>
+                    
+                    <p>8. The luminosity distance for a source at redshift z = 0.1 in a standard ΛCDM cosmology is approximately d<sub>L</sub> ≈ 460 Mpc ≈ 1.42 × 10<sup>27</sup> cm.</p>
+                    
+                    <p>9. Calculate the intrinsic 2-10 keV luminosity:</p>
+                    <p>L<sub>0</sub>(2-10 keV) = 4π × d<sub>L</sub>² × F<sub>0</sub>(2-10 keV)</p>
+                    <p>L<sub>0</sub>(2-10 keV) = 4π × (1.42 × 10<sup>27</sup> cm)² × 1.25 × 10<sup>-11</sup> erg cm<sup>-2</sup> s<sup>-1</sup></p>
+                    <p>L<sub>0</sub>(2-10 keV) = 4π × 2.02 × 10<sup>54</sup> cm² × 1.25 × 10<sup>-11</sup> erg cm<sup>-2</sup> s<sup>-1</sup></p>
+                    <p>L<sub>0</sub>(2-10 keV) = 3.17 × 10<sup>44</sup> erg s<sup>-1</sup></p>
+                    
+                    <p>10. Therefore, the intrinsic 2-10 keV luminosity of the AGN is approximately 3.17 × 10<sup>44</sup> erg s<sup>-1</sup>, which is typical for a moderately luminous AGN.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution5')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Current Frontiers and Open Questions</h2>
+            <p>Despite significant progress in understanding AGN physics, many important questions remain open, driving current and future research in this field.</p>
+            
+            <h3>Black Hole Growth and Evolution</h3>
+            <p>Key questions about black hole growth and evolution include:</p>
+            <ul>
+                <li><strong>Seed black holes:</strong> How did the first supermassive black holes form? Possibilities include direct collapse of massive gas clouds, remnants of Population III stars, or mergers of stellar-mass black holes.</li>
+                <li><strong>Growth mechanisms:</strong> What is the relative importance of gas accretion versus black hole mergers in building up the supermassive black hole population?</li>
+                <li><strong>Eddington limit:</strong> Can black holes accrete at super-Eddington rates for extended periods? If so, what are the implications for black hole growth in the early universe?</li>
+                <li><strong>Spin evolution:</strong> How do black hole spins evolve through accretion and mergers, and what are the implications for jet production and energy extraction?</li>
+            </ul>
+            
+            <h3>AGN Structure and Physics</h3>
+            <p>Open questions about AGN structure and physics include:</p>
+            <ul>
+                <li><strong>Accretion disk physics:</strong> What is the detailed structure of AGN accretion disks, particularly in the innermost regions where general relativistic effects are important?</li>
+                <li><strong>Corona formation:</strong> How is the X-ray emitting corona formed and maintained, and what determines its geometry and physical conditions?</li>
+                <li><strong>Jet launching:</strong> What are the precise mechanisms for launching and collimating relativistic jets, and why do only some AGN produce powerful jets?</li>
+                <li><strong>Torus structure:</strong> What is the detailed structure and dynamics of the dusty torus, and how does it evolve with AGN luminosity and black hole mass?</li>
+                <li><strong>Changing-look AGN:</strong> What causes the dramatic changes in AGN type observed in changing-look AGN, and what do these changes tell us about AGN structure?</li>
+            </ul>
+            
+            <h3>AGN-Galaxy Co-evolution</h3>
+            <p>Questions about the relationship between AGN and their host galaxies include:</p>
+            <ul>
+                <li><strong>Feedback mechanisms:</strong> What are the detailed physical processes by which AGN feedback affects the host galaxy, and how do these processes depend on AGN and galaxy properties?</li>
+                <li><strong>Triggering mechanisms:</strong> What processes trigger AGN activity, and how do these vary with redshift and galaxy properties?</li>
+                <li><strong>Star formation connection:</strong> What is the relationship between AGN activity and star formation in the host galaxy, and how does this relationship evolve with cosmic time?</li>
+                <li><strong>Environment effects:</strong> How does the large-scale environment influence AGN activity and its impact on galaxy evolution?</li>
+            </ul>
+            
+            <h3>Future Observational Prospects</h3>
+            <p>Upcoming facilities and missions will address many of these questions through transformative observations:</p>
+            <ul>
+                <li><strong>James Webb Space Telescope (JWST):</strong> Will provide unprecedented infrared observations of AGN, probing the dusty torus and host galaxies of high-redshift quasars.</li>
+                <li><strong>Athena X-ray Observatory:</strong> Will revolutionize X-ray spectroscopy of AGN, providing detailed measurements of accretion disk structure and black hole spin.</li>
+                <li><strong>Laser Interferometer Space Antenna (LISA):</strong> Will detect gravitational waves from merging supermassive black holes, providing direct insights into black hole growth through mergers.</li>
+                <li><strong>Square Kilometre Array (SKA):</strong> Will transform radio observations of AGN, detecting and characterizing jets and lobes with unprecedented sensitivity.</li>
+                <li><strong>Cherenkov Telescope Array (CTA):</strong> Will greatly improve very high energy gamma-ray observations of AGN, probing the most energetic processes in jets.</li>
+                <li><strong>30-meter class optical/infrared telescopes:</strong> Facilities like the Extremely Large Telescope (ELT), Giant Magellan Telescope (GMT), and Thirty Meter Telescope (TMT) will provide revolutionary spatial resolution and sensitivity for AGN studies.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Black Hole Merger Simulation</h3>
+                <p>This image shows a simulation of two supermassive black holes merging, a process that will be detectable by future gravitational wave observatories like LISA.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Merging_black_holes_gravitational_waves.jpg/800px-Merging_black_holes_gravitational_waves.jpg" alt="Black hole merger simulation">
+                <p><em>Image: Simulation of merging supermassive black holes, showing the gravitational waves emitted during the merger process.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 6: AGN Feedback Energy</p>
+                <p>An AGN with a black hole mass of 10<sup>9</sup> M<sub>☉</sub> is accreting at 10% of the Eddington rate with an efficiency of η = 0.1. If 10% of the accretion energy goes into a jet or wind that couples to the surrounding gas with an efficiency of 5%, calculate the energy injected into the host galaxy over 10<sup>7</sup> years. Compare this to the binding energy of a galaxy with a stellar mass of 10<sup>11</sup> M<sub>☉</sub> and velocity dispersion σ = 200 km/s.</p>
+                
+                <div class="solution" id="solution6">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The Eddington luminosity for a 10<sup>9</sup> M<sub>☉</sub> black hole is:</p>
+                    <p>L<sub>Edd</sub> = 1.3 × 10<sup>38</sup> erg/s × 10<sup>9</sup> = 1.3 × 10<sup>47</sup> erg/s</p>
+                    
+                    <p>2. The AGN is accreting at 10% of the Eddington rate, so its luminosity is:</p>
+                    <p>L<sub>AGN</sub> = 0.1 × L<sub>Edd</sub> = 0.1 × 1.3 × 10<sup>47</sup> erg/s = 1.3 × 10<sup>46</sup> erg/s</p>
+                    
+                    <p>3. The power going into the jet or wind is:</p>
+                    <p>P<sub>jet</sub> = 0.1 × L<sub>AGN</sub> = 0.1 × 1.3 × 10<sup>46</sup> erg/s = 1.3 × 10<sup>45</sup> erg/s</p>
+                    
+                    <p>4. The power that effectively couples to the surrounding gas is:</p>
+                    <p>P<sub>feedback</sub> = 0.05 × P<sub>jet</sub> = 0.05 × 1.3 × 10<sup>45</sup> erg/s = 6.5 × 10<sup>43</sup> erg/s</p>
+                    
+                    <p>5. Over 10<sup>7</sup> years, the total energy injected is:</p>
+                    <p>E<sub>feedback</sub> = P<sub>feedback</sub> × 10<sup>7</sup> years × 3.15 × 10<sup>7</sup> s/year</p>
+                    <p>E<sub>feedback</sub> = 6.5 × 10<sup>43</sup> erg/s × 3.15 × 10<sup>14</sup> s</p>
+                    <p>E<sub>feedback</sub> = 2.05 × 10<sup>58</sup> erg</p>
+                    
+                    <p>6. The binding energy of a galaxy can be estimated as:</p>
+                    <p>E<sub>bind</sub> ≈ M<sub>*</sub> × σ²</p>
+                    <p>where M<sub>*</sub> is the stellar mass and σ is the velocity dispersion.</p>
+                    
+                    <p>7. Calculate the binding energy:</p>
+                    <p>E<sub>bind</sub> ≈ 10<sup>11</sup> M<sub>☉</sub> × 1.99 × 10<sup>33</sup> g/M<sub>☉</sub> × (200 km/s)²</p>
+                    <p>E<sub>bind</sub> ≈ 1.99 × 10<sup>44</sup> g × 4 × 10<sup>10</sup> (km/s)²</p>
+                    <p>E<sub>bind</sub> ≈ 7.96 × 10<sup>54</sup> g × (km/s)²</p>
+                    
+                    <p>8. Convert to erg (1 erg = 1 g × (cm/s)²):</p>
+                    <p>E<sub>bind</sub> ≈ 7.96 × 10<sup>54</sup> g × (10<sup>5</sup> cm/s)² = 7.96 × 10<sup>64</sup> g × (cm/s)² = 7.96 × 10<sup>64</sup> erg</p>
+                    
+                    <p>9. Compare the feedback energy to the binding energy:</p>
+                    <p>E<sub>feedback</sub> / E<sub>bind</sub> = 2.05 × 10<sup>58</sup> erg / 7.96 × 10<sup>64</sup> erg = 2.58 × 10<sup>-7</sup></p>
+                    
+                    <p>10. The feedback energy is much smaller than the binding energy of the galaxy. However, this calculation assumes uniform coupling to all gas in the galaxy. In reality, AGN feedback can be much more effective if it couples preferentially to gas in the central regions or if it prevents gas cooling and accretion rather than ejecting already-formed stars. Additionally, over the full lifetime of the AGN (which could be much longer than 10<sup>7</sup> years), the cumulative feedback energy could be comparable to or exceed the binding energy.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution6')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Resources</h2>
+            <h3>Authoritative Textbooks</h3>
+            <ul>
+                <li><strong>Active Galactic Nuclei</strong> by Julian H. Krolik — Comprehensive treatment of AGN physics with emphasis on theoretical foundations.</li>
+                <li><strong>An Introduction to Active Galactic Nuclei</strong> by Bradley M. Peterson — Excellent introduction to AGN with emphasis on observational properties.</li>
+                <li><strong>Quasars and Active Galactic Nuclei: An Introduction</strong> by Ajit K. Kembhavi and Jayant V. Narlikar — Accessible introduction with balanced coverage of theory and observations.</li>
+                <li><strong>High Energy Astrophysics</strong> by Malcolm S. Longair — Comprehensive coverage of high-energy processes relevant to AGN.</li>
+                <li><strong>The Physics of AGN</strong> by Hagai Netzer — Modern treatment of AGN physics with emphasis on multi-wavelength observations.</li>
+            </ul>
+            
+            <h3>Review Articles</h3>
+            <ul>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2015ARA%26A..53..365N/abstract" target="_blank" rel="noopener noreferrer">Netzer, H. (2015). "Revisiting the Unified Model of Active Galactic Nuclei." Annual Review of Astronomy and Astrophysics, 53, 365-408.</a></li>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2017ARA%26A..55..389P/abstract" target="_blank" rel="noopener noreferrer">Padovani, P., et al. (2017). "Active Galactic Nuclei: What's in a Name?" Astronomy and Astrophysics Review, 25, 2.</a></li>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2014ARA%26A..52..529Y/abstract" target="_blank" rel="noopener noreferrer">Yuan, F., & Narayan, R. (2014). "Hot Accretion Flows Around Black Holes." Annual Review of Astronomy and Astrophysics, 52, 529-588.</a></li>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2012ARA%26A..50..455F/abstract" target="_blank" rel="noopener noreferrer">Fabian, A. C. (2012). "Observational Evidence of Active Galactic Nuclei Feedback." Annual Review of Astronomy and Astrophysics, 50, 455-489.</a></li>
+                <li><a href="https://ui.adsabs.harvard.edu/abs/2019ARA%26A..57..467B/abstract" target="_blank" rel="noopener noreferrer">Blandford, R., et al. (2019). "Relativistic Jets from Active Galactic Nuclei." Annual Review of Astronomy and Astrophysics, 57, 467-509.</a></li>
+            </ul>
+            
+            <h3>Online Resources</h3>
+            <ul>
+                <li><a href="https://ned.ipac.caltech.edu/" target="_blank" rel="noopener noreferrer">NASA/IPAC Extragalactic Database (NED)</a> — Comprehensive database of extragalactic objects, including AGN.</li>
+                <li><a href="https://heasarc.gsfc.nasa.gov/" target="_blank" rel="noopener noreferrer">High Energy Astrophysics Science Archive Research Center (HEASARC)</a> — Archive of data from high-energy astrophysics missions, with many AGN observations.</li>
+                <li><a href="https://www.astro.gsu.edu/AGNmass/" target="_blank" rel="noopener noreferrer">AGN Black Hole Mass Database</a> — Compilation of black hole mass measurements for AGN.</li>
+                <li><a href="https://www.isdc.unige.ch/agn/" target="_blank" rel="noopener noreferrer">INTEGRAL AGN Database</a> — Database of AGN observed by the INTEGRAL satellite.</li>
+                <li><a href="https://fermi.gsfc.nasa.gov/ssc/data/access/lat/4yr_catalog/" target="_blank" rel="noopener noreferrer">Fermi-LAT AGN Catalog</a> — Catalog of gamma-ray AGN detected by the Fermi Large Area Telescope.</li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Related Topics</h2>
+            <div class="related-topics">
+                <a href="basic_astrophysics_enhanced.html" class="related-topic">Basic Astrophysics</a>
+                <a href="galaxy_evolution_enhanced.html" class="related-topic">Galaxy Evolution</a>
+                <a href="radiative_transfer_enhanced.html" class="related-topic">Radiative Transfer</a>
+                <a href="quantum_mechanics_enhanced.html" class="related-topic">Quantum Mechanics</a>
+                <a href="elctromagnetic_theory_enhanced.html" class="related-topic">Electrodynamics</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-nav">
+                <a href="index.html">Home</a> |
+                <a href="classical_mechanics_enhanced.html">Classical Mechanics</a> |
+                <a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a> |
+                <a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a> |
+                <a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a> |
+                <a href="mathematical_physics_enhanced.html">Mathematical Physics</a>
+            </div>
+            <p>"The most incomprehensible thing about the universe is that it is comprehensible." — Albert Einstein</p>
+            <p>© 2025 Physics Refresher Course | Last Updated: May 2025</p>
+        </footer>
+    </div>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+        
+        // Convert equation content to proper MathJax format when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const equations = document.querySelectorAll('.equation');
+            equations.forEach(function(equation) {
+                // Preserve the original text
+                const originalText = equation.textContent;
+                // Replace with properly delimited math
+                equation.innerHTML = '\\[' + originalText + '\\]';
+            });
+        });
+    </script>
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            if (solution.style.display === "none" || solution.style.display === "") {
+                solution.style.display = "block";
+            } else {
+                solution.style.display = "none";
+            }
+        }
+        
+        // Hide all solutions initially
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutions = document.querySelectorAll('.solution');
+            solutions.forEach(function(solution) {
+                solution.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

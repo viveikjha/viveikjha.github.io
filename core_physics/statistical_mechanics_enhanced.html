@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Statistical Mechanics — Physics Refresher Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2c1810;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="35" r="0.5" fill="%23d4af8c" opacity="0.4"/><circle cx="80" cy="65" r="0.3" fill="%23c19a6b" opacity="0.3"/><circle cx="45" cy="80" r="0.4" fill="%23b8935f" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #2c1810;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B4513;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        nav a.active {
+            color: #2c1810;
+            border-bottom: 2px solid #8B4513;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            color: #2c1810;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Equation Styles */
+        .equation-box {
+            background: rgba(255, 252, 249, 0.9);
+            border-left: 4px solid #8B4513;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .equation-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Interactive Elements */
+        .interactive-element {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .interactive-element img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Practice Problems */
+        .problem {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .problem-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+        }
+
+        .solution {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ddd;
+        }
+
+        .solution-toggle {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        /* Related Topics */
+        .related-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .related-topic {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #8B4513;
+            transition: all 0.3s ease;
+        }
+
+        .related-topic:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 69, 19, 0.1);
+            font-style: italic;
+            color: #8B4513;
+        }
+
+        .footer-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #8B4513;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Physics Refresher Course</h1>
+            <h2 class="page-title">Statistical Mechanics</h2>
+            <p class="subtitle">The bridge between microscopic and macroscopic physics, explaining how the collective behavior of countless particles gives rise to the thermodynamic properties we observe.</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="classical_mechanics_enhanced.html">Classical Mechanics</a></li>
+                <li><a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a></li>
+                <li><a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a></li>
+                <li><a href="statistical_mechanics_enhanced.html" class="active">Statistical Mechanics</a></li>
+                <li><a href="mathematical_physics_enhanced.html">Mathematical Physics</a></li>
+            </ul>
+        </nav>
+
+        <section class="content-section">
+            <h2>Introduction to Statistical Mechanics</h2>
+            <p>Statistical mechanics is the branch of physics that applies probability theory to the study of the thermodynamic behavior of systems composed of a large number of particles. It provides the microscopic foundation for thermodynamics, explaining how the properties of atoms and molecules determine the macroscopic behavior of matter.</p>
+            
+            <p>The historical development of statistical mechanics began in the late 19th century with the work of James Clerk Maxwell, Ludwig Boltzmann, and Josiah Willard Gibbs. Maxwell introduced statistical methods to describe the distribution of molecular velocities in a gas. Boltzmann developed the concept of entropy as a measure of the number of possible microscopic states of a system, encapsulated in his famous equation S = k log W. Gibbs formalized the theory by introducing the concept of ensembles, collections of mental copies of a system used to calculate average properties.</p>
+            
+            <p>This module follows the elegant treatment by Pathria and Beale, enriched by Kerson Huang's lucid insights, to provide a comprehensive understanding of how microscopic physics gives rise to macroscopic phenomena such as temperature, pressure, heat capacity, and phase transitions.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Fundamentals of Probability and Statistics</h2>
+            <p>Statistical mechanics relies heavily on probability theory and statistics to bridge the gap between microscopic and macroscopic descriptions of physical systems.</p>
+            
+            <h3>Probability Distributions</h3>
+            <p>A probability distribution P(x) gives the probability of finding a system in state x. For a discrete set of states, the probabilities must sum to 1:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\sum_i P(x_i) = 1</p>
+                <p class="equation-caption">Normalization condition for discrete probability distribution</p>
+            </div>
+            
+            <p>For continuous variables, the probability density function p(x) is used, with the normalization condition:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\int p(x) dx = 1</p>
+                <p class="equation-caption">Normalization condition for continuous probability density</p>
+            </div>
+            
+            <h3>Expectation Values and Moments</h3>
+            <p>The expectation value (average) of a function f(x) is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\langle f(x) \rangle = \sum_i f(x_i) P(x_i)</p>
+                <p class="equation-caption">Expectation value for discrete distribution</p>
+            </div>
+            
+            <p>Or for continuous variables:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\langle f(x) \rangle = \int f(x) p(x) dx</p>
+                <p class="equation-caption">Expectation value for continuous distribution</p>
+            </div>
+            
+            <p>The moments of a distribution are defined as the expectation values of powers of x:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\langle x^n \rangle = \int x^n p(x) dx</p>
+                <p class="equation-caption">nth moment of a distribution</p>
+            </div>
+            
+            <p>The first moment (n=1) is the mean, and the variance is related to the second moment: σ² = ⟨(x-⟨x⟩)²⟩ = ⟨x²⟩ - ⟨x⟩².</p>
+            
+            <h3>Central Limit Theorem</h3>
+            <p>The central limit theorem states that the sum of a large number of independent random variables, each with finite mean and variance, tends toward a normal (Gaussian) distribution, regardless of the original distribution of the variables. This theorem is fundamental to statistical mechanics, as it explains why many macroscopic quantities follow normal distributions.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Central Limit Theorem</h3>
+                <p>This diagram illustrates how the sum of random variables approaches a normal distribution as the number of variables increases, regardless of the original distribution.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/IllustrationCentralTheorem.png/800px-IllustrationCentralTheorem.png" alt="Central Limit Theorem illustration">
+                <p><em>Image: Illustration of the Central Limit Theorem showing how the distribution of sums approaches a normal distribution as the number of terms increases.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 1: Expectation Values for a Discrete Distribution</p>
+                <p>Consider a six-sided die with probabilities P(1) = P(6) = 1/4 and P(2) = P(3) = P(4) = P(5) = 1/8. Calculate the expectation value ⟨x⟩ and the variance σ².</p>
+                
+                <div class="solution" id="solution1">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The expectation value is:</p>
+                    <p>⟨x⟩ = ∑ᵢ xᵢP(xᵢ) = 1·(1/4) + 2·(1/8) + 3·(1/8) + 4·(1/8) + 5·(1/8) + 6·(1/4)</p>
+                    <p>⟨x⟩ = 1/4 + 2/8 + 3/8 + 4/8 + 5/8 + 6/4</p>
+                    <p>⟨x⟩ = 1/4 + 1/4 + 3/8 + 1/2 + 5/8 + 3/2</p>
+                    <p>⟨x⟩ = 3.5</p>
+                    
+                    <p>2. For the variance, we first calculate ⟨x²⟩:</p>
+                    <p>⟨x²⟩ = ∑ᵢ xᵢ²P(xᵢ) = 1²·(1/4) + 2²·(1/8) + 3²·(1/8) + 4²·(1/8) + 5²·(1/8) + 6²·(1/4)</p>
+                    <p>⟨x²⟩ = 1/4 + 4/8 + 9/8 + 16/8 + 25/8 + 36/4</p>
+                    <p>⟨x²⟩ = 1/4 + 1/2 + 9/8 + 2 + 25/8 + 9</p>
+                    <p>⟨x²⟩ = 15.25</p>
+                    
+                    <p>3. The variance is:</p>
+                    <p>σ² = ⟨x²⟩ - ⟨x⟩² = 15.25 - 3.5² = 15.25 - 12.25 = 3</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution1')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Microcanonical Ensemble</h2>
+            <p>The microcanonical ensemble is the most fundamental ensemble in statistical mechanics, describing an isolated system with fixed energy, volume, and number of particles.</p>
+            
+            <h3>Fundamental Postulate of Statistical Mechanics</h3>
+            <p>The fundamental postulate states that for an isolated system in equilibrium, all accessible microstates are equally probable. This is the principle of equal a priori probabilities.</p>
+            
+            <h3>Entropy and the Microcanonical Ensemble</h3>
+            <p>The entropy of a system in the microcanonical ensemble is given by Boltzmann's famous formula:</p>
+            
+            <div class="equation-box">
+                <p class="equation">S = k_B \ln \Omega(E, V, N)</p>
+                <p class="equation-caption">Boltzmann's entropy formula</p>
+            </div>
+            
+            <p>Where k<sub>B</sub> is Boltzmann's constant (1.381 × 10<sup>-23</sup> J/K), and Ω(E, V, N) is the number of microstates consistent with the macroscopic constraints of energy E, volume V, and particle number N.</p>
+            
+            <h3>Thermodynamic Relations</h3>
+            <p>From the entropy, we can derive other thermodynamic quantities:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{1}{T} = \left( \frac{\partial S}{\partial E} \right)_{V,N}</p>
+                <p class="equation-caption">Definition of temperature</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{P}{T} = \left( \frac{\partial S}{\partial V} \right)_{E,N}</p>
+                <p class="equation-caption">Definition of pressure</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">-\frac{\mu}{T} = \left( \frac{\partial S}{\partial N} \right)_{E,V}</p>
+                <p class="equation-caption">Definition of chemical potential</p>
+            </div>
+            
+            <h3>Density of States</h3>
+            <p>For continuous systems, we define the density of states g(E), which gives the number of microstates per unit energy interval:</p>
+            
+            <div class="equation-box">
+                <p class="equation">g(E) = \frac{d\Omega(E)}{dE}</p>
+                <p class="equation-caption">Density of states</p>
+            </div>
+            
+            <p>The number of microstates in an energy range [E, E+ΔE] is then g(E)ΔE.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 2: Entropy of a Two-Level System</p>
+                <p>Consider a system of N non-interacting particles, each of which can be in one of two energy states: E=0 or E=ε. If the total energy of the system is E = nε (meaning n particles are in the excited state), calculate the entropy of the system.</p>
+                
+                <div class="solution" id="solution2">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The number of ways to distribute n excited particles among N total particles is given by the binomial coefficient:</p>
+                    <p>Ω(E=nε, N) = (N choose n) = N!/(n!(N-n)!)</p>
+                    
+                    <p>2. The entropy is S = k<sub>B</sub> ln Ω:</p>
+                    <p>S = k<sub>B</sub> ln[N!/(n!(N-n)!)]</p>
+                    
+                    <p>3. Using Stirling's approximation for large N: ln(N!) ≈ N ln(N) - N:</p>
+                    <p>S ≈ k<sub>B</sub>[N ln(N) - N - n ln(n) + n - (N-n)ln(N-n) + (N-n)]</p>
+                    <p>S ≈ k<sub>B</sub>[N ln(N) - n ln(n) - (N-n)ln(N-n)]</p>
+                    
+                    <p>4. Simplifying:</p>
+                    <p>S ≈ -k<sub>B</sub>[n ln(n/N) + (N-n)ln((N-n)/N)]</p>
+                    <p>S ≈ -k<sub>B</sub>N[x ln(x) + (1-x)ln(1-x)]</p>
+                    
+                    <p>where x = n/N is the fraction of particles in the excited state.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution2')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Canonical Ensemble</h2>
+            <p>The canonical ensemble describes a system in thermal equilibrium with a heat bath at a fixed temperature. It is more practical than the microcanonical ensemble for many applications.</p>
+            
+            <h3>Partition Function</h3>
+            <p>The central quantity in the canonical ensemble is the partition function Z:</p>
+            
+            <div class="equation-box">
+                <p class="equation">Z = \sum_i e^{-\beta E_i}</p>
+                <p class="equation-caption">Canonical partition function (discrete)</p>
+            </div>
+            
+            <p>Or for continuous energy levels:</p>
+            
+            <div class="equation-box">
+                <p class="equation">Z = \int g(E) e^{-\beta E} dE</p>
+                <p class="equation-caption">Canonical partition function (continuous)</p>
+            </div>
+            
+            <p>Where β = 1/(k<sub>B</sub>T) is the inverse temperature, E<sub>i</sub> are the energy levels of the system, and g(E) is the density of states.</p>
+            
+            <h3>Probability Distribution</h3>
+            <p>The probability of finding the system in a microstate with energy E<sub>i</sub> is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">P(E_i) = \frac{1}{Z} e^{-\beta E_i}</p>
+                <p class="equation-caption">Boltzmann distribution</p>
+            </div>
+            
+            <p>This is the famous Boltzmann distribution, which shows that states with lower energy are exponentially more likely to be occupied than states with higher energy.</p>
+            
+            <h3>Thermodynamic Quantities</h3>
+            <p>From the partition function, we can derive all thermodynamic quantities:</p>
+            
+            <div class="equation-box">
+                <p class="equation">F = -k_B T \ln Z</p>
+                <p class="equation-caption">Helmholtz free energy</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">U = -\frac{\partial \ln Z}{\partial \beta} = k_B T^2 \frac{\partial \ln Z}{\partial T}</p>
+                <p class="equation-caption">Internal energy</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">S = k_B \ln Z + k_B T \frac{\partial \ln Z}{\partial T}</p>
+                <p class="equation-caption">Entropy</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">C_V = \frac{\partial U}{\partial T} = k_B \beta^2 \frac{\partial^2 \ln Z}{\partial \beta^2}</p>
+                <p class="equation-caption">Heat capacity at constant volume</p>
+            </div>
+            
+            <h3>Equipartition Theorem</h3>
+            <p>For a system in thermal equilibrium, each quadratic term in the Hamiltonian contributes (1/2)k<sub>B</sub>T to the average energy. This is the equipartition theorem, which explains why the heat capacity of many systems is proportional to the number of degrees of freedom.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Boltzmann Distribution</h3>
+                <p>This diagram shows the Boltzmann distribution for different temperatures. Note how higher temperatures lead to a more uniform distribution across energy levels.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Maxwell-Boltzmann_distribution_1.svg/800px-Maxwell-Boltzmann_distribution_1.svg.png" alt="Boltzmann distribution at different temperatures">
+                <p><em>Image: Boltzmann distribution for different temperatures, showing the probability of occupying states with different energies.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 3: Partition Function of a Harmonic Oscillator</p>
+                <p>Calculate the partition function, internal energy, and heat capacity of a quantum harmonic oscillator with energy levels E<sub>n</sub> = (n+1/2)ħω, where n = 0, 1, 2, ...</p>
+                
+                <div class="solution" id="solution3">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The partition function is:</p>
+                    <p>Z = ∑<sub>n=0</sub><sup>∞</sup> e<sup>-β(n+1/2)ħω</sup> = e<sup>-βħω/2</sup> ∑<sub>n=0</sub><sup>∞</sup> e<sup>-βnħω</sup></p>
+                    
+                    <p>2. The sum is a geometric series with first term a = 1 and common ratio r = e<sup>-βħω</sup>:</p>
+                    <p>∑<sub>n=0</sub><sup>∞</sup> r<sup>n</sup> = 1/(1-r) for |r| < 1</p>
+                    
+                    <p>3. Therefore:</p>
+                    <p>Z = e<sup>-βħω/2</sup> / (1 - e<sup>-βħω</sup>)</p>
+                    
+                    <p>4. The internal energy is:</p>
+                    <p>U = -∂(ln Z)/∂β = ħω/2 + ħω e<sup>-βħω</sup>/(1 - e<sup>-βħω</sup>)</p>
+                    <p>U = ħω/2 + ħω/(e<sup>βħω</sup> - 1)</p>
+                    
+                    <p>5. The heat capacity is:</p>
+                    <p>C<sub>V</sub> = ∂U/∂T = k<sub>B</sub>β²ħ²ω² e<sup>βħω</sup>/(e<sup>βħω</sup> - 1)²</p>
+                    <p>C<sub>V</sub> = k<sub>B</sub>(βħω)² e<sup>βħω</sup>/(e<sup>βħω</sup> - 1)²</p>
+                    
+                    <p>6. In the high-temperature limit (βħω << 1), we get C<sub>V</sub> ≈ k<sub>B</sub>, in accordance with the equipartition theorem.</p>
+                    <p>7. In the low-temperature limit (βħω >> 1), we get C<sub>V</sub> ≈ k<sub>B</sub>(βħω)² e<sup>-βħω</sup>, which approaches zero exponentially.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution3')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Grand Canonical Ensemble</h2>
+            <p>The grand canonical ensemble describes a system in thermal and chemical equilibrium with a reservoir, allowing the exchange of both energy and particles.</p>
+            
+            <h3>Grand Partition Function</h3>
+            <p>The central quantity in the grand canonical ensemble is the grand partition function Ξ:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\Xi = \sum_{N=0}^{\infty} z^N Z_N</p>
+                <p class="equation-caption">Grand partition function</p>
+            </div>
+            
+            <p>Where z = e<sup>βμ</sup> is the fugacity, μ is the chemical potential, and Z<sub>N</sub> is the canonical partition function for a system with N particles.</p>
+            
+            <h3>Probability Distribution</h3>
+            <p>The probability of finding the system with N particles in a microstate with energy E<sub>i</sub> is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">P(E_i, N) = \frac{1}{\Xi} z^N e^{-\beta E_i}</p>
+                <p class="equation-caption">Grand canonical probability distribution</p>
+            </div>
+            
+            <h3>Thermodynamic Quantities</h3>
+            <p>From the grand partition function, we can derive all thermodynamic quantities:</p>
+            
+            <div class="equation-box">
+                <p class="equation">PV = k_B T \ln \Xi</p>
+                <p class="equation-caption">Pressure-volume product</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">\langle N \rangle = z \frac{\partial \ln \Xi}{\partial z}</p>
+                <p class="equation-caption">Average particle number</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">U = -\frac{\partial \ln \Xi}{\partial \beta} + \mu \langle N \rangle</p>
+                <p class="equation-caption">Internal energy</p>
+            </div>
+            
+            <h3>Fluctuations</h3>
+            <p>The grand canonical ensemble allows for fluctuations in particle number. The variance of these fluctuations is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\langle (\Delta N)^2 \rangle = k_B T \left( \frac{\partial \langle N \rangle}{\partial \mu} \right)_{T,V}</p>
+                <p class="equation-caption">Particle number fluctuations</p>
+            </div>
+            
+            <p>For an ideal gas, this gives ⟨(ΔN)²⟩ = ⟨N⟩, showing that the fluctuations are proportional to the square root of the average number of particles.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Quantum Statistical Mechanics</h2>
+            <p>Quantum statistical mechanics applies statistical methods to quantum systems, leading to the Fermi-Dirac and Bose-Einstein distributions for fermions and bosons, respectively.</p>
+            
+            <h3>Quantum Statistics</h3>
+            <p>In quantum mechanics, identical particles are indistinguishable, leading to two possible statistics:</p>
+            <ul>
+                <li><strong>Fermi-Dirac Statistics:</strong> For fermions (particles with half-integer spin), which obey the Pauli exclusion principle.</li>
+                <li><strong>Bose-Einstein Statistics:</strong> For bosons (particles with integer spin), which can occupy the same quantum state in unlimited numbers.</li>
+            </ul>
+            
+            <h3>Fermi-Dirac Distribution</h3>
+            <p>The average occupation number of a single-particle state with energy ε for fermions is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">f(\varepsilon) = \frac{1}{e^{\beta(\varepsilon-\mu)} + 1}</p>
+                <p class="equation-caption">Fermi-Dirac distribution</p>
+            </div>
+            
+            <p>At T = 0, this becomes a step function: f(ε) = 1 for ε < μ and f(ε) = 0 for ε > μ. The value of μ at T = 0 is called the Fermi energy E<sub>F</sub>.</p>
+            
+            <h3>Bose-Einstein Distribution</h3>
+            <p>The average occupation number of a single-particle state with energy ε for bosons is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">f(\varepsilon) = \frac{1}{e^{\beta(\varepsilon-\mu)} - 1}</p>
+                <p class="equation-caption">Bose-Einstein distribution</p>
+            </div>
+            
+            <p>For bosons, the chemical potential μ must be less than the ground state energy to ensure positive occupation numbers.</p>
+            
+            <h3>Classical Limit</h3>
+            <p>In the classical limit, where the occupation numbers are much less than 1 (f(ε) << 1), both the Fermi-Dirac and Bose-Einstein distributions approach the Maxwell-Boltzmann distribution:</p>
+            
+            <div class="equation-box">
+                <p class="equation">f(\varepsilon) \approx e^{-\beta(\varepsilon-\mu)}</p>
+                <p class="equation-caption">Maxwell-Boltzmann distribution</p>
+            </div>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Quantum Distributions</h3>
+                <p>This diagram compares the Fermi-Dirac, Bose-Einstein, and Maxwell-Boltzmann distributions as a function of energy.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/FD_BE_MB_statistics.svg/800px-FD_BE_MB_statistics.svg.png" alt="Comparison of quantum distributions">
+                <p><em>Image: Comparison of Fermi-Dirac, Bose-Einstein, and Maxwell-Boltzmann distributions.</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Ideal Quantum Gases</h2>
+            <p>Ideal quantum gases are systems of non-interacting quantum particles, providing important models for understanding the behavior of real systems.</p>
+            
+            <h3>Ideal Fermi Gas</h3>
+            <p>An ideal Fermi gas consists of non-interacting fermions. Examples include electrons in metals and white dwarf stars, and neutrons in neutron stars.</p>
+            
+            <p>The density of states for a 3D Fermi gas is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">g(\varepsilon) = \frac{V}{2\pi^2} \left( \frac{2m}{\hbar^2} \right)^{3/2} \varepsilon^{1/2}</p>
+                <p class="equation-caption">Density of states for a 3D Fermi gas</p>
+            </div>
+            
+            <p>At T = 0, all states up to the Fermi energy E<sub>F</sub> are filled, and all states above are empty. The Fermi energy is related to the particle density n = N/V by:</p>
+            
+            <div class="equation-box">
+                <p class="equation">E_F = \frac{\hbar^2}{2m} (3\pi^2 n)^{2/3}</p>
+                <p class="equation-caption">Fermi energy for a 3D Fermi gas</p>
+            </div>
+            
+            <p>At low temperatures (T << T<sub>F</sub>, where T<sub>F</sub> = E<sub>F</sub>/k<sub>B</sub> is the Fermi temperature), the heat capacity is linear in temperature:</p>
+            
+            <div class="equation-box">
+                <p class="equation">C_V \approx \frac{\pi^2}{2} N k_B \frac{T}{T_F}</p>
+                <p class="equation-caption">Heat capacity of a degenerate Fermi gas</p>
+            </div>
+            
+            <h3>Ideal Bose Gas</h3>
+            <p>An ideal Bose gas consists of non-interacting bosons. Examples include photons (light), phonons (sound), and helium-4 atoms.</p>
+            
+            <p>For bosons with non-zero mass, a remarkable phenomenon occurs below a critical temperature T<sub>c</sub>: Bose-Einstein condensation, where a macroscopic fraction of particles occupies the ground state.</p>
+            
+            <div class="equation-box">
+                <p class="equation">T_c = \frac{2\pi\hbar^2}{m k_B} \left( \frac{n}{\zeta(3/2)} \right)^{2/3}</p>
+                <p class="equation-caption">Critical temperature for Bose-Einstein condensation</p>
+            </div>
+            
+            <p>Where ζ(3/2) ≈ 2.612 is the Riemann zeta function. Below T<sub>c</sub>, the fraction of particles in the ground state is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{N_0}{N} = 1 - \left( \frac{T}{T_c} \right)^{3/2}</p>
+                <p class="equation-caption">Condensate fraction</p>
+            </div>
+            
+            <h3>Blackbody Radiation</h3>
+            <p>Blackbody radiation is a system of photons in thermal equilibrium. The energy density per unit frequency interval is given by Planck's law:</p>
+            
+            <div class="equation-box">
+                <p class="equation">u(\nu) = \frac{8\pi h \nu^3}{c^3} \frac{1}{e^{h\nu/k_B T} - 1}</p>
+                <p class="equation-caption">Planck's law for blackbody radiation</p>
+            </div>
+            
+            <p>Integrating over all frequencies gives the total energy density:</p>
+            
+            <div class="equation-box">
+                <p class="equation">u = \frac{8\pi^5 (k_B T)^4}{15 (hc)^3}</p>
+                <p class="equation-caption">Stefan-Boltzmann law</p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 4: Fermi Energy and Pressure of an Electron Gas</p>
+                <p>Calculate the Fermi energy and pressure at T = 0 for an electron gas with number density n = 10²⁹ m⁻³, typical of conduction electrons in a metal.</p>
+                
+                <div class="solution" id="solution4">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The Fermi energy is:</p>
+                    <p>E<sub>F</sub> = (ħ²/2m)(3π²n)²/³</p>
+                    <p>E<sub>F</sub> = (1.055 × 10⁻³⁴ J·s)²/(2 × 9.11 × 10⁻³¹ kg) × (3π² × 10²⁹ m⁻³)²/³</p>
+                    <p>E<sub>F</sub> ≈ 1.92 × 10⁻¹⁸ J ≈ 12 eV</p>
+                    
+                    <p>2. The pressure at T = 0 is:</p>
+                    <p>P = (2/5)n·E<sub>F</sub></p>
+                    <p>P = (2/5) × 10²⁹ m⁻³ × 1.92 × 10⁻¹⁸ J</p>
+                    <p>P ≈ 7.68 × 10¹⁰ Pa ≈ 7.68 × 10⁵ atm</p>
+                    
+                    <p>3. This enormous pressure is what prevents white dwarf stars from collapsing under their own gravity.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution4')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Interacting Systems and Phase Transitions</h2>
+            <p>Real systems involve interactions between particles, leading to complex phenomena such as phase transitions.</p>
+            
+            <h3>Mean Field Theory</h3>
+            <p>Mean field theory approximates the effect of all other particles on a given particle by an average or effective field. This simplifies many-body problems and provides qualitative insights into phase transitions.</p>
+            
+            <h3>Ising Model</h3>
+            <p>The Ising model is a simple model of ferromagnetism, consisting of discrete variables (spins) that can be in one of two states (+1 or -1) and interact with their neighbors. The Hamiltonian is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">H = -J \sum_{\langle i,j \rangle} s_i s_j - h \sum_i s_i</p>
+                <p class="equation-caption">Ising model Hamiltonian</p>
+            </div>
+            
+            <p>Where J is the coupling constant, h is the external magnetic field, s<sub>i</sub> = ±1 are the spin variables, and the first sum is over nearest neighbors.</p>
+            
+            <p>In the mean field approximation, the critical temperature for the onset of spontaneous magnetization is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">T_c = \frac{zJ}{k_B}</p>
+                <p class="equation-caption">Critical temperature in mean field theory</p>
+            </div>
+            
+            <p>Where z is the number of nearest neighbors (coordination number).</p>
+            
+            <h3>Phase Transitions and Critical Phenomena</h3>
+            <p>Phase transitions are characterized by discontinuities or singularities in thermodynamic quantities. They are classified as:</p>
+            <ul>
+                <li><strong>First-order transitions:</strong> Involve latent heat and discontinuities in first derivatives of the free energy (e.g., melting, boiling).</li>
+                <li><strong>Second-order transitions:</strong> Continuous transitions with discontinuities in second derivatives of the free energy (e.g., ferromagnetic transition, superconducting transition).</li>
+            </ul>
+            
+            <p>Near a second-order phase transition, many physical quantities follow power laws with universal critical exponents. For example, the specific heat C, magnetization M, and susceptibility χ behave as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">C \sim |t|^{-\alpha}</p>
+                <p class="equation">M \sim |t|^{\beta}</p>
+                <p class="equation">\chi \sim |t|^{-\gamma}</p>
+                <p class="equation-caption">Critical behavior near a phase transition, where t = (T-T<sub>c</sub>)/T<sub>c</sub></p>
+            </div>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Phase Diagram</h3>
+                <p>This diagram shows a typical phase diagram for a substance, illustrating the regions where different phases are stable and the transitions between them.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Phase-diag.svg/800px-Phase-diag.svg.png" alt="Phase diagram">
+                <p><em>Image: Phase diagram showing solid, liquid, and gas phases, with critical point and triple point marked.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 5: Mean Field Theory for the Ising Model</p>
+                <p>Using mean field theory, derive the self-consistent equation for the magnetization m = ⟨s<sub>i</sub>⟩ in the Ising model with zero external field, and show that a non-zero solution exists below the critical temperature T<sub>c</sub> = zJ/k<sub>B</sub>.</p>
+                
+                <div class="solution" id="solution5">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. In mean field theory, we replace the interaction term with an effective field:</p>
+                    <p>s<sub>j</sub> → ⟨s<sub>j</sub>⟩ = m</p>
+                    <p>So the effective Hamiltonian for a single spin is:</p>
+                    <p>H<sub>eff</sub> = -s<sub>i</sub>(zJm)</p>
+                    
+                    <p>2. The average value of s<sub>i</sub> in thermal equilibrium is:</p>
+                    <p>m = ⟨s<sub>i</sub>⟩ = (e<sup>βzJm</sup> - e<sup>-βzJm</sup>)/(e<sup>βzJm</sup> + e<sup>-βzJm</sup>) = tanh(βzJm)</p>
+                    
+                    <p>3. This is a self-consistent equation for m:</p>
+                    <p>m = tanh(βzJm)</p>
+                    
+                    <p>4. For T > T<sub>c</sub>, the only solution is m = 0 (paramagnetic phase).</p>
+                    <p>5. For T < T<sub>c</sub>, non-zero solutions appear (ferromagnetic phase).</p>
+                    
+                    <p>6. To find T<sub>c</sub>, we expand tanh(x) ≈ x - x³/3 + ... for small x:</p>
+                    <p>m ≈ βzJm - (βzJm)³/3</p>
+                    
+                    <p>7. For m ≠ 0, we can divide by m:</p>
+                    <p>1 ≈ βzJ - (βzJ)³m²/3</p>
+                    
+                    <p>8. As T approaches T<sub>c</sub> from below, m → 0, so:</p>
+                    <p>1 = β<sub>c</sub>zJ</p>
+                    
+                    <p>9. Therefore:</p>
+                    <p>T<sub>c</sub> = zJ/k<sub>B</sub></p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution5')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Applications and Advanced Topics</h2>
+            <p>Statistical mechanics has numerous applications across physics, chemistry, biology, and beyond.</p>
+            
+            <h3>Kinetic Theory of Gases</h3>
+            <p>Kinetic theory applies statistical mechanics to the motion of gas molecules, explaining macroscopic properties like pressure, temperature, and transport phenomena (diffusion, viscosity, thermal conductivity).</p>
+            
+            <h3>Brownian Motion and Fluctuations</h3>
+            <p>The random motion of particles suspended in a fluid (Brownian motion) is a direct manifestation of molecular fluctuations. Einstein's theory of Brownian motion provided early evidence for the atomic nature of matter.</p>
+            
+            <h3>Non-equilibrium Statistical Mechanics</h3>
+            <p>Non-equilibrium statistical mechanics deals with systems not in thermal equilibrium, including irreversible processes, transport phenomena, and the approach to equilibrium. Key concepts include the Boltzmann equation, linear response theory, and the fluctuation-dissipation theorem.</p>
+            
+            <h3>Renormalization Group</h3>
+            <p>The renormalization group is a powerful method for studying systems near critical points, providing a systematic way to handle the multiple length scales that emerge in phase transitions. It explains the universality of critical exponents and has applications beyond statistical mechanics, including quantum field theory and the theory of dynamical systems.</p>
+            
+            <h3>Information Theory and Statistical Mechanics</h3>
+            <p>There are deep connections between information theory and statistical mechanics. Shannon's entropy in information theory is mathematically equivalent to the Gibbs entropy in statistical mechanics, and both measure the amount of "missing information" or uncertainty in a system.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Monte Carlo Simulation</h3>
+                <p>This diagram shows a snapshot from a Monte Carlo simulation of the 2D Ising model near the critical temperature, illustrating the formation of spin clusters of all sizes.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ising_animation.gif/440px-Ising_animation.gif" alt="Monte Carlo simulation of the Ising model">
+                <p><em>Image: Monte Carlo simulation of the 2D Ising model, showing the evolution of spin configurations.</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Resources</h2>
+            <h3>Authoritative Textbooks</h3>
+            <ul>
+                <li><strong>Statistical Mechanics</strong> by R.K. Pathria and Paul D. Beale — Comprehensive and rigorous, with excellent coverage of quantum statistics.</li>
+                <li><strong>Statistical Physics</strong> by Kerson Huang — Intuitive approach with elegant physical arguments and clear explanations.</li>
+                <li><strong>Fundamentals of Statistical and Thermal Physics</strong> by F. Reif — Excellent for building conceptual understanding, with many worked examples.</li>
+                <li><strong>Equilibrium Statistical Physics</strong> by Michael Plischke & Birger Bergersen — Strong on phase transitions and critical phenomena.</li>
+                <li><strong>Statistical Mechanics</strong> by Landau and Lifshitz — Advanced and formal, part of the renowned Course of Theoretical Physics series.</li>
+            </ul>
+            
+            <h3>Online Lecture Notes & Resources</h3>
+            <ul>
+                <li><a href="https://ocw.mit.edu/courses/physics/8-044-statistical-physics-i-spring-2013/" target="_blank" rel="noopener noreferrer">MIT OCW — Statistical Physics I (8.044)</a></li>
+                <li><a href="https://www.damtp.cam.ac.uk/user/tong/statphys_enhanced.html" target="_blank" rel="noopener noreferrer">David Tong (Cambridge) — Statistical Physics Lectures</a></li>
+                <li><a href="https://farside.ph.utexas.edu/teaching/sm1/statmech1_enhanced.html" target="_blank" rel="noopener noreferrer">UT Austin — Statistical Mechanics Lecture Notes</a></li>
+                <li><a href="https://www-thphys.physics.ox.ac.uk/people/JohnCardy/statistical_mechanics_2015/statistical_mechanics_enhanced.html" target="_blank" rel="noopener noreferrer">Oxford University — Statistical Mechanics (John Cardy)</a></li>
+            </ul>
+            
+            <h3>Video Lectures</h3>
+            <ul>
+                <li><a href="https://www.youtube.com/playlist?list=PLUl4u3cNGP60gl3fdUTKRrt5t_GPx2sRg" target="_blank" rel="noopener noreferrer">MIT 8.333 Statistical Mechanics I (Mehran Kardar)</a></li>
+                <li><a href="https://www.youtube.com/playlist?list=PLUl4u3cNGP63HkEHvYaNJiO0UCUmY0Ts7" target="_blank" rel="noopener noreferrer">MIT 8.334 Statistical Mechanics II (Mehran Kardar)</a></li>
+                <li><a href="https://www.youtube.com/playlist?list=PLB72416C707D85AB0" target="_blank" rel="noopener noreferrer">Stanford University — Leonard Susskind's Statistical Mechanics</a></li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Related Topics</h2>
+            <div class="related-topics">
+                <a href="classical_mechanics_enhanced.html" class="related-topic">Classical Mechanics</a>
+                <a href="quantum_mechanics_enhanced.html" class="related-topic">Quantum Mechanics</a>
+                <a href="mathematical_physics_enhanced.html" class="related-topic">Mathematical Physics</a>
+                <a href="radiative_transfer_enhanced.html" class="related-topic">Radiative Transfer</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-nav">
+                <a href="index.html">Home</a> |
+                <a href="classical_mechanics_enhanced.html">Classical Mechanics</a> |
+                <a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a> |
+                <a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a> |
+                <a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a> |
+                <a href="mathematical_physics_enhanced.html">Mathematical Physics</a>
+            </div>
+            <p>"The more we know, the more we realize there is to know." — Albert Einstein</p>
+            <p>© 2025 Physics Refresher Course | Last Updated: May 2025</p>
+        </footer>
+    </div>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+        
+        // Convert equation content to proper MathJax format when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const equations = document.querySelectorAll('.equation');
+            equations.forEach(function(equation) {
+                // Preserve the original text
+                const originalText = equation.textContent;
+                // Replace with properly delimited math
+                equation.innerHTML = '\\[' + originalText + '\\]';
+            });
+        });
+    </script>
+    
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            if (solution.style.display === "none" || solution.style.display === "") {
+                solution.style.display = "block";
+            } else {
+                solution.style.display = "none";
+            }
+        }
+        
+        // Hide all solutions initially
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutions = document.querySelectorAll('.solution');
+            solutions.forEach(function(solution) {
+                solution.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

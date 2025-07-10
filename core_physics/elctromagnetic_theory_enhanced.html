@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Electrodynamics — Physics Refresher Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2c1810;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="35" r="0.5" fill="%23d4af8c" opacity="0.4"/><circle cx="80" cy="65" r="0.3" fill="%23c19a6b" opacity="0.3"/><circle cx="45" cy="80" r="0.4" fill="%23b8935f" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #2c1810;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B4513;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        nav a.active {
+            color: #2c1810;
+            border-bottom: 2px solid #8B4513;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            color: #2c1810;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Equation Styles */
+        .equation-box {
+            background: rgba(255, 252, 249, 0.9);
+            border-left: 4px solid #8B4513;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .equation-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Interactive Elements */
+        .interactive-element {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .interactive-element img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Practice Problems */
+        .problem {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .problem-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+        }
+
+        .solution {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ddd;
+        }
+
+        .solution-toggle {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        /* Related Topics */
+        .related-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .related-topic {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #8B4513;
+            transition: all 0.3s ease;
+        }
+
+        .related-topic:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 69, 19, 0.1);
+            font-style: italic;
+            color: #8B4513;
+        }
+
+        .footer-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #8B4513;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Physics Refresher Course</h1>
+            <h2 class="page-title">Electrodynamics</h2>
+            <p class="subtitle">From static electric and magnetic fields to Maxwell's revolutionary equations and electromagnetic waves, exploring the fundamental forces that shape our technological world.</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="classical_mechanics_enhanced.html">Classical Mechanics</a></li>
+                <li><a href="elctromagnetic_theory_enhanced.html" class="active">Electrodynamics</a></li>
+                <li><a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a></li>
+                <li><a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a></li>
+                <li><a href="mathematical_physics_enhanced.html">Mathematical Physics</a></li>
+            </ul>
+        </nav>
+
+        <section class="content-section">
+            <h2>Introduction to Electrodynamics</h2>
+            <p>Electrodynamics stands as one of the most elegant and successful theories in physics, describing the behavior of electric and magnetic fields and their interactions with matter. This branch of physics forms the backbone of our modern technological world, from the generation and transmission of electrical power to telecommunications, computing, and countless electronic devices.</p>
+            
+            <p>The historical development of electrodynamics spans centuries, beginning with ancient observations of static electricity and lodestones, progressing through the experimental discoveries of Coulomb, Ampère, and Faraday in the 18th and 19th centuries, and culminating in Maxwell's revolutionary synthesis of electricity, magnetism, and optics in the 1860s. Maxwell's equations not only unified previously disparate phenomena but also predicted the existence of electromagnetic waves, leading to Hertz's experimental confirmation and eventually to the development of radio, television, and modern wireless communications.</p>
+            
+            <p>This module covers the full spectrum of electromagnetic theory, from electrostatics and magnetostatics through Maxwell's equations to electromagnetic waves and radiation. We follow the pedagogical approach of Griffiths for introductory concepts, while drawing on Jackson's more advanced treatment for deeper insights, providing a comprehensive foundation that bridges undergraduate and graduate-level understanding.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Electrostatics</h2>
+            <p>Electrostatics deals with electric charges at rest and the electric fields they produce. This foundational area establishes key concepts that underpin all of electromagnetic theory.</p>
+            
+            <h3>Coulomb's Law</h3>
+            <p>The fundamental law of electrostatics, formulated by Charles-Augustin de Coulomb in 1785, describes the force between two point charges:</p>
+            
+            <div class="equation-box">
+                <p class="equation">F = \frac{1}{4\pi\epsilon_0} \frac{q_1 q_2}{r^2} \hat{r}</p>
+                <p class="equation-caption">Coulomb's law: Force between two point charges q₁ and q₂ separated by distance r</p>
+            </div>
+            
+            <p>Where ε₀ is the permittivity of free space (8.85 × 10⁻¹² F/m), and r̂ is the unit vector pointing from q₁ to q₂. This inverse-square law bears a striking resemblance to Newton's law of universal gravitation, though electric forces can be both attractive and repulsive.</p>
+            
+            <h3>Electric Field</h3>
+            <p>The electric field E at a point in space is defined as the force per unit charge that would be experienced by a small test charge placed at that point:</p>
+            
+            <div class="equation-box">
+                <p class="equation">E = \frac{F}{q_0}</p>
+                <p class="equation-caption">Definition of electric field as force per unit charge</p>
+            </div>
+            
+            <p>For a point charge q, the electric field at a distance r is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">E = \frac{1}{4\pi\epsilon_0} \frac{q}{r^2} \hat{r}</p>
+                <p class="equation-caption">Electric field due to a point charge</p>
+            </div>
+            
+            <p>For a continuous charge distribution, the electric field is given by:</p>
+            
+            <div class="equation-box">
+                <p class="equation">E = \frac{1}{4\pi\epsilon_0} \int \frac{\rho(r')}{|r-r'|^2} \hat{r'} dV'</p>
+                <p class="equation-caption">Electric field due to a continuous charge distribution with volume charge density ρ</p>
+            </div>
+            
+            <h3>Gauss's Law</h3>
+            <p>Gauss's law, one of Maxwell's equations, relates the electric flux through a closed surface to the enclosed charge:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\oint E \cdot dA = \frac{Q_{enc}}{\epsilon_0}</p>
+                <p class="equation-caption">Gauss's law in integral form</p>
+            </div>
+            
+            <p>In differential form, using the divergence theorem:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla \cdot E = \frac{\rho}{\epsilon_0}</p>
+                <p class="equation-caption">Gauss's law in differential form</p>
+            </div>
+            
+            <p>Gauss's law is particularly useful for calculating electric fields in situations with high symmetry, such as spherical, cylindrical, or planar charge distributions.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Electric Field Lines</h3>
+                <p>This diagram illustrates electric field lines for various charge configurations. Field lines start on positive charges and end on negative charges, with their density indicating field strength.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/VFPt_charges_plus_minus_electric_field.svg/800px-VFPt_charges_plus_minus_electric_field.svg.png" alt="Electric field lines between opposite charges">
+                <p><em>Image: Electric field lines between opposite charges, showing the direction and relative strength of the field.</em></p>
+            </div>
+            
+            <h3>Electric Potential</h3>
+            <p>The electric potential V is a scalar function whose negative gradient gives the electric field:</p>
+            
+            <div class="equation-box">
+                <p class="equation">E = -\nabla V</p>
+                <p class="equation-caption">Relationship between electric field and potential</p>
+            </div>
+            
+            <p>For a point charge q, the potential at a distance r is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">V = \frac{1}{4\pi\epsilon_0} \frac{q}{r}</p>
+                <p class="equation-caption">Electric potential due to a point charge</p>
+            </div>
+            
+            <p>The potential difference between two points A and B is related to the work done per unit charge in moving from A to B:</p>
+            
+            <div class="equation-box">
+                <p class="equation">V_A - V_B = -\int_A^B E \cdot dl</p>
+                <p class="equation-caption">Potential difference as the line integral of the electric field</p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 1: Electric Field of a Charged Ring</p>
+                <p>A ring of radius R carries a uniform linear charge density λ. Find the electric field at a point on the axis of the ring, at a distance z from the center.</p>
+                
+                <div class="solution" id="solution1">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. Due to symmetry, the electric field will point along the axis (z-direction).</p>
+                    <p>2. Consider a small segment of the ring with charge dq = λ·Rdθ.</p>
+                    <p>3. The distance from this segment to the point P is r = √(R² + z²).</p>
+                    <p>4. The electric field due to this segment has components parallel and perpendicular to the axis:</p>
+                    <p>dE‖ = (1/4πε₀) · (dq/r²) · (z/r)</p>
+                    <p>dE⊥ = (1/4πε₀) · (dq/r²) · (R/r)</p>
+                    <p>5. The perpendicular components cancel when integrated around the ring due to symmetry.</p>
+                    <p>6. Integrating the parallel components:</p>
+                    <p>E = ∫dE‖ = (1/4πε₀) · ∫(λRdθ/r³) · z</p>
+                    <p>7. Since r = √(R² + z²) is constant for all segments:</p>
+                    <p>E = (1/4πε₀) · (λz/(R² + z²)^(3/2)) · ∫dθ</p>
+                    <p>8. Integrating from 0 to 2π:</p>
+                    <p>E = (1/4πε₀) · (2πλz/(R² + z²)^(3/2))</p>
+                    <p>9. Simplifying:</p>
+                    <p>E = (λz/2ε₀) · 1/(R² + z²)^(3/2)</p>
+                    <p>This gives the electric field at any point on the axis of the charged ring.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution1')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Electric Multipoles and Boundary Value Problems</h2>
+            <p>When dealing with complex charge distributions, multipole expansions provide a powerful method for approximating the resulting electric potential and field, especially at distances large compared to the size of the distribution.</p>
+            
+            <h3>Multipole Expansion</h3>
+            <p>The electric potential of a localized charge distribution can be expanded in terms of spherical harmonics:</p>
+            
+            <div class="equation-box">
+                <p class="equation">V(r, \theta, \phi) = \frac{1}{4\pi\epsilon_0} \sum_{l=0}^{\infty} \sum_{m=-l}^{l} \frac{4\pi}{2l+1} \frac{q_{lm}}{r^{l+1}} Y_{lm}(\theta, \phi)</p>
+                <p class="equation-caption">Multipole expansion of electric potential</p>
+            </div>
+            
+            <p>The leading terms in this expansion have specific physical interpretations:</p>
+            <ul>
+                <li><strong>Monopole (l=0):</strong> Proportional to the total charge of the distribution</li>
+                <li><strong>Dipole (l=1):</strong> Characterized by the electric dipole moment p = ∫r'ρ(r')dV'</li>
+                <li><strong>Quadrupole (l=2):</strong> Described by a symmetric, traceless tensor</li>
+            </ul>
+            
+            <h3>Laplace and Poisson Equations</h3>
+            <p>The electric potential satisfies Poisson's equation:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla^2 V = -\frac{\rho}{\epsilon_0}</p>
+                <p class="equation-caption">Poisson's equation relating potential to charge density</p>
+            </div>
+            
+            <p>In regions where there is no charge (ρ = 0), this reduces to Laplace's equation:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla^2 V = 0</p>
+                <p class="equation-caption">Laplace's equation for charge-free regions</p>
+            </div>
+            
+            <p>Solving these equations with appropriate boundary conditions is a central problem in electrostatics. Common techniques include:</p>
+            <ul>
+                <li><strong>Method of Images:</strong> Replacing boundary conditions with strategically placed "image" charges</li>
+                <li><strong>Separation of Variables:</strong> Expressing the solution as a product of functions, each depending on a single coordinate</li>
+                <li><strong>Green's Functions:</strong> Using the response to a point source to build solutions for arbitrary charge distributions</li>
+            </ul>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 2: Method of Images</p>
+                <p>A point charge q is located at a distance d from an infinite grounded conducting plane. Find the electric potential and force on the charge.</p>
+                
+                <div class="solution" id="solution2">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. Using the method of images, we place an image charge -q at a distance d on the opposite side of the conducting plane.</p>
+                    <p>2. The potential at any point is the sum of potentials due to the real charge and the image charge:</p>
+                    <p>V(r) = (1/4πε₀) · [q/|r-r₁| - q/|r-r₂|]</p>
+                    <p>where r₁ is the position of the real charge and r₂ is the position of the image charge.</p>
+                    <p>3. On the conducting plane, |r-r₁| = |r-r₂|, so V = 0, satisfying the boundary condition.</p>
+                    <p>4. The force on the real charge is the same as the force exerted by the image charge:</p>
+                    <p>F = (1/4πε₀) · (q·(-q)/(2d)²) · (-1)</p>
+                    <p>5. Simplifying:</p>
+                    <p>F = (1/4πε₀) · (q²/4d²)</p>
+                    <p>6. The force is attractive, pulling the charge toward the conducting plane.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution2')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Electric Fields in Matter</h2>
+            <p>When electric fields interact with matter, they induce charge separations that modify the field. Understanding these interactions is crucial for applications in materials science and engineering.</p>
+            
+            <h3>Polarization and Dielectrics</h3>
+            <p>In dielectric materials, electric fields cause microscopic charge separations, creating electric dipoles. The polarization P is defined as the dipole moment per unit volume:</p>
+            
+            <div class="equation-box">
+                <p class="equation">P = \lim_{\Delta V \to 0} \frac{1}{\Delta V} \sum_i p_i</p>
+                <p class="equation-caption">Definition of polarization as dipole moment per unit volume</p>
+            </div>
+            
+            <p>The polarization gives rise to bound charges within the dielectric:</p>
+            <ul>
+                <li><strong>Bound Volume Charge Density:</strong> ρₑ = -∇·P</li>
+                <li><strong>Bound Surface Charge Density:</strong> σₑ = P·n̂</li>
+            </ul>
+            
+            <h3>Electric Displacement Field</h3>
+            <p>The electric displacement field D is defined as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">D = \epsilon_0 E + P</p>
+                <p class="equation-caption">Definition of electric displacement field</p>
+            </div>
+            
+            <p>Gauss's law in terms of D simplifies to:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla \cdot D = \rho_f</p>
+                <p class="equation-caption">Gauss's law in terms of D, where ρf is the free charge density</p>
+            </div>
+            
+            <h3>Linear Dielectrics</h3>
+            <p>In linear dielectrics, the polarization is proportional to the electric field:</p>
+            
+            <div class="equation-box">
+                <p class="equation">P = \epsilon_0 \chi_e E</p>
+                <p class="equation-caption">Polarization in a linear dielectric, where χe is the electric susceptibility</p>
+            </div>
+            
+            <p>This leads to the relation:</p>
+            
+            <div class="equation-box">
+                <p class="equation">D = \epsilon_0 (1 + \chi_e) E = \epsilon E</p>
+                <p class="equation-caption">Relationship between D and E in a linear dielectric, where ε is the permittivity</p>
+            </div>
+            
+            <p>The relative permittivity or dielectric constant εᵣ is defined as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\epsilon_r = \frac{\epsilon}{\epsilon_0} = 1 + \chi_e</p>
+                <p class="equation-caption">Definition of relative permittivity</p>
+            </div>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Electric Field in a Dielectric</h3>
+                <p>This diagram illustrates how electric field lines are modified when passing through a dielectric material. Note the refraction of field lines at the boundary due to the change in permittivity.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/VFPt_dielectric.svg/800px-VFPt_dielectric.svg.png" alt="Electric field lines in a dielectric">
+                <p><em>Image: Electric field lines passing through a dielectric material, showing the refraction at the boundary.</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Magnetostatics</h2>
+            <p>Magnetostatics deals with steady currents and the magnetic fields they produce. Like electrostatics, it provides fundamental concepts that extend to the full theory of electrodynamics.</p>
+            
+            <h3>Biot-Savart Law</h3>
+            <p>The Biot-Savart law gives the magnetic field produced by a steady current:</p>
+            
+            <div class="equation-box">
+                <p class="equation">B = \frac{\mu_0}{4\pi} \int \frac{I dl \times r}{r^3}</p>
+                <p class="equation-caption">Biot-Savart law for the magnetic field due to a current element</p>
+            </div>
+            
+            <p>Where μ₀ is the permeability of free space (4π × 10⁻⁷ H/m), I is the current, dl is an infinitesimal segment of the current-carrying wire, and r is the vector from the current element to the point where the field is being calculated.</p>
+            
+            <h3>Ampère's Law</h3>
+            <p>Ampère's law relates the circulation of the magnetic field around a closed loop to the current passing through the loop:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\oint B \cdot dl = \mu_0 I_{enc}</p>
+                <p class="equation-caption">Ampère's law in integral form</p>
+            </div>
+            
+            <p>In differential form, using Stokes' theorem:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla \times B = \mu_0 J</p>
+                <p class="equation-caption">Ampère's law in differential form</p>
+            </div>
+            
+            <p>Like Gauss's law in electrostatics, Ampère's law is particularly useful for calculating magnetic fields in situations with high symmetry.</p>
+            
+            <h3>Magnetic Vector Potential</h3>
+            <p>The magnetic field B can be expressed as the curl of a vector potential A:</p>
+            
+            <div class="equation-box">
+                <p class="equation">B = \nabla \times A</p>
+                <p class="equation-caption">Relationship between magnetic field and vector potential</p>
+            </div>
+            
+            <p>This automatically satisfies the condition ∇·B = 0 (no magnetic monopoles). For a current distribution, the vector potential is given by:</p>
+            
+            <div class="equation-box">
+                <p class="equation">A = \frac{\mu_0}{4\pi} \int \frac{J(r')}{|r-r'|} dV'</p>
+                <p class="equation-caption">Vector potential due to a current distribution</p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 3: Magnetic Field of a Solenoid</p>
+                <p>A long solenoid of radius R has n turns per unit length, carrying a current I. Find the magnetic field inside and outside the solenoid.</p>
+                
+                <div class="solution" id="solution3">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. Due to the symmetry of the problem, we can apply Ampère's law using a rectangular loop with one side inside the solenoid and one side outside, both parallel to the axis.</p>
+                    <p>2. For a long solenoid, the field outside is approximately zero, and the field inside is approximately uniform and parallel to the axis.</p>
+                    <p>3. Applying Ampère's law:</p>
+                    <p>∮B·dl = B_inside·L + B_outside·L = μ₀·I_enc</p>
+                    <p>where L is the length of the loop parallel to the axis.</p>
+                    <p>4. The enclosed current is I_enc = nIL, where n is the number of turns per unit length.</p>
+                    <p>5. Assuming B_outside = 0:</p>
+                    <p>B_inside·L = μ₀·nIL</p>
+                    <p>6. Therefore:</p>
+                    <p>B_inside = μ₀nI</p>
+                    <p>7. This confirms that inside a long solenoid, the magnetic field is:</p>
+                    <p>B = μ₀nI (inside)</p>
+                    <p>B ≈ 0 (outside)</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution3')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Magnetic Fields in Matter</h2>
+            <p>Just as electric fields induce polarization in dielectrics, magnetic fields induce magnetization in materials, modifying the field distribution.</p>
+            
+            <h3>Magnetization</h3>
+            <p>The magnetization M is defined as the magnetic dipole moment per unit volume:</p>
+            
+            <div class="equation-box">
+                <p class="equation">M = \lim_{\Delta V \to 0} \frac{1}{\Delta V} \sum_i m_i</p>
+                <p class="equation-caption">Definition of magnetization as magnetic moment per unit volume</p>
+            </div>
+            
+            <p>The magnetization gives rise to bound currents:</p>
+            <ul>
+                <li><strong>Bound Volume Current Density:</strong> Jₘ = ∇×M</li>
+                <li><strong>Bound Surface Current Density:</strong> Kₘ = M×n̂</li>
+            </ul>
+            
+            <h3>Magnetic Field Intensity</h3>
+            <p>The magnetic field intensity H is defined as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">H = \frac{1}{\mu_0} B - M</p>
+                <p class="equation-caption">Definition of magnetic field intensity</p>
+            </div>
+            
+            <p>Ampère's law in terms of H simplifies to:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla \times H = J_f</p>
+                <p class="equation-caption">Ampère's law in terms of H, where Jf is the free current density</p>
+            </div>
+            
+            <h3>Magnetic Materials</h3>
+            <p>Materials can be classified based on their magnetic response:</p>
+            <ul>
+                <li><strong>Diamagnetism:</strong> Weak, negative susceptibility; present in all materials</li>
+                <li><strong>Paramagnetism:</strong> Weak, positive susceptibility; occurs in materials with unpaired electrons</li>
+                <li><strong>Ferromagnetism:</strong> Strong, positive susceptibility with hysteresis; occurs in iron, nickel, cobalt, and some alloys</li>
+                <li><strong>Antiferromagnetism:</strong> Zero net magnetization due to opposing alignment of neighboring moments</li>
+                <li><strong>Ferrimagnetism:</strong> Net magnetization from unequal opposing moments</li>
+            </ul>
+            
+            <p>In linear magnetic materials, the magnetization is proportional to the magnetic field:</p>
+            
+            <div class="equation-box">
+                <p class="equation">M = \chi_m H</p>
+                <p class="equation-caption">Magnetization in a linear magnetic material, where χm is the magnetic susceptibility</p>
+            </div>
+            
+            <p>This leads to the relation:</p>
+            
+            <div class="equation-box">
+                <p class="equation">B = \mu_0 (1 + \chi_m) H = \mu H</p>
+                <p class="equation-caption">Relationship between B and H in a linear magnetic material, where μ is the permeability</p>
+            </div>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Magnetic Hysteresis Loop</h3>
+                <p>This diagram shows a typical hysteresis loop for a ferromagnetic material, illustrating the non-linear relationship between B and H and the phenomenon of magnetic memory.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Hysteresiscurve.svg/800px-Hysteresiscurve.svg.png" alt="Magnetic hysteresis loop">
+                <p><em>Image: Magnetic hysteresis loop showing the relationship between B and H in a ferromagnetic material.</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Maxwell's Equations and Electromagnetic Waves</h2>
+            <p>Maxwell's equations, formulated by James Clerk Maxwell in the 1860s, provide a complete description of classical electromagnetism. Maxwell's key insight was to add the displacement current term to Ampère's law, which led to the prediction of electromagnetic waves.</p>
+            
+            <h3>Maxwell's Equations</h3>
+            <p>In differential form, Maxwell's equations are:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla \cdot E = \frac{\rho}{\epsilon_0}</p>
+                <p class="equation">\nabla \cdot B = 0</p>
+                <p class="equation">\nabla \times E = -\frac{\partial B}{\partial t}</p>
+                <p class="equation">\nabla \times B = \mu_0 J + \mu_0 \epsilon_0 \frac{\partial E}{\partial t}</p>
+                <p class="equation-caption">Maxwell's equations in differential form</p>
+            </div>
+            
+            <p>In integral form:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\oint E \cdot dA = \frac{Q_{enc}}{\epsilon_0}</p>
+                <p class="equation">\oint B \cdot dA = 0</p>
+                <p class="equation">\oint E \cdot dl = -\frac{d}{dt} \int B \cdot dA</p>
+                <p class="equation">\oint B \cdot dl = \mu_0 I_{enc} + \mu_0 \epsilon_0 \frac{d}{dt} \int E \cdot dA</p>
+                <p class="equation-caption">Maxwell's equations in integral form</p>
+            </div>
+            
+            <h3>Electromagnetic Waves</h3>
+            <p>In a region with no charges or currents, Maxwell's equations can be combined to yield wave equations for E and B:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla^2 E = \mu_0 \epsilon_0 \frac{\partial^2 E}{\partial t^2}</p>
+                <p class="equation">\nabla^2 B = \mu_0 \epsilon_0 \frac{\partial^2 B}{\partial t^2}</p>
+                <p class="equation-caption">Wave equations for electric and magnetic fields</p>
+            </div>
+            
+            <p>These equations describe waves propagating at speed c = 1/√(μ₀ε₀) = 3 × 10⁸ m/s, which is the speed of light in vacuum. This remarkable result led Maxwell to identify light as an electromagnetic wave.</p>
+            
+            <p>For a plane wave propagating in the x-direction, the solutions are:</p>
+            
+            <div class="equation-box">
+                <p class="equation">E = E_0 \cos(kx - \omega t)</p>
+                <p class="equation">B = B_0 \cos(kx - \omega t)</p>
+                <p class="equation-caption">Plane wave solutions for electric and magnetic fields</p>
+            </div>
+            
+            <p>Where k = 2π/λ is the wave number, ω = 2πf is the angular frequency, and E₀ and B₀ are the amplitudes, related by B₀ = E₀/c.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Electromagnetic Wave Propagation</h3>
+                <p>This diagram illustrates the propagation of an electromagnetic wave, showing the oscillating electric and magnetic fields perpendicular to each other and to the direction of propagation.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Onde_electromagnetique.svg/800px-Onde_electromagnetique.svg.png" alt="Electromagnetic wave propagation">
+                <p><em>Image: Propagation of an electromagnetic wave, showing the oscillating electric (blue) and magnetic (red) fields.</em></p>
+            </div>
+            
+            <h3>Energy and Momentum in Electromagnetic Fields</h3>
+            <p>Electromagnetic fields carry energy and momentum. The energy density u is given by:</p>
+            
+            <div class="equation-box">
+                <p class="equation">u = \frac{1}{2} \epsilon_0 E^2 + \frac{1}{2\mu_0} B^2</p>
+                <p class="equation-caption">Energy density in electromagnetic fields</p>
+            </div>
+            
+            <p>The energy flow is described by the Poynting vector S:</p>
+            
+            <div class="equation-box">
+                <p class="equation">S = \frac{1}{\mu_0} E \times B</p>
+                <p class="equation-caption">Poynting vector representing energy flow</p>
+            </div>
+            
+            <p>The momentum density g is related to the Poynting vector by:</p>
+            
+            <div class="equation-box">
+                <p class="equation">g = \frac{S}{c^2}</p>
+                <p class="equation-caption">Momentum density in electromagnetic fields</p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 4: Reflection and Transmission at a Boundary</p>
+                <p>An electromagnetic wave is incident normally on a boundary between two dielectric media with refractive indices n₁ and n₂. Find the reflection and transmission coefficients for the electric field.</p>
+                
+                <div class="solution" id="solution4">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. At the boundary, the tangential components of E and H must be continuous.</p>
+                    <p>2. For normal incidence, all fields are tangential to the boundary.</p>
+                    <p>3. Let E_i, E_r, and E_t be the incident, reflected, and transmitted electric fields.</p>
+                    <p>4. Continuity of E at the boundary gives:</p>
+                    <p>E_i + E_r = E_t</p>
+                    <p>5. The magnetic field H is related to E by H = E/η, where η = √(μ/ε) is the impedance.</p>
+                    <p>6. Continuity of H gives:</p>
+                    <p>(E_i - E_r)/η₁ = E_t/η₂</p>
+                    <p>7. For non-magnetic media, η = η₀/n, where η₀ is the impedance of free space.</p>
+                    <p>8. Solving these equations:</p>
+                    <p>r = E_r/E_i = (n₁ - n₂)/(n₁ + n₂)</p>
+                    <p>t = E_t/E_i = 2n₁/(n₁ + n₂)</p>
+                    <p>9. These are the Fresnel equations for normal incidence.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution4')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Electromagnetic Radiation</h2>
+            <p>Accelerating charges emit electromagnetic radiation, a phenomenon that underlies countless technologies from radio broadcasting to X-ray imaging.</p>
+            
+            <h3>Retarded Potentials</h3>
+            <p>The electromagnetic field at a point r and time t depends on the source distribution at an earlier time t' = t - |r-r'|/c, accounting for the finite speed of light. This leads to the retarded potentials:</p>
+            
+            <div class="equation-box">
+                <p class="equation">V(r, t) = \frac{1}{4\pi\epsilon_0} \int \frac{\rho(r', t')}{|r-r'|} dV'</p>
+                <p class="equation">A(r, t) = \frac{\mu_0}{4\pi} \int \frac{J(r', t')}{|r-r'|} dV'</p>
+                <p class="equation-caption">Retarded scalar and vector potentials</p>
+            </div>
+            
+            <h3>Dipole Radiation</h3>
+            <p>For a source much smaller than the wavelength of radiation, the dominant contribution comes from the electric dipole term. The power radiated by an oscillating electric dipole is given by the Larmor formula:</p>
+            
+            <div class="equation-box">
+                <p class="equation">P = \frac{\mu_0}{6\pi c} |\ddot{p}|^2</p>
+                <p class="equation-caption">Power radiated by an oscillating electric dipole</p>
+            </div>
+            
+            <p>Where p̈ is the second time derivative of the dipole moment. The angular distribution of radiation follows a sin²θ pattern, where θ is the angle from the dipole axis.</p>
+            
+            <h3>Radiation from Accelerated Charges</h3>
+            <p>More generally, the power radiated by an accelerated charge q is given by:</p>
+            
+            <div class="equation-box">
+                <p class="equation">P = \frac{\mu_0 q^2}{6\pi c} |a|^2</p>
+                <p class="equation-caption">Power radiated by an accelerated charge (non-relativistic)</p>
+            </div>
+            
+            <p>For relativistic motion, the radiation pattern becomes concentrated in the direction of motion, leading to phenomena such as synchrotron radiation and bremsstrahlung.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 5: Radiation from a Hertzian Dipole</p>
+                <p>A Hertzian dipole consists of a small antenna of length L carrying a current I = I₀cos(ωt). Find the electric and magnetic fields in the radiation zone (r >> λ).</p>
+                
+                <div class="solution" id="solution5">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The dipole moment of the antenna is p = I₀Lcos(ωt)/ω.</p>
+                    <p>2. In the radiation zone, the fields are approximately:</p>
+                    <p>E_θ ≈ (μ₀I₀Lω/4πc) · (sin(θ)/r) · sin(ωt - kr)</p>
+                    <p>B_φ ≈ (μ₀I₀Lω/4πc²) · (sin(θ)/r) · sin(ωt - kr)</p>
+                    <p>3. Note that E_θ = cB_φ, as expected for radiation fields.</p>
+                    <p>4. The time-averaged Poynting vector is:</p>
+                    <p>⟨S⟩ = (μ₀I₀²L²ω²/32π²c) · (sin²(θ)/r²)</p>
+                    <p>5. Integrating over all angles gives the total radiated power:</p>
+                    <p>P = (μ₀I₀²L²ω²/12πc)</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution5')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Relativistic Electrodynamics</h2>
+            <p>Maxwell's equations are inherently relativistic, maintaining their form under Lorentz transformations. This deep connection between electromagnetism and special relativity reveals the unified nature of electric and magnetic fields.</p>
+            
+            <h3>Lorentz Transformations of Fields</h3>
+            <p>Under a Lorentz transformation to a reference frame moving with velocity v along the x-axis, the electromagnetic fields transform as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">E'_x = E_x</p>
+                <p class="equation">E'_y = \gamma (E_y - vB_z)</p>
+                <p class="equation">E'_z = \gamma (E_z + vB_y)</p>
+                <p class="equation">B'_x = B_x</p>
+                <p class="equation">B'_y = \gamma (B_y + \frac{v}{c^2}E_z)</p>
+                <p class="equation">B'_z = \gamma (B_z - \frac{v}{c^2}E_y)</p>
+                <p class="equation-caption">Lorentz transformations of electromagnetic fields</p>
+            </div>
+            
+            <p>Where γ = 1/√(1-v²/c²) is the Lorentz factor. These transformations show that electric and magnetic fields are different aspects of a single electromagnetic field, with their separation depending on the observer's reference frame.</p>
+            
+            <h3>Electromagnetic Field Tensor</h3>
+            <p>In relativistic notation, the electromagnetic field is described by an antisymmetric tensor F<sup>μν</sup>:</p>
+            
+            <div class="equation-box">
+                <p class="equation">F^{\mu\nu} = \begin{pmatrix} 0 & -E_x/c & -E_y/c & -E_z/c \\ E_x/c & 0 & -B_z & B_y \\ E_y/c & B_z & 0 & -B_x \\ E_z/c & -B_y & B_x & 0 \end{pmatrix}</p>
+                <p class="equation-caption">Electromagnetic field tensor</p>
+            </div>
+            
+            <p>Maxwell's equations can be written compactly in terms of this tensor:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\partial_\mu F^{\mu\nu} = \mu_0 J^\nu</p>
+                <p class="equation">\partial_\mu F_{\nu\lambda} + \partial_\nu F_{\lambda\mu} + \partial_\lambda F_{\mu\nu} = 0</p>
+                <p class="equation-caption">Maxwell's equations in tensor form</p>
+            </div>
+            
+            <h3>Electromagnetic Invariants</h3>
+            <p>Two important scalar invariants can be constructed from the electromagnetic field tensor:</p>
+            
+            <div class="equation-box">
+                <p class="equation">S_1 = \frac{1}{2} F_{\mu\nu} F^{\mu\nu} = \frac{1}{c^2}(E^2 - c^2B^2)</p>
+                <p class="equation">S_2 = \frac{1}{4} \epsilon_{\mu\nu\alpha\beta} F^{\mu\nu} F^{\alpha\beta} = \frac{2}{c} E \cdot B</p>
+                <p class="equation-caption">Electromagnetic invariants</p>
+            </div>
+            
+            <p>These invariants have the same value in all inertial reference frames and play important roles in the classification of electromagnetic fields.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 6: Magnetic Field as a Relativistic Effect</p>
+                <p>A long, straight wire carries a current I. In the lab frame, there is both an electric field (due to any net charge on the wire) and a magnetic field (due to the current). Show that in a reference frame moving parallel to the wire with the drift velocity of the electrons, the magnetic field vanishes.</p>
+                
+                <div class="solution" id="solution6">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. In the lab frame, the magnetic field at a distance r from the wire is:</p>
+                    <p>B = (μ₀I/2πr)</p>
+                    <p>2. The current I is related to the drift velocity v_d of the electrons by:</p>
+                    <p>I = nAev_d</p>
+                    <p>where n is the number density of conduction electrons, A is the cross-sectional area, and e is the elementary charge.</p>
+                    <p>3. In a reference frame moving with velocity v = v_d parallel to the wire, the magnetic field transforms as:</p>
+                    <p>B' = γ(B - (v/c²)×E)</p>
+                    <p>4. In the lab frame, if the wire is electrically neutral, the electric field E is zero.</p>
+                    <p>5. However, in the moving frame, the positive ions in the wire appear to be moving backward, creating a current in the opposite direction that exactly cancels the current due to the now-stationary electrons.</p>
+                    <p>6. Therefore, in this frame, the net current is zero, and consequently, the magnetic field B' vanishes.</p>
+                    <p>7. This demonstrates that magnetic fields can be viewed as relativistic effects arising from moving charges.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution6')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Applications and Advanced Topics</h2>
+            <p>Electrodynamics has numerous applications and extensions that continue to be active areas of research and technological development.</p>
+            
+            <h3>Waveguides and Resonant Cavities</h3>
+            <p>Waveguides are structures that guide electromagnetic waves along a specific path, typically used in microwave and optical communications. The electromagnetic fields in a waveguide must satisfy boundary conditions at the conducting walls, leading to discrete modes of propagation.</p>
+            
+            <p>Resonant cavities are enclosed structures that support standing electromagnetic waves at specific resonant frequencies, used in applications ranging from microwave ovens to particle accelerators.</p>
+            
+            <h3>Antennas and Radiation Patterns</h3>
+            <p>Antennas convert electrical signals into electromagnetic waves and vice versa. The radiation pattern of an antenna describes the directional dependence of its radiation intensity, characterized by parameters such as directivity, gain, and beamwidth.</p>
+            
+            <h3>Electromagnetic Waves in Plasmas</h3>
+            <p>Plasmas, consisting of ionized gases, exhibit complex interactions with electromagnetic waves, including phenomena such as plasma oscillations, Landau damping, and various wave modes (e.g., Alfvén waves, magnetosonic waves).</p>
+            
+            <h3>Nonlinear Electrodynamics</h3>
+            <p>At very high field strengths, the linear relationship between polarization/magnetization and fields breaks down, leading to nonlinear effects such as harmonic generation, self-focusing, and optical solitons.</p>
+            
+            <h3>Quantum Electrodynamics</h3>
+            <p>Quantum electrodynamics (QED) is the quantum field theory of electromagnetism, describing how light and matter interact at the quantum level. QED has been tested to extraordinary precision and serves as a model for other quantum field theories.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Antenna Radiation Pattern</h3>
+                <p>This diagram shows the three-dimensional radiation pattern of a dipole antenna, illustrating the directional dependence of its radiation intensity.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Dipole_antenna_radiation_pattern.svg/800px-Dipole_antenna_radiation_pattern.svg.png" alt="Dipole antenna radiation pattern">
+                <p><em>Image: Three-dimensional radiation pattern of a dipole antenna, showing the characteristic "donut" shape.</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Resources</h2>
+            <h3>Authoritative Textbooks</h3>
+            <ul>
+                <li><strong>Introduction to Electrodynamics</strong> by David J. Griffiths — A lucid and rigorous undergraduate classic, known for its clear explanations and insightful problems.</li>
+                <li><strong>Classical Electrodynamics</strong> by John D. Jackson — The definitive advanced treatise, indispensable for graduate-level mastery and a standard reference in the field.</li>
+                <li><strong>Electromagnetic Waves and Radiating Systems</strong> by Edward C. Jordan and Keith G. Balmain — Excellent coverage of waveguides, antennas, and radiation theory.</li>
+                <li><strong>Principles of Optics</strong> by Max Born and Emil Wolf — The canonical text on classical optics and polarization phenomena.</li>
+                <li><strong>Classical Electricity and Magnetism</strong> by Panofsky and Phillips — A concise and elegant exposition with a focus on physical insight.</li>
+            </ul>
+            
+            <h3>Online Lecture Notes & Resources</h3>
+            <ul>
+                <li><a href="https://ocw.mit.edu/courses/physics/8-02-electricity-and-magnetism-spring-2002/" target="_blank" rel="noopener noreferrer">MIT OpenCourseWare — Electricity & Magnetism (8.02)</a></li>
+                <li><a href="https://www.physics.rutgers.edu/~steves/502/EMnotes.pdf" target="_blank" rel="noopener noreferrer">Rutgers — Advanced Electrodynamics Lecture Notes</a></li>
+                <li><a href="https://www.feynmanlectures.caltech.edu/II_toc_enhanced.html" target="_blank" rel="noopener noreferrer">Feynman Lectures on Physics, Vol. II — Electromagnetism</a></li>
+                <li><a href="https://www.phy.olemiss.edu/~ellis/EMnotes.pdf" target="_blank" rel="noopener noreferrer">University of Mississippi — Electrodynamics Notes</a></li>
+                <li><a href="https://www.youtube.com/playlist?list=PLUl4u3cNGP63EdVPNLG3ToM6LaEUuStEY" target="_blank" rel="noopener noreferrer">YouTube: Walter Lewin's Electricity & Magnetism Lectures</a></li>
+            </ul>
+            
+            <h3>Video Lectures</h3>
+            <ul>
+                <li><a href="https://www.youtube.com/playlist?list=PLyQSN7X0ro203puVhQsmCj9qhlFQ-As8e" target="_blank" rel="noopener noreferrer">MIT 8.03 Physics III: Vibrations and Waves (Walter Lewin)</a></li>
+                <li><a href="https://www.youtube.com/playlist?list=PLUl4u3cNGP60cspQn3N9dYRPiyVWDd80G" target="_blank" rel="noopener noreferrer">MIT 8.02 Electricity and Magnetism (Walter Lewin)</a></li>
+                <li><a href="https://www.youtube.com/playlist?list=PLUdYlQf0_sSsb2tNcA3gtgOt8LGH6tJbr" target="_blank" rel="noopener noreferrer">NPTEL — Classical Electrodynamics by Prof. Rajaram Nityananda</a></li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Related Topics</h2>
+            <div class="related-topics">
+                <a href="classical_mechanics_enhanced.html" class="related-topic">Classical Mechanics</a>
+                <a href="quantum_mechanics_enhanced.html" class="related-topic">Quantum Mechanics</a>
+                <a href="mathematical_physics_enhanced.html" class="related-topic">Mathematical Physics</a>
+                <a href="radiative_transfer_enhanced.html" class="related-topic">Radiative Transfer</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-nav">
+                <a href="index.html">Home</a> |
+                <a href="classical_mechanics_enhanced.html">Classical Mechanics</a> |
+                <a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a> |
+                <a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a> |
+                <a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a> |
+                <a href="mathematical_physics_enhanced.html">Mathematical Physics</a>
+            </div>
+            <p>"The book of nature is written in the language of mathematics" — Galileo Galilei</p>
+            <p>© 2025 Physics Refresher Course | Last Updated: May 2025</p>
+        </footer>
+    </div>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+        
+        // Convert equation content to proper MathJax format when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const equations = document.querySelectorAll('.equation');
+            equations.forEach(function(equation) {
+                // Preserve the original text
+                const originalText = equation.textContent;
+                // Replace with properly delimited math
+                equation.innerHTML = '\\[' + originalText + '\\]';
+            });
+        });
+    </script>
+
+
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            if (solution.style.display === "none" || solution.style.display === "") {
+                solution.style.display = "block";
+            } else {
+                solution.style.display = "none";
+            }
+        }
+        
+        // Hide all solutions initially
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutions = document.querySelectorAll('.solution');
+            solutions.forEach(function(solution) {
+                solution.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

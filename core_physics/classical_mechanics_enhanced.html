@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Classical Mechanics — Physics Refresher Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2c1810;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="35" r="0.5" fill="%23d4af8c" opacity="0.4"/><circle cx="80" cy="65" r="0.3" fill="%23c19a6b" opacity="0.3"/><circle cx="45" cy="80" r="0.4" fill="%23b8935f" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #2c1810;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B4513;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        nav a.active {
+            color: #2c1810;
+            border-bottom: 2px solid #8B4513;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            color: #2c1810;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Equation Styles */
+        .equation-box {
+            background: rgba(255, 252, 249, 0.9);
+            border-left: 4px solid #8B4513;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .equation-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Interactive Elements */
+        .interactive-element {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .interactive-element img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Practice Problems */
+        .problem {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .problem-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+        }
+
+        .solution {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ddd;
+        }
+
+        .solution-toggle {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        /* Related Topics */
+        .related-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .related-topic {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #8B4513;
+            transition: all 0.3s ease;
+        }
+
+        .related-topic:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 69, 19, 0.1);
+            font-style: italic;
+            color: #8B4513;
+        }
+
+        .footer-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #8B4513;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Physics Refresher Course</h1>
+            <h2 class="page-title">Classical Mechanics</h2>
+            <p class="subtitle">From Newtonian principles to Lagrangian and Hamiltonian formulations, exploring the elegant mathematics that describes motion in our universe.</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="classical_mechanics_enhanced.html" class="active">Classical Mechanics</a></li>
+                <li><a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a></li>
+                <li><a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a></li>
+                <li><a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a></li>
+                <li><a href="mathematical_physics_enhanced.html">Mathematical Physics</a></li>
+            </ul>
+        </nav>
+
+        <section class="content-section">
+            <h2>Introduction to Classical Mechanics</h2>
+            <p>Classical mechanics, the oldest branch of physics, provides a framework for understanding the motion of objects ranging from everyday items to celestial bodies. Despite being superseded by quantum mechanics and relativity in certain domains, classical mechanics remains indispensable for describing macroscopic phenomena and serves as the foundation for more advanced physical theories.</p>
+            
+            <p>The historical development of classical mechanics spans centuries, from Aristotle's initial concepts to Galileo's experimental approach, culminating in Newton's revolutionary laws of motion and universal gravitation in the 17th century. The field evolved further with the analytical mechanics of Lagrange and Hamilton in the 18th and 19th centuries, introducing powerful mathematical formalisms that remain central to modern theoretical physics.</p>
+            
+            <p>This module follows the canonical structure laid out in Goldstein's <em>Classical Mechanics</em>, systematically progressing through Newtonian mechanics to the more elegant Lagrangian and Hamiltonian frameworks, variational principles, and the symplectic structures that underpin contemporary theoretical physics.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Newtonian Mechanics</h2>
+            <p>Newtonian mechanics, named after Sir Isaac Newton, forms the bedrock of classical physics. Newton's three laws of motion, published in his seminal work <em>Philosophiæ Naturalis Principia Mathematica</em> (1687), provide a complete framework for analyzing the motion of objects under the influence of forces.</p>
+            
+            <h3>Newton's Laws of Motion</h3>
+            <ol>
+                <li><strong>First Law (Law of Inertia):</strong> An object remains at rest or in uniform motion in a straight line unless acted upon by an external force. This law establishes the concept of inertial reference frames.</li>
+                
+                <li><strong>Second Law (Law of Acceleration):</strong> The acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass. Mathematically expressed as F = ma.</li>
+                
+                <li><strong>Third Law (Law of Action and Reaction):</strong> For every action, there is an equal and opposite reaction. When one body exerts a force on another, the second body simultaneously exerts a force of equal magnitude in the opposite direction on the first body.</li>
+            </ol>
+            
+            <div class="equation-box">
+                <p class="equation">F = ma</p>
+                <p class="equation-caption">Newton's Second Law: Force equals mass times acceleration</p>
+            </div>
+            
+            <h3>Conservation Laws</h3>
+            <p>Newtonian mechanics introduces several fundamental conservation principles that remain cornerstones of physics:</p>
+            <ul>
+                <li><strong>Conservation of Linear Momentum:</strong> In an isolated system, the total linear momentum remains constant.</li>
+                <li><strong>Conservation of Angular Momentum:</strong> In the absence of external torques, the total angular momentum of a system remains constant.</li>
+                <li><strong>Conservation of Energy:</strong> In an isolated system, the total mechanical energy (kinetic plus potential) remains constant.</li>
+            </ul>
+            
+            <div class="equation-box">
+                <p class="equation">p = mv</p>
+                <p class="equation-caption">Linear momentum: product of mass and velocity</p>
+                
+                <p class="equation">L = r × p</p>
+                <p class="equation-caption">Angular momentum: cross product of position vector and linear momentum</p>
+                
+                <p class="equation">E = T + V</p>
+                <p class="equation-caption">Total mechanical energy: sum of kinetic (T) and potential (V) energies</p>
+            </div>
+            
+            <h3>Applications of Newtonian Mechanics</h3>
+            <p>Newtonian mechanics successfully describes a vast range of phenomena:</p>
+            <ul>
+                <li>Projectile motion and ballistics</li>
+                <li>Orbital dynamics of planets and satellites</li>
+                <li>Mechanical systems like pendulums and springs</li>
+                <li>Fluid dynamics (when combined with appropriate constitutive relations)</li>
+                <li>Structural mechanics and engineering applications</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Projectile Motion</h3>
+                <p>This interactive diagram demonstrates how initial velocity and angle affect the trajectory of a projectile under constant gravitational acceleration.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Ideal_projectile_motion_for_different_angles.svg/800px-Ideal_projectile_motion_for_different_angles.svg.png" alt="Projectile motion trajectories">
+                <p><em>Image: Trajectories of projectiles launched at different angles but identical initial speeds in a uniform gravitational field, neglecting air resistance.</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Lagrangian Mechanics</h2>
+            <p>Lagrangian mechanics, developed by Joseph-Louis Lagrange in the late 18th century, reformulates classical mechanics using the principle of least action. This approach shifts focus from forces to energy, offering a more elegant and powerful framework for analyzing complex mechanical systems.</p>
+            
+            <h3>Generalized Coordinates</h3>
+            <p>A key innovation in Lagrangian mechanics is the use of generalized coordinates, which allow for a more natural description of constrained systems. These coordinates:</p>
+            <ul>
+                <li>Can be chosen to exploit symmetries in the system</li>
+                <li>Reduce the number of equations needed by incorporating constraints</li>
+                <li>Simplify the analysis of complex, multi-body problems</li>
+            </ul>
+            
+            <h3>The Lagrangian Function</h3>
+            <p>The Lagrangian function (L) is defined as the difference between kinetic energy (T) and potential energy (V):</p>
+            
+            <div class="equation-box">
+                <p class="equation">L(q, q̇, t) = T(q, q̇, t) - V(q, t)</p>
+                <p class="equation-caption">The Lagrangian function in terms of generalized coordinates q and their time derivatives q̇</p>
+            </div>
+            
+            <h3>Principle of Least Action</h3>
+            <p>The principle of least action states that the path taken by a physical system between two points in configuration space is the one that minimizes (or more generally, extremizes) the action functional:</p>
+            
+            <div class="equation-box">
+                <p class="equation">S = ∫<sub>t₁</sub><sup>t₂</sup> L(q, q̇, t) dt</p>
+                <p class="equation-caption">The action functional as the time integral of the Lagrangian</p>
+            </div>
+            
+            <h3>Euler-Lagrange Equations</h3>
+            <p>Applying variational calculus to the principle of least action yields the Euler-Lagrange equations, which are the equations of motion in Lagrangian mechanics:</p>
+            
+            <div class="equation-box">
+                <p class="equation">d/dt(∂L/∂q̇ᵢ) - ∂L/∂qᵢ = 0</p>
+                <p class="equation-caption">The Euler-Lagrange equations for each generalized coordinate qᵢ</p>
+            </div>
+            
+            <h3>Noether's Theorem</h3>
+            <p>Emmy Noether's profound theorem connects symmetries in physical systems to conservation laws:</p>
+            <ul>
+                <li>Invariance under time translation → Conservation of energy</li>
+                <li>Invariance under spatial translation → Conservation of linear momentum</li>
+                <li>Invariance under rotation → Conservation of angular momentum</li>
+            </ul>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 1: Simple Pendulum using Lagrangian Mechanics</p>
+                <p>Derive the equation of motion for a simple pendulum of length L and mass m using Lagrangian mechanics.</p>
+                
+                <div class="solution" id="solution1">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. Choose the generalized coordinate: θ (the angle from the vertical)</p>
+                    <p>2. Express the kinetic energy: T = (1/2)mL²θ̇²</p>
+                    <p>3. Express the potential energy: V = mgL(1-cosθ)</p>
+                    <p>4. Form the Lagrangian: L = T - V = (1/2)mL²θ̇² - mgL(1-cosθ)</p>
+                    <p>5. Apply the Euler-Lagrange equation:</p>
+                    <p>d/dt(∂L/∂θ̇) - ∂L/∂θ = 0</p>
+                    <p>d/dt(mL²θ̇) - mgLsinθ = 0</p>
+                    <p>mL²θ̈ - mgLsinθ = 0</p>
+                    <p>θ̈ + (g/L)sinθ = 0</p>
+                    <p>This is the exact equation of motion for a simple pendulum.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution1')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Hamiltonian Mechanics</h2>
+            <p>Hamiltonian mechanics, developed by William Rowan Hamilton in the 1830s, represents a further reformulation of classical mechanics. It introduces the concept of phase space and provides a framework that more naturally connects to quantum mechanics and statistical mechanics.</p>
+            
+            <h3>The Hamiltonian Function</h3>
+            <p>The Hamiltonian function H is defined through a Legendre transformation of the Lagrangian:</p>
+            
+            <div class="equation-box">
+                <p class="equation">H(q, p, t) = ∑ᵢ pᵢq̇ᵢ - L(q, q̇, t)</p>
+                <p class="equation-caption">The Hamiltonian function in terms of generalized coordinates q and momenta p</p>
+            </div>
+            
+            <p>For many systems, the Hamiltonian represents the total energy of the system and is expressed as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">H(q, p, t) = T(p) + V(q)</p>
+                <p class="equation-caption">The Hamiltonian as the sum of kinetic and potential energies</p>
+            </div>
+            
+            <h3>Hamilton's Canonical Equations</h3>
+            <p>The equations of motion in Hamiltonian mechanics are given by Hamilton's canonical equations:</p>
+            
+            <div class="equation-box">
+                <p class="equation">q̇ᵢ = ∂H/∂pᵢ</p>
+                <p class="equation">ṗᵢ = -∂H/∂qᵢ</p>
+                <p class="equation-caption">Hamilton's canonical equations of motion</p>
+            </div>
+            
+            <h3>Phase Space and Liouville's Theorem</h3>
+            <p>Hamiltonian mechanics introduces the concept of phase space, a 2n-dimensional space where n is the number of degrees of freedom. Each point in phase space represents a possible state of the system, specified by the generalized coordinates and momenta.</p>
+            
+            <p>Liouville's theorem states that the phase space volume occupied by a set of system states is conserved as the system evolves according to Hamilton's equations. This has profound implications for statistical mechanics and the foundations of thermodynamics.</p>
+            
+            <h3>Canonical Transformations</h3>
+            <p>Canonical transformations are changes of variables in phase space that preserve the form of Hamilton's equations. They are powerful tools for solving complex mechanical problems by transforming them into simpler forms.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 2: Harmonic Oscillator in Hamiltonian Mechanics</p>
+                <p>For a one-dimensional harmonic oscillator with mass m and spring constant k, derive Hamilton's equations of motion and solve them to find the time evolution of position and momentum.</p>
+                
+                <div class="solution" id="solution2">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The Hamiltonian for a harmonic oscillator is:</p>
+                    <p>H = p²/(2m) + (1/2)kx²</p>
+                    <p>2. Hamilton's equations give:</p>
+                    <p>ẋ = ∂H/∂p = p/m</p>
+                    <p>ṗ = -∂H/∂x = -kx</p>
+                    <p>3. Differentiating the first equation with respect to time:</p>
+                    <p>ẍ = ṗ/m = -kx/m</p>
+                    <p>4. This gives us the familiar equation: ẍ + (k/m)x = 0</p>
+                    <p>5. The general solution is:</p>
+                    <p>x(t) = A cos(ωt + φ), where ω = √(k/m)</p>
+                    <p>6. From Hamilton's first equation, we get:</p>
+                    <p>p(t) = mẋ(t) = -mAω sin(ωt + φ)</p>
+                    <p>The constants A and φ are determined by initial conditions.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution2')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Central Force Problems</h2>
+            <p>Central force problems involve forces that are directed toward or away from a fixed point and depend only on the distance from that point. The most famous example is the gravitational force, which governs planetary motion.</p>
+            
+            <h3>Kepler's Laws of Planetary Motion</h3>
+            <p>Johannes Kepler formulated three empirical laws that describe the motion of planets around the Sun:</p>
+            <ol>
+                <li><strong>First Law:</strong> The orbit of each planet is an ellipse with the Sun at one focus.</li>
+                <li><strong>Second Law:</strong> A line joining a planet and the Sun sweeps out equal areas during equal intervals of time (conservation of angular momentum).</li>
+                <li><strong>Third Law:</strong> The square of the orbital period of a planet is proportional to the cube of the semi-major axis of its orbit (T² ∝ a³).</li>
+            </ol>
+            
+            <p>Newton later showed that these laws follow directly from his law of universal gravitation and his laws of motion.</p>
+            
+            <h3>Effective Potential</h3>
+            <p>In central force problems, it's often useful to introduce the concept of an effective potential, which combines the actual potential with a centrifugal term arising from the conservation of angular momentum:</p>
+            
+            <div class="equation-box">
+                <p class="equation">V<sub>eff</sub>(r) = V(r) + L²/(2mr²)</p>
+                <p class="equation-caption">Effective potential for a central force problem</p>
+            </div>
+            
+            <p>This reduces the two-dimensional orbital motion to a one-dimensional radial problem, greatly simplifying the analysis.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Effective Potential for Gravitational Force</h3>
+                <p>This diagram shows the effective potential for the gravitational force, illustrating how different orbital types (circular, elliptical, parabolic, hyperbolic) correspond to different energy levels.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Effective_potential.svg/800px-Effective_potential.svg.png" alt="Effective potential diagram">
+                <p><em>Image: Effective potential for a gravitational force, showing how different energy levels correspond to different types of orbits.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 3: Orbital Motion under Inverse Square Law</p>
+                <p>Show that for a particle moving under an inverse square force F = -k/r², the orbit is a conic section, and determine the condition for the orbit to be (a) an ellipse, (b) a parabola, or (c) a hyperbola.</p>
+                
+                <div class="solution" id="solution3">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. For an inverse square force, the potential energy is V(r) = -k/r</p>
+                    <p>2. The effective potential is V<sub>eff</sub>(r) = -k/r + L²/(2mr²)</p>
+                    <p>3. The total energy is E = (1/2)mv² + V<sub>eff</sub>(r)</p>
+                    <p>4. Through mathematical analysis (using the orbit equation in polar coordinates), one can show that the orbit equation is:</p>
+                    <p>r = L²/(mk) · 1/(1 + e·cos(θ))</p>
+                    <p>where e is the eccentricity given by:</p>
+                    <p>e = √(1 + 2EL²/(mk²))</p>
+                    <p>5. The type of orbit depends on the eccentricity e:</p>
+                    <p>(a) Ellipse: e < 1, which occurs when E < 0</p>
+                    <p>(b) Parabola: e = 1, which occurs when E = 0</p>
+                    <p>(c) Hyperbola: e > 1, which occurs when E > 0</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution3')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Rigid Body Dynamics</h2>
+            <p>Rigid body dynamics extends classical mechanics to systems where the distances between constituent particles remain fixed. This branch is essential for understanding the motion of solid objects in three-dimensional space.</p>
+            
+            <h3>Rotational Kinematics</h3>
+            <p>The orientation of a rigid body can be described using various parameterizations:</p>
+            <ul>
+                <li><strong>Euler Angles:</strong> Three angles (φ, θ, ψ) that specify a sequence of rotations about coordinate axes.</li>
+                <li><strong>Rotation Matrices:</strong> 3×3 orthogonal matrices with determinant 1 that transform vectors from one coordinate system to another.</li>
+                <li><strong>Quaternions:</strong> Four-parameter representation that avoids singularities present in Euler angles.</li>
+            </ul>
+            
+            <h3>Moment of Inertia</h3>
+            <p>The moment of inertia tensor I characterizes the resistance of a rigid body to changes in its rotational motion:</p>
+            
+            <div class="equation-box">
+                <p class="equation">I = ∫ ρ(r) (r²δᵢⱼ - rᵢrⱼ) dV</p>
+                <p class="equation-caption">Moment of inertia tensor for a continuous mass distribution</p>
+            </div>
+            
+            <p>For any rigid body, there exists a set of principal axes for which the moment of inertia tensor is diagonal, simplifying the analysis of rotational motion.</p>
+            
+            <h3>Euler's Equations</h3>
+            <p>Euler's equations describe the rotational dynamics of a rigid body in a reference frame attached to the principal axes:</p>
+            
+            <div class="equation-box">
+                <p class="equation">I₁ω̇₁ + (I₃ - I₂)ω₂ω₃ = M₁</p>
+                <p class="equation">I₂ω̇₂ + (I₁ - I₃)ω₃ω₁ = M₂</p>
+                <p class="equation">I₃ω̇₃ + (I₂ - I₁)ω₁ω₂ = M₃</p>
+                <p class="equation-caption">Euler's equations for rigid body rotation</p>
+            </div>
+            
+            <p>Where I₁, I₂, I₃ are the principal moments of inertia, ω₁, ω₂, ω₃ are the angular velocity components along the principal axes, and M₁, M₂, M₃ are the components of the external torque.</p>
+            
+            <h3>Free Rotation and the Poinsot Construction</h3>
+            <p>In the absence of external torques, a rigid body exhibits complex rotational behavior that can be visualized using the Poinsot construction, which represents the motion as the rolling of an ellipsoid (the inertia ellipsoid) on a fixed plane.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 4: Rotation of an Asymmetric Top</p>
+                <p>Consider a rigid body with principal moments of inertia I₁ < I₂ < I₃ rotating freely in space. Analyze the stability of rotation about each principal axis.</p>
+                
+                <div class="solution" id="solution4">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. For free rotation (no external torques), Euler's equations become:</p>
+                    <p>I₁ω̇₁ + (I₃ - I₂)ω₂ω₃ = 0</p>
+                    <p>I₂ω̇₂ + (I₁ - I₃)ω₃ω₁ = 0</p>
+                    <p>I₃ω̇₃ + (I₂ - I₁)ω₁ω₂ = 0</p>
+                    
+                    <p>2. To analyze stability, consider small perturbations around rotation about each principal axis:</p>
+                    
+                    <p>3. For rotation about the 1-axis (ω₁ ≠ 0, ω₂ = ω₃ = 0):</p>
+                    <p>If perturbed slightly, the equations show that ω₂ and ω₃ will oscillate, indicating stable rotation.</p>
+                    
+                    <p>4. For rotation about the 3-axis (ω₃ ≠ 0, ω₁ = ω₂ = 0):</p>
+                    <p>Similarly, small perturbations lead to oscillations in ω₁ and ω₂, indicating stable rotation.</p>
+                    
+                    <p>5. For rotation about the 2-axis (ω₂ ≠ 0, ω₁ = ω₃ = 0):</p>
+                    <p>Small perturbations grow exponentially, indicating unstable rotation.</p>
+                    
+                    <p>6. Conclusion: Rotation about the axes with the largest and smallest moments of inertia is stable, while rotation about the intermediate axis is unstable.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution4')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Small Oscillations</h2>
+            <p>The theory of small oscillations deals with the behavior of mechanical systems near stable equilibrium positions. When displacements from equilibrium are small, the equations of motion can be linearized, leading to a set of coupled harmonic oscillators.</p>
+            
+            <h3>Linearization around Equilibrium</h3>
+            <p>For a system with n degrees of freedom described by generalized coordinates q₁, q₂, ..., qₙ, the potential energy near an equilibrium point can be approximated as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">V(q) ≈ V₀ + (1/2)∑ᵢⱼ kᵢⱼqᵢqⱼ</p>
+                <p class="equation-caption">Quadratic approximation of potential energy near equilibrium</p>
+            </div>
+            
+            <p>Where kᵢⱼ are the elements of the Hessian matrix of V evaluated at the equilibrium point.</p>
+            
+            <h3>Normal Modes</h3>
+            <p>The equations of motion for small oscillations can be written in matrix form:</p>
+            
+            <div class="equation-box">
+                <p class="equation">Mq̈ + Kq = 0</p>
+                <p class="equation-caption">Matrix equation for coupled oscillations</p>
+            </div>
+            
+            <p>Where M is the mass matrix and K is the stiffness matrix. The solution involves finding the eigenvalues and eigenvectors of M⁻¹K, which correspond to the squared frequencies and normal modes of the system, respectively.</p>
+            
+            <p>Normal modes represent special patterns of motion where all parts of the system oscillate with the same frequency and phase. Any general motion can be expressed as a superposition of normal modes.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 5: Coupled Oscillators</p>
+                <p>Two masses m₁ and m₂ are connected to fixed walls and to each other by springs with spring constants k₁, k₂, and k₃ as shown below. Find the normal modes and their frequencies.</p>
+                <p>[wall]--k₁--[m₁]--k₃--[m₂]--k₂--[wall]</p>
+                
+                <div class="solution" id="solution5">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. Let x₁ and x₂ be the displacements of masses m₁ and m₂ from their equilibrium positions.</p>
+                    
+                    <p>2. The equations of motion are:</p>
+                    <p>m₁ẍ₁ = -k₁x₁ - k₃(x₁ - x₂)</p>
+                    <p>m₂ẍ₂ = -k₂x₂ - k₃(x₂ - x₁)</p>
+                    
+                    <p>3. Rearranging:</p>
+                    <p>m₁ẍ₁ = -(k₁ + k₃)x₁ + k₃x₂</p>
+                    <p>m₂ẍ₂ = k₃x₁ - (k₂ + k₃)x₂</p>
+                    
+                    <p>4. In matrix form:</p>
+                    <p>[m₁  0 ] [ẍ₁] + [(k₁+k₃)  -k₃   ] [x₁] = [0]</p>
+                    <p>[0   m₂] [ẍ₂]   [-k₃     (k₂+k₃)] [x₂]   [0]</p>
+                    
+                    <p>5. Assuming solutions of the form x₁ = A₁cos(ωt), x₂ = A₂cos(ωt), we get the eigenvalue equation:</p>
+                    <p>det(K - ω²M) = 0</p>
+                    
+                    <p>6. Solving this equation gives the normal mode frequencies.</p>
+                    
+                    <p>7. For the special case where m₁ = m₂ = m and k₁ = k₂ = k:</p>
+                    <p>ω₁² = k/m (in-phase mode)</p>
+                    <p>ω₂² = (k + 2k₃)/m (out-of-phase mode)</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution5')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Hamilton-Jacobi Theory</h2>
+            <p>Hamilton-Jacobi theory represents the pinnacle of classical mechanics, providing a powerful method for solving mechanical problems by finding a canonical transformation that reduces the Hamiltonian to a trivial form.</p>
+            
+            <h3>The Hamilton-Jacobi Equation</h3>
+            <p>The Hamilton-Jacobi equation is a first-order partial differential equation for a function S(q, α, t), known as Hamilton's principal function:</p>
+            
+            <div class="equation-box">
+                <p class="equation">∂S/∂t + H(q, ∂S/∂q, t) = 0</p>
+                <p class="equation-caption">The Hamilton-Jacobi equation</p>
+            </div>
+            
+            <p>Where α represents a set of constants that will become the new momenta after the canonical transformation.</p>
+            
+            <h3>Action-Angle Variables</h3>
+            <p>For integrable systems, the Hamilton-Jacobi equation can be solved to yield action-angle variables (J, θ), where:</p>
+            <ul>
+                <li>The actions J are constants of motion</li>
+                <li>The angles θ evolve linearly with time: θ(t) = θ₀ + ωt</li>
+            </ul>
+            
+            <p>This representation is particularly useful for understanding the long-term behavior of mechanical systems and forms the basis for perturbation theory in celestial mechanics.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 6: Hamilton-Jacobi Equation for Harmonic Oscillator</p>
+                <p>Use the Hamilton-Jacobi equation to solve the one-dimensional harmonic oscillator problem with Hamiltonian H = p²/(2m) + (1/2)mω²x².</p>
+                
+                <div class="solution" id="solution6">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The Hamilton-Jacobi equation for this system is:</p>
+                    <p>∂S/∂t + (1/2m)(∂S/∂x)² + (1/2)mω²x² = 0</p>
+                    
+                    <p>2. Try a separable solution of the form S(x,α,t) = W(x,α) - αt, where α is the energy E:</p>
+                    <p>-E + (1/2m)(dW/dx)² + (1/2)mω²x² = 0</p>
+                    
+                    <p>3. Solving for dW/dx:</p>
+                    <p>dW/dx = ±√(2m(E - (1/2)mω²x²))</p>
+                    
+                    <p>4. Integrating:</p>
+                    <p>W(x,E) = ∫ √(2m(E - (1/2)mω²x²)) dx</p>
+                    
+                    <p>5. This integral can be evaluated to give:</p>
+                    <p>W(x,E) = (m²ω²x² - 2mE)/(2mω) · arcsin(x√(mω²/2E)) + C</p>
+                    
+                    <p>6. The action variable is:</p>
+                    <p>J = (1/2π) ∮ p dx = E/ω</p>
+                    
+                    <p>7. The angle variable evolves as:</p>
+                    <p>θ(t) = θ₀ + ωt</p>
+                    
+                    <p>8. This confirms that the harmonic oscillator has a single frequency ω, independent of amplitude.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution6')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Advanced Topics and Applications</h2>
+            <p>Classical mechanics extends beyond the core topics to encompass a wide range of advanced subjects and applications that continue to be relevant in modern physics and engineering.</p>
+            
+            <h3>Non-inertial Reference Frames</h3>
+            <p>When working in accelerating or rotating reference frames, additional fictitious forces appear in the equations of motion:</p>
+            <ul>
+                <li><strong>Centrifugal Force:</strong> Directed away from the axis of rotation</li>
+                <li><strong>Coriolis Force:</strong> Perpendicular to both the velocity and the axis of rotation</li>
+                <li><strong>Euler Force:</strong> Arises from angular acceleration of the reference frame</li>
+            </ul>
+            
+            <p>These forces explain phenomena such as the deflection of winds in weather systems, the precession of Foucault's pendulum, and the shape of rotating fluid surfaces.</p>
+            
+            <h3>Continuum Mechanics</h3>
+            <p>Classical mechanics extends to continuous media through the theories of elasticity, fluid dynamics, and acoustics. These fields apply Newton's laws to infinitesimal elements of continuous materials, leading to partial differential equations that describe the behavior of the entire system.</p>
+            
+            <h3>Chaos and Nonlinear Dynamics</h3>
+            <p>Many mechanical systems exhibit chaotic behavior, characterized by extreme sensitivity to initial conditions. Examples include the double pendulum, the three-body problem, and certain driven oscillators. The study of chaos has led to important concepts such as strange attractors, Lyapunov exponents, and fractal basin boundaries.</p>
+            
+            <h3>Connection to Quantum Mechanics</h3>
+            <p>Classical mechanics serves as the correspondence limit of quantum mechanics for large quantum numbers. The Hamilton-Jacobi equation is closely related to the Schrödinger equation, and the action function S is connected to the quantum phase through the relation S = ℏφ. This connection is formalized in the WKB approximation and the path integral formulation of quantum mechanics.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Double Pendulum Chaos</h3>
+                <p>The double pendulum is a simple mechanical system that exhibits chaotic behavior. Slight changes in initial conditions lead to dramatically different trajectories over time.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Double-compound-pendulum.gif/400px-Double-compound-pendulum.gif" alt="Double pendulum motion">
+                <p><em>Image: Animation showing the chaotic motion of a double pendulum.</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Resources</h2>
+            <h3>Authoritative Textbooks</h3>
+            <ul>
+                <li><strong>Classical Mechanics</strong> by Herbert Goldstein, Charles Poole, and John Safko — The definitive graduate-level text, comprehensive and rigorous.</li>
+                <li><strong>Mechanics</strong> by L.D. Landau and E.M. Lifshitz — Elegant and concise, with deep theoretical insight and a unique perspective.</li>
+                <li><strong>Analytical Mechanics</strong> by Fowles & Cassiday — Accessible yet rigorous undergraduate text with excellent problem sets.</li>
+                <li><strong>Classical Dynamics of Particles and Systems</strong> by Marion & Thornton — Practical examples with sound mathematics and clear explanations.</li>
+                <li><strong>Mathematical Methods of Classical Mechanics</strong> by V.I. Arnold — For a symplectic and geometrical treatment of mechanics, emphasizing mathematical structure.</li>
+            </ul>
+            
+            <h3>Online Lecture Notes & Resources</h3>
+            <ul>
+                <li><a href="https://ocw.mit.edu/courses/physics/8-09-classical-mechanics-iii-fall-2014/" target="_blank" rel="noopener noreferrer">MIT OCW — Classical Mechanics III (8.09, Hamiltonian formalism)</a></li>
+                <li><a href="https://ocw.mit.edu/courses/physics/8-01sc-classical-mechanics-fall-2016/" target="_blank" rel="noopener noreferrer">MIT OCW — Classical Mechanics I (8.01SC)</a></li>
+                <li><a href="https://people.physics.anu.edu.au/~websterc/Teaching/ClassicalMechanics/" target="_blank" rel="noopener noreferrer">ANU — Classical Mechanics Notes</a></li>
+                <li><a href="https://www.physics.ucla.edu/~cwp/articles/ClassicalMechanics/index_enhanced.html" target="_blank" rel="noopener noreferrer">UCLA — Classical Mechanics Notes and Examples</a></li>
+                <li><a href="https://farside.ph.utexas.edu/teaching/301/lectures_enhanced.html" target="_blank" rel="noopener noreferrer">University of Texas — Lectures on Classical Mechanics</a></li>
+            </ul>
+            
+            <h3>Video Lectures</h3>
+            <ul>
+                <li><a href="https://www.youtube.com/playlist?list=PLUl4u3cNGP61qDex7XslwNJ-xxxEFzMNV" target="_blank" rel="noopener noreferrer">MIT 8.01 Classical Mechanics (Walter Lewin)</a></li>
+                <li><a href="https://www.youtube.com/playlist?list=PL5E4E56893588CBA8" target="_blank" rel="noopener noreferrer">Stanford University — Leonard Susskind's Classical Mechanics</a></li>
+                <li><a href="https://www.youtube.com/playlist?list=PLmxVF8ick5UT6gALtNFWS5pzRTcZD_tPt" target="_blank" rel="noopener noreferrer">NPTEL — Classical Mechanics by Prof. P.C. Deshmukh</a></li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Related Topics</h2>
+            <div class="related-topics">
+                <a href="mathematical_physics_enhanced.html" class="related-topic">Mathematical Physics</a>
+                <a href="quantum_mechanics_enhanced.html" class="related-topic">Quantum Mechanics</a>
+                <a href="elctromagnetic_theory_enhanced.html" class="related-topic">Electrodynamics</a>
+                <a href="statistical_mechanics_enhanced.html" class="related-topic">Statistical Mechanics</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-nav">
+                <a href="index.html">Home</a> |
+                <a href="classical_mechanics_enhanced.html">Classical Mechanics</a> |
+                <a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a> |
+                <a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a> |
+                <a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a> |
+                <a href="mathematical_physics_enhanced.html">Mathematical Physics</a>
+            </div>
+            <p>"The book of nature is written in the language of mathematics" — Galileo Galilei</p>
+            <p>© 2025 Physics Refresher Course | Last Updated: May 2025</p>
+        </footer>
+    </div>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+        
+        // Convert equation content to proper MathJax format when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const equations = document.querySelectorAll('.equation');
+            equations.forEach(function(equation) {
+                // Preserve the original text
+                const originalText = equation.textContent;
+                // Replace with properly delimited math
+                equation.innerHTML = '\\[' + originalText + '\\]';
+            });
+        });
+    </script>
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            if (solution.style.display === "none" || solution.style.display === "") {
+                solution.style.display = "block";
+            } else {
+                solution.style.display = "none";
+            }
+        }
+        
+        // Hide all solutions initially
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutions = document.querySelectorAll('.solution');
+            solutions.forEach(function(solution) {
+                solution.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

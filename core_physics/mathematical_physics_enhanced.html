@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mathematical Physics — Physics Refresher Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2c1810;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="35" r="0.5" fill="%23d4af8c" opacity="0.4"/><circle cx="80" cy="65" r="0.3" fill="%23c19a6b" opacity="0.3"/><circle cx="45" cy="80" r="0.4" fill="%23b8935f" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #2c1810;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B4513;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        nav a.active {
+            color: #2c1810;
+            border-bottom: 2px solid #8B4513;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            color: #2c1810;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Equation Styles */
+        .equation-box {
+            background: rgba(255, 252, 249, 0.9);
+            border-left: 4px solid #8B4513;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .equation-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Interactive Elements */
+        .interactive-element {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .interactive-element img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Practice Problems */
+        .problem {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .problem-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+        }
+
+        .solution {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ddd;
+        }
+
+        .solution-toggle {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        /* Related Topics */
+        .related-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .related-topic {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #8B4513;
+            transition: all 0.3s ease;
+        }
+
+        .related-topic:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 69, 19, 0.1);
+            font-style: italic;
+            color: #8B4513;
+        }
+
+        .footer-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #8B4513;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Physics Refresher Course</h1>
+            <h2 class="page-title">Mathematical Physics</h2>
+            <p class="subtitle">The essential mathematical tools and methods that form the language of theoretical physics, enabling precise formulation and solution of physical problems.</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="classical_mechanics_enhanced.html">Classical Mechanics</a></li>
+                <li><a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a></li>
+                <li><a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a></li>
+                <li><a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a></li>
+                <li><a href="mathematical_physics_enhanced.html" class="active">Mathematical Physics</a></li>
+            </ul>
+        </nav>
+
+        <section class="content-section">
+            <h2>Introduction to Mathematical Physics</h2>
+            <p>Mathematical physics stands at the intersection of mathematics and physics, providing the formal structures and analytical tools necessary for the precise formulation and solution of physical theories. Throughout history, the development of physics has been intimately connected with advances in mathematics, with each field enriching the other. Newton's development of calculus alongside his laws of motion, Maxwell's use of vector calculus to formulate electromagnetism, Einstein's reliance on non-Euclidean geometry for general relativity, and the application of Hilbert spaces in quantum mechanics all exemplify this profound relationship.</p>
+            
+            <p>This module follows the comprehensive approach of Arfken, Weber, and Harris, complemented by the elegant formalism of Hassani and the practical problem-solving emphasis of Boas, to provide a thorough grounding in the mathematical methods essential for understanding modern physics. Rather than presenting mathematics as a collection of abstract structures, we emphasize its role as the language in which the laws of nature are expressed, focusing on developing both intuition and technical proficiency.</p>
+            
+            <p>The topics covered range from foundational techniques like vector calculus and differential equations to more advanced subjects such as group theory and functional analysis, all presented with an emphasis on physical applications and problem-solving strategies. By mastering these mathematical tools, you will gain the ability to formulate, analyze, and solve complex problems across all areas of theoretical physics.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Vector Analysis and Coordinate Systems</h2>
+            <p>Vector analysis provides the mathematical framework for describing quantities that have both magnitude and direction, essential for formulating physical laws in a coordinate-independent manner.</p>
+            
+            <h3>Vector Algebra</h3>
+            <p>Vectors in three-dimensional space can be represented in various coordinate systems. In Cartesian coordinates, a vector A is written as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\mathbf{A} = A_x \mathbf{\hat{x}} + A_y \mathbf{\hat{y}} + A_z \mathbf{\hat{z}}</p>
+                <p class="equation-caption">Vector in Cartesian coordinates</p>
+            </div>
+            
+            <p>The dot product (scalar product) of two vectors A and B is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\mathbf{A} \cdot \mathbf{B} = A_x B_x + A_y B_y + A_z B_z = |\mathbf{A}||\mathbf{B}|\cos\theta</p>
+                <p class="equation-caption">Dot product</p>
+            </div>
+            
+            <p>The cross product (vector product) is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\mathbf{A} \times \mathbf{B} = (A_y B_z - A_z B_y)\mathbf{\hat{x}} + (A_z B_x - A_x B_z)\mathbf{\hat{y}} + (A_x B_y - A_y B_x)\mathbf{\hat{z}}</p>
+                <p class="equation-caption">Cross product</p>
+            </div>
+            
+            <h3>Curvilinear Coordinates</h3>
+            <p>Many physical problems are more naturally expressed in curvilinear coordinate systems such as cylindrical (ρ, φ, z) or spherical (r, θ, φ) coordinates.</p>
+            
+            <p>The gradient of a scalar field f in spherical coordinates is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla f = \frac{\partial f}{\partial r}\mathbf{\hat{r}} + \frac{1}{r}\frac{\partial f}{\partial \theta}\mathbf{\hat{\theta}} + \frac{1}{r\sin\theta}\frac{\partial f}{\partial \phi}\mathbf{\hat{\phi}}</p>
+                <p class="equation-caption">Gradient in spherical coordinates</p>
+            </div>
+            
+            <p>The divergence of a vector field A in spherical coordinates is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla \cdot \mathbf{A} = \frac{1}{r^2}\frac{\partial}{\partial r}(r^2 A_r) + \frac{1}{r\sin\theta}\frac{\partial}{\partial \theta}(\sin\theta A_\theta) + \frac{1}{r\sin\theta}\frac{\partial A_\phi}{\partial \phi}</p>
+                <p class="equation-caption">Divergence in spherical coordinates</p>
+            </div>
+            
+            <p>The curl of a vector field A in spherical coordinates is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla \times \mathbf{A} = \frac{1}{r\sin\theta}\left(\frac{\partial}{\partial \theta}(\sin\theta A_\phi) - \frac{\partial A_\theta}{\partial \phi}\right)\mathbf{\hat{r}} + \frac{1}{r}\left(\frac{1}{\sin\theta}\frac{\partial A_r}{\partial \phi} - \frac{\partial}{\partial r}(r A_\phi)\right)\mathbf{\hat{\theta}} + \frac{1}{r}\left(\frac{\partial}{\partial r}(r A_\theta) - \frac{\partial A_r}{\partial \theta}\right)\mathbf{\hat{\phi}}</p>
+                <p class="equation-caption">Curl in spherical coordinates</p>
+            </div>
+            
+            <h3>Tensor Analysis</h3>
+            <p>Tensors generalize the concept of scalars and vectors to higher-rank objects that transform in specific ways under coordinate transformations. A rank-2 tensor T can be represented as a matrix with components T<sub>ij</sub>.</p>
+            
+            <p>The metric tensor g<sub>ij</sub> is fundamental in defining distances in curved spaces:</p>
+            
+            <div class="equation-box">
+                <p class="equation">ds^2 = g_{ij}dx^i dx^j</p>
+                <p class="equation-caption">Line element in terms of the metric tensor</p>
+            </div>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Vector Fields</h3>
+                <p>This diagram shows a vector field representing the electric field of a point charge. The arrows indicate the direction and magnitude of the field at each point in space.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/VFPt_charges_plus_minus_thumb.svg/800px-VFPt_charges_plus_minus_thumb.svg.png" alt="Electric field vector field">
+                <p><em>Image: Vector field representation of the electric field around positive and negative charges.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 1: Gradient in Spherical Coordinates</p>
+                <p>Calculate the gradient of the function f(r, θ, φ) = r²sin²θcos²φ in spherical coordinates.</p>
+                
+                <div class="solution" id="solution1">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The gradient in spherical coordinates is given by:</p>
+                    <p>∇f = (∂f/∂r)r̂ + (1/r)(∂f/∂θ)θ̂ + (1/(r·sinθ))(∂f/∂φ)φ̂</p>
+                    
+                    <p>2. Calculate each partial derivative:</p>
+                    <p>∂f/∂r = ∂(r²sin²θcos²φ)/∂r = 2r·sin²θ·cos²φ</p>
+                    <p>∂f/∂θ = r²·∂(sin²θ)/∂θ·cos²φ = r²·2sinθcosθ·cos²φ</p>
+                    <p>∂f/∂φ = r²sin²θ·∂(cos²φ)/∂φ = r²sin²θ·(-2cosφsinφ)</p>
+                    
+                    <p>3. Substitute into the gradient formula:</p>
+                    <p>∇f = 2r·sin²θ·cos²φ·r̂ + (1/r)·r²·2sinθcosθ·cos²φ·θ̂ + (1/(r·sinθ))·r²sin²θ·(-2cosφsinφ)·φ̂</p>
+                    
+                    <p>4. Simplify:</p>
+                    <p>∇f = 2r·sin²θ·cos²φ·r̂ + 2r·sinθcosθ·cos²φ·θ̂ - 2r·sinθ·cosφsinφ·φ̂</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution1')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Differential Equations in Physics</h2>
+            <p>Differential equations are the mathematical language in which most physical laws are formulated. They describe how physical quantities change with respect to variables such as time and position.</p>
+            
+            <h3>Ordinary Differential Equations</h3>
+            <p>Ordinary differential equations (ODEs) involve derivatives with respect to a single variable. The general form of a linear second-order ODE is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">a(x)\frac{d^2y}{dx^2} + b(x)\frac{dy}{dx} + c(x)y = f(x)</p>
+                <p class="equation-caption">General linear second-order ODE</p>
+            </div>
+            
+            <p>Many important equations in physics are of this form, including the harmonic oscillator equation:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{d^2x}{dt^2} + \omega^2 x = 0</p>
+                <p class="equation-caption">Harmonic oscillator equation</p>
+            </div>
+            
+            <h3>Partial Differential Equations</h3>
+            <p>Partial differential equations (PDEs) involve derivatives with respect to multiple variables. Key examples in physics include:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla^2 \phi = 0</p>
+                <p class="equation-caption">Laplace's equation (electrostatics, gravitational potential)</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla^2 \phi = \frac{1}{c^2}\frac{\partial^2 \phi}{\partial t^2}</p>
+                <p class="equation-caption">Wave equation (electromagnetic waves, sound waves)</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">\nabla^2 \phi = \frac{1}{\alpha}\frac{\partial \phi}{\partial t}</p>
+                <p class="equation-caption">Heat equation (diffusion, thermal conduction)</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">i\hbar\frac{\partial \psi}{\partial t} = -\frac{\hbar^2}{2m}\nabla^2\psi + V\psi</p>
+                <p class="equation-caption">Schrödinger equation (quantum mechanics)</p>
+            </div>
+            
+            <h3>Boundary Value Problems</h3>
+            <p>Many physical problems involve solving differential equations subject to boundary conditions. Methods for solving such problems include:</p>
+            <ul>
+                <li><strong>Separation of variables:</strong> Assuming the solution can be written as a product of functions, each depending on a single variable.</li>
+                <li><strong>Eigenfunction expansions:</strong> Expressing the solution as a sum of eigenfunctions of a differential operator.</li>
+                <li><strong>Green's functions:</strong> Using the response to a point source to build up the solution for arbitrary sources.</li>
+            </ul>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 2: Solving the Wave Equation</p>
+                <p>Solve the one-dimensional wave equation ∂²u/∂t² = c²·∂²u/∂x² for a vibrating string of length L with fixed ends (u(0,t) = u(L,t) = 0) and initial conditions u(x,0) = sin(πx/L) and ∂u/∂t(x,0) = 0.</p>
+                
+                <div class="solution" id="solution2">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. Use separation of variables: u(x,t) = X(x)T(t)</p>
+                    <p>2. Substituting into the wave equation:</p>
+                    <p>X(x)T''(t) = c²X''(x)T(t)</p>
+                    <p>3. Dividing by X(x)T(t):</p>
+                    <p>T''(t)/T(t) = c²X''(x)/X(x) = -λ</p>
+                    <p>where λ is a separation constant.</p>
+                    
+                    <p>4. This gives two ordinary differential equations:</p>
+                    <p>X''(x) + (λ/c²)X(x) = 0</p>
+                    <p>T''(t) + λT(t) = 0</p>
+                    
+                    <p>5. The boundary conditions X(0) = X(L) = 0 lead to the eigenvalue problem for X(x).</p>
+                    <p>6. The solutions are X_n(x) = sin(nπx/L) with λ_n = (nπ/L)²c².</p>
+                    
+                    <p>7. For each λ_n, the time-dependent part is:</p>
+                    <p>T_n(t) = A_n cos(nπct/L) + B_n sin(nπct/L)</p>
+                    
+                    <p>8. The general solution is:</p>
+                    <p>u(x,t) = Σ [A_n cos(nπct/L) + B_n sin(nπct/L)] sin(nπx/L)</p>
+                    
+                    <p>9. Applying the initial condition u(x,0) = sin(πx/L):</p>
+                    <p>u(x,0) = Σ A_n sin(nπx/L) = sin(πx/L)</p>
+                    <p>This implies A_1 = 1 and A_n = 0 for n > 1.</p>
+                    
+                    <p>10. Applying the initial condition ∂u/∂t(x,0) = 0:</p>
+                    <p>∂u/∂t(x,0) = Σ B_n (nπc/L) sin(nπx/L) = 0</p>
+                    <p>This implies B_n = 0 for all n.</p>
+                    
+                    <p>11. Therefore, the solution is:</p>
+                    <p>u(x,t) = sin(πx/L) cos(πct/L)</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution2')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Complex Analysis</h2>
+            <p>Complex analysis extends calculus to the complex plane, providing powerful tools for solving integrals, differential equations, and other mathematical problems in physics.</p>
+            
+            <h3>Complex Functions</h3>
+            <p>A complex function f(z) of a complex variable z = x + iy can be written as f(z) = u(x,y) + iv(x,y), where u and v are real functions.</p>
+            
+            <p>If f(z) is analytic (holomorphic), it satisfies the Cauchy-Riemann equations:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \quad \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}</p>
+                <p class="equation-caption">Cauchy-Riemann equations</p>
+            </div>
+            
+            <h3>Contour Integration</h3>
+            <p>The contour integral of a complex function f(z) along a path C is defined as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\oint_C f(z) dz = \oint_C (u + iv)(dx + idy) = \oint_C (u dx - v dy) + i\oint_C (v dx + u dy)</p>
+                <p class="equation-caption">Contour integral</p>
+            </div>
+            
+            <p>Cauchy's integral theorem states that if f(z) is analytic inside and on a simple closed contour C, then:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\oint_C f(z) dz = 0</p>
+                <p class="equation-caption">Cauchy's integral theorem</p>
+            </div>
+            
+            <p>Cauchy's integral formula gives the value of an analytic function at a point in terms of its values on a surrounding contour:</p>
+            
+            <div class="equation-box">
+                <p class="equation">f(z_0) = \frac{1}{2\pi i} \oint_C \frac{f(z)}{z - z_0} dz</p>
+                <p class="equation-caption">Cauchy's integral formula</p>
+            </div>
+            
+            <h3>Residue Theorem</h3>
+            <p>The residue theorem is a powerful tool for evaluating complex integrals:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\oint_C f(z) dz = 2\pi i \sum_{k} \text{Res}(f, z_k)</p>
+                <p class="equation-caption">Residue theorem</p>
+            </div>
+            
+            <p>Where the sum is over all poles z<sub>k</sub> of f(z) inside the contour C, and Res(f, z<sub>k</sub>) is the residue of f at z<sub>k</sub>.</p>
+            
+            <p>For a simple pole at z = z<sub>0</sub>, the residue is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\text{Res}(f, z_0) = \lim_{z \to z_0} (z - z_0)f(z)</p>
+                <p class="equation-caption">Residue at a simple pole</p>
+            </div>
+            
+            <h3>Applications in Physics</h3>
+            <p>Complex analysis has numerous applications in physics, including:</p>
+            <ul>
+                <li><strong>Evaluating real integrals:</strong> Many definite integrals can be evaluated using contour integration and the residue theorem.</li>
+                <li><strong>Solving potential problems:</strong> Conformal mapping techniques simplify boundary value problems in electrostatics and fluid dynamics.</li>
+                <li><strong>Green's functions:</strong> Complex analysis provides tools for constructing Green's functions for differential equations.</li>
+                <li><strong>Dispersion relations:</strong> The Kramers-Kronig relations, derived from complex analysis, relate the real and imaginary parts of response functions in physical systems.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Complex Functions</h3>
+                <p>This diagram shows the complex function f(z) = z². The coloring represents the phase of the function, while the brightness indicates its magnitude.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Complex_sqrt.jpg/800px-Complex_sqrt.jpg" alt="Complex function visualization">
+                <p><em>Image: Visualization of a complex function in the complex plane.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 3: Contour Integration</p>
+                <p>Evaluate the integral ∫<sub>0</sub><sup>∞</sup> dx/(1+x²) using contour integration.</p>
+                
+                <div class="solution" id="solution3">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. Consider the complex function f(z) = 1/(1+z²).</p>
+                    <p>2. This function has poles at z = ±i.</p>
+                    <p>3. We'll use a semicircular contour in the upper half-plane, consisting of:</p>
+                    <p>- The real axis from -R to R</p>
+                    <p>- A semicircle of radius R centered at the origin, in the upper half-plane</p>
+                    
+                    <p>4. By the residue theorem:</p>
+                    <p>∮<sub>C</sub> f(z)dz = 2πi·Res(f, i)</p>
+                    
+                    <p>5. Calculate the residue at z = i:</p>
+                    <p>Res(f, i) = lim<sub>z→i</sub> (z-i)/(1+z²) = lim<sub>z→i</sub> (z-i)/((z+i)(z-i)) = 1/(2i)</p>
+                    
+                    <p>6. Therefore:</p>
+                    <p>∮<sub>C</sub> f(z)dz = 2πi·(1/(2i)) = π</p>
+                    
+                    <p>7. As R → ∞, the integral along the semicircle vanishes (can be shown using Jordan's lemma).</p>
+                    <p>8. The integral along the real axis becomes:</p>
+                    <p>∫<sub>-∞</sub><sup>∞</sup> dx/(1+x²) = π</p>
+                    
+                    <p>9. By symmetry:</p>
+                    <p>∫<sub>0</sub><sup>∞</sup> dx/(1+x²) = π/2</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution3')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Special Functions</h2>
+            <p>Special functions arise naturally in the solution of differential equations in physics and have properties that make them particularly useful for describing physical phenomena.</p>
+            
+            <h3>Bessel Functions</h3>
+            <p>Bessel functions J<sub>ν</sub>(x) are solutions to Bessel's differential equation:</p>
+            
+            <div class="equation-box">
+                <p class="equation">x^2 \frac{d^2y}{dx^2} + x \frac{dy}{dx} + (x^2 - \nu^2)y = 0</p>
+                <p class="equation-caption">Bessel's equation</p>
+            </div>
+            
+            <p>They arise in problems with cylindrical symmetry, such as vibrations of circular membranes, electromagnetic waves in cylindrical waveguides, and quantum mechanics of particles in cylindrical potentials.</p>
+            
+            <h3>Legendre Polynomials</h3>
+            <p>Legendre polynomials P<sub>l</sub>(x) are solutions to Legendre's differential equation:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{d}{dx}\left[(1-x^2)\frac{dP_l}{dx}\right] + l(l+1)P_l = 0</p>
+                <p class="equation-caption">Legendre's equation</p>
+            </div>
+            
+            <p>They are used in the solution of Laplace's equation in spherical coordinates and in the quantum theory of angular momentum.</p>
+            
+            <h3>Spherical Harmonics</h3>
+            <p>Spherical harmonics Y<sub>lm</sub>(θ,φ) are the angular part of the solution to Laplace's equation in spherical coordinates:</p>
+            
+            <div class="equation-box">
+                <p class="equation">Y_{lm}(\theta, \phi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} P_l^m(\cos\theta) e^{im\phi}</p>
+                <p class="equation-caption">Spherical harmonics</p>
+            </div>
+            
+            <p>Where P<sub>l</sub><sup>m</sup>(cosθ) are the associated Legendre functions. Spherical harmonics are essential in quantum mechanics for describing the angular dependence of atomic orbitals and in the multipole expansion of fields.</p>
+            
+            <h3>Orthogonal Polynomials</h3>
+            <p>Orthogonal polynomials satisfy orthogonality relations of the form:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\int_a^b w(x) P_n(x) P_m(x) dx = \delta_{nm}</p>
+                <p class="equation-caption">Orthogonality relation</p>
+            </div>
+            
+            <p>Where w(x) is a weight function and δ<sub>nm</sub> is the Kronecker delta. Important examples include:</p>
+            <ul>
+                <li><strong>Hermite polynomials:</strong> Used in the quantum harmonic oscillator.</li>
+                <li><strong>Laguerre polynomials:</strong> Used in the radial part of the hydrogen atom wave functions.</li>
+                <li><strong>Chebyshev polynomials:</strong> Used in approximation theory and numerical methods.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Spherical Harmonics</h3>
+                <p>This diagram shows the angular dependence of several spherical harmonics, which represent the shapes of atomic orbitals in quantum mechanics.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Rotating_spherical_harmonics.gif/440px-Rotating_spherical_harmonics.gif" alt="Spherical harmonics visualization">
+                <p><em>Image: Visualization of spherical harmonics, which describe the angular dependence of atomic orbitals.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 4: Orthogonality of Legendre Polynomials</p>
+                <p>Verify the orthogonality relation for Legendre polynomials: ∫<sub>-1</sub><sup>1</sup> P<sub>n</sub>(x)P<sub>m</sub>(x)dx = (2/(2n+1))δ<sub>nm</sub> for the cases n = 0, m = 0 and n = 1, m = 0.</p>
+                
+                <div class="solution" id="solution4">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The first few Legendre polynomials are:</p>
+                    <p>P<sub>0</sub>(x) = 1</p>
+                    <p>P<sub>1</sub>(x) = x</p>
+                    
+                    <p>2. For n = 0, m = 0:</p>
+                    <p>∫<sub>-1</sub><sup>1</sup> P<sub>0</sub>(x)P<sub>0</sub>(x)dx = ∫<sub>-1</sub><sup>1</sup> 1·1 dx = ∫<sub>-1</sub><sup>1</sup> dx = 2</p>
+                    <p>The expected result is (2/(2·0+1))δ<sub>00</sub> = 2/1 = 2, which matches our calculation.</p>
+                    
+                    <p>3. For n = 1, m = 0:</p>
+                    <p>∫<sub>-1</sub><sup>1</sup> P<sub>1</sub>(x)P<sub>0</sub>(x)dx = ∫<sub>-1</sub><sup>1</sup> x·1 dx = ∫<sub>-1</sub><sup>1</sup> x dx = [x²/2]<sub>-1</sub><sup>1</sup> = 1/2 - (-1/2) = 0</p>
+                    <p>The expected result is (2/(2·1+1))δ<sub>10</sub> = (2/3)·0 = 0, which matches our calculation.</p>
+                    
+                    <p>4. This confirms the orthogonality relation for these specific cases.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution4')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Linear Algebra and Group Theory</h2>
+            <p>Linear algebra and group theory provide the mathematical framework for understanding symmetries and transformations in physics, essential for formulating and solving problems in quantum mechanics, particle physics, and condensed matter physics.</p>
+            
+            <h3>Vector Spaces and Linear Operators</h3>
+            <p>A vector space V is a set of elements (vectors) that can be added and multiplied by scalars, satisfying certain axioms. Linear operators A: V → V are mappings that preserve the vector space structure:</p>
+            
+            <div class="equation-box">
+                <p class="equation">A(a\mathbf{u} + b\mathbf{v}) = aA\mathbf{u} + bA\mathbf{v}</p>
+                <p class="equation-caption">Linearity property</p>
+            </div>
+            
+            <p>In quantum mechanics, physical states are represented as vectors in a Hilbert space, and observables are represented as Hermitian operators.</p>
+            
+            <h3>Eigenvalues and Eigenvectors</h3>
+            <p>An eigenvector v of a linear operator A is a non-zero vector that, when acted upon by A, yields a scalar multiple of itself:</p>
+            
+            <div class="equation-box">
+                <p class="equation">A\mathbf{v} = \lambda \mathbf{v}</p>
+                <p class="equation-caption">Eigenvalue equation</p>
+            </div>
+            
+            <p>Where λ is the corresponding eigenvalue. In quantum mechanics, the eigenvalues of an observable operator represent the possible outcomes of measurements, and the eigenvectors represent the corresponding states.</p>
+            
+            <h3>Group Theory</h3>
+            <p>A group is a set G with a binary operation · that satisfies four axioms:</p>
+            <ul>
+                <li><strong>Closure:</strong> For all a, b in G, a·b is in G.</li>
+                <li><strong>Associativity:</strong> For all a, b, c in G, (a·b)·c = a·(b·c).</li>
+                <li><strong>Identity:</strong> There exists an element e in G such that e·a = a·e = a for all a in G.</li>
+                <li><strong>Inverse:</strong> For each a in G, there exists an element a<sup>-1</sup> in G such that a·a<sup>-1</sup> = a<sup>-1</sup>·a = e.</li>
+            </ul>
+            
+            <p>Groups are used to describe symmetries in physical systems. For example, the rotation group SO(3) describes the symmetry of objects under rotations in three-dimensional space.</p>
+            
+            <h3>Representation Theory</h3>
+            <p>A representation of a group G is a mapping from G to a set of linear operators on a vector space V, preserving the group structure:</p>
+            
+            <div class="equation-box">
+                <p class="equation">D(g_1 \cdot g_2) = D(g_1) D(g_2)</p>
+                <p class="equation-caption">Homomorphism property</p>
+            </div>
+            
+            <p>Representation theory is essential in quantum mechanics for understanding how symmetries constrain the possible states and transitions of physical systems.</p>
+            
+            <h3>Lie Groups and Lie Algebras</h3>
+            <p>Lie groups are continuous groups that are also differentiable manifolds. Examples include the rotation group SO(3) and the Lorentz group SO(3,1).</p>
+            
+            <p>Associated with each Lie group is a Lie algebra, which captures the structure of the group near the identity element. The commutation relations of the generators of a Lie algebra determine the structure of the corresponding Lie group.</p>
+            
+            <p>In physics, Lie groups and algebras are used to describe symmetries in field theories, particle physics, and condensed matter physics.</p>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 5: Eigenvalues and Eigenvectors</p>
+                <p>Find the eigenvalues and eigenvectors of the matrix A = [[2, 1], [1, 2]].</p>
+                
+                <div class="solution" id="solution5">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The eigenvalues λ satisfy the characteristic equation:</p>
+                    <p>det(A - λI) = 0</p>
+                    
+                    <p>2. Calculate the determinant:</p>
+                    <p>det([[2-λ, 1], [1, 2-λ]]) = (2-λ)(2-λ) - 1·1 = (2-λ)² - 1 = 0</p>
+                    
+                    <p>3. Solve for λ:</p>
+                    <p>(2-λ)² = 1</p>
+                    <p>2-λ = ±1</p>
+                    <p>λ = 2±1</p>
+                    <p>λ = 1 or λ = 3</p>
+                    
+                    <p>4. For λ = 1, find the eigenvector v₁:</p>
+                    <p>(A - I)v₁ = 0</p>
+                    <p>[[1, 1], [1, 1]]·[x, y]ᵀ = [0, 0]ᵀ</p>
+                    <p>This gives x + y = 0, so y = -x.</p>
+                    <p>Taking x = 1, we get v₁ = [1, -1]ᵀ.</p>
+                    
+                    <p>5. For λ = 3, find the eigenvector v₂:</p>
+                    <p>(A - 3I)v₂ = 0</p>
+                    <p>[[-1, 1], [1, -1]]·[x, y]ᵀ = [0, 0]ᵀ</p>
+                    <p>This gives -x + y = 0, so y = x.</p>
+                    <p>Taking x = 1, we get v₂ = [1, 1]ᵀ.</p>
+                    
+                    <p>6. Therefore, the eigenvalues are λ = 1 and λ = 3, with corresponding eigenvectors v₁ = [1, -1]ᵀ and v₂ = [1, 1]ᵀ.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution5')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Calculus of Variations</h2>
+            <p>The calculus of variations deals with finding functions that extremize (minimize or maximize) functionals, which are mappings from a space of functions to the real numbers. It is fundamental in formulating physical principles such as Hamilton's principle in mechanics and Fermat's principle in optics.</p>
+            
+            <h3>Functionals and Variations</h3>
+            <p>A functional J[y] maps a function y(x) to a real number, often expressed as an integral:</p>
+            
+            <div class="equation-box">
+                <p class="equation">J[y] = \int_{x_1}^{x_2} F(x, y, y') dx</p>
+                <p class="equation-caption">Functional as an integral</p>
+            </div>
+            
+            <p>The variation δJ of a functional J[y] due to a small change δy in the function y is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\delta J = J[y + \delta y] - J[y]</p>
+                <p class="equation-caption">Variation of a functional</p>
+            </div>
+            
+            <h3>Euler-Lagrange Equation</h3>
+            <p>The necessary condition for a function y(x) to extremize a functional J[y] = ∫F(x, y, y')dx is that it satisfies the Euler-Lagrange equation:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{\partial F}{\partial y} - \frac{d}{dx}\frac{\partial F}{\partial y'} = 0</p>
+                <p class="equation-caption">Euler-Lagrange equation</p>
+            </div>
+            
+            <h3>Applications in Physics</h3>
+            <p>The calculus of variations has numerous applications in physics:</p>
+            <ul>
+                <li><strong>Classical mechanics:</strong> Hamilton's principle states that the path taken by a mechanical system between two points is the one that extremizes the action functional S = ∫L dt, where L is the Lagrangian.</li>
+                <li><strong>Optics:</strong> Fermat's principle states that light follows the path that minimizes the travel time between two points.</li>
+                <li><strong>Field theory:</strong> The equations of motion for fields are derived from the principle of least action applied to field Lagrangians.</li>
+                <li><strong>General relativity:</strong> The Einstein field equations can be derived from the Einstein-Hilbert action.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Brachistochrone Problem</h3>
+                <p>This diagram illustrates the brachistochrone problem: finding the curve along which a particle will slide from point A to point B in the shortest time under the influence of gravity. The solution is a cycloid.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Brachistochrone.svg/800px-Brachistochrone.svg.png" alt="Brachistochrone curve">
+                <p><em>Image: The brachistochrone curve (red) compared to a straight line (blue) and a circular arc (green).</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 6: Shortest Path on a Sphere</p>
+                <p>Use the calculus of variations to find the shortest path (geodesic) between two points on the surface of a sphere.</p>
+                
+                <div class="solution" id="solution6">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. On a sphere of radius R, we can use spherical coordinates (θ, φ) where θ is the polar angle and φ is the azimuthal angle.</p>
+                    
+                    <p>2. The line element on the sphere is:</p>
+                    <p>ds² = R²dθ² + R²sin²θ dφ²</p>
+                    
+                    <p>3. The length of a curve on the sphere is:</p>
+                    <p>L = ∫ ds = ∫ √(R²dθ² + R²sin²θ dφ²) = R∫ √(dθ² + sin²θ dφ²)</p>
+                    
+                    <p>4. If we parameterize the curve by θ, we get:</p>
+                    <p>L = R∫ √(1 + sin²θ (dφ/dθ)²) dθ</p>
+                    
+                    <p>5. The integrand is F(θ, φ, φ') = √(1 + sin²θ (φ')²), where φ' = dφ/dθ.</p>
+                    
+                    <p>6. The Euler-Lagrange equation is:</p>
+                    <p>∂F/∂φ - d/dθ(∂F/∂φ') = 0</p>
+                    
+                    <p>7. Since F does not depend explicitly on φ, we have ∂F/∂φ = 0, which means:</p>
+                    <p>d/dθ(∂F/∂φ') = 0</p>
+                    <p>∂F/∂φ' = constant = C</p>
+                    
+                    <p>8. Calculate ∂F/∂φ':</p>
+                    <p>∂F/∂φ' = sin²θ·φ' / √(1 + sin²θ (φ')²)</p>
+                    
+                    <p>9. This gives:</p>
+                    <p>sin²θ·φ' / √(1 + sin²θ (φ')²) = C</p>
+                    
+                    <p>10. Solving for φ':</p>
+                    <p>φ' = C / √(sin⁴θ - C²sin²θ)</p>
+                    
+                    <p>11. This differential equation can be solved to show that the geodesics on a sphere are great circles, which are the intersections of the sphere with planes passing through the center of the sphere.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution6')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Integral Transforms</h2>
+            <p>Integral transforms convert functions from one domain to another, often simplifying the solution of differential equations and the analysis of signals.</p>
+            
+            <h3>Fourier Transform</h3>
+            <p>The Fourier transform converts a function f(x) from the spatial or time domain to the frequency domain:</p>
+            
+            <div class="equation-box">
+                <p class="equation">F(k) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} f(x) e^{-ikx} dx</p>
+                <p class="equation-caption">Fourier transform</p>
+            </div>
+            
+            <p>The inverse Fourier transform is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">f(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} F(k) e^{ikx} dk</p>
+                <p class="equation-caption">Inverse Fourier transform</p>
+            </div>
+            
+            <p>The Fourier transform is widely used in signal processing, quantum mechanics, and the solution of partial differential equations.</p>
+            
+            <h3>Laplace Transform</h3>
+            <p>The Laplace transform converts a function f(t) from the time domain to the complex frequency domain:</p>
+            
+            <div class="equation-box">
+                <p class="equation">F(s) = \int_{0}^{\infty} f(t) e^{-st} dt</p>
+                <p class="equation-caption">Laplace transform</p>
+            </div>
+            
+            <p>The inverse Laplace transform is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">f(t) = \frac{1}{2\pi i} \int_{c-i\infty}^{c+i\infty} F(s) e^{st} ds</p>
+                <p class="equation-caption">Inverse Laplace transform</p>
+            </div>
+            
+            <p>The Laplace transform is particularly useful for solving initial value problems for ordinary and partial differential equations.</p>
+            
+            <h3>Other Integral Transforms</h3>
+            <p>Other important integral transforms in physics include:</p>
+            <ul>
+                <li><strong>Mellin transform:</strong> Used in the analysis of scaling properties and in number theory.</li>
+                <li><strong>Hankel transform:</strong> A form of Fourier transform in cylindrical coordinates, involving Bessel functions.</li>
+                <li><strong>Hilbert transform:</strong> Related to the Fourier transform and used in signal processing and the analysis of analytic signals.</li>
+                <li><strong>Wavelet transform:</strong> Provides time-frequency localization, useful for analyzing non-stationary signals.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Fourier Transform</h3>
+                <p>This diagram illustrates the Fourier transform of a square pulse, showing how it decomposes into a sum of sinusoidal components.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Fourier_transform_of_rect.svg/800px-Fourier_transform_of_rect.svg.png" alt="Fourier transform of a square pulse">
+                <p><em>Image: Fourier transform of a square pulse, showing the sinc function in the frequency domain.</em></p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Numerical Methods</h2>
+            <p>Numerical methods are essential for solving complex mathematical problems in physics that do not admit analytical solutions.</p>
+            
+            <h3>Numerical Integration</h3>
+            <p>Numerical integration approximates definite integrals using methods such as:</p>
+            <ul>
+                <li><strong>Trapezoidal rule:</strong> Approximates the integral by trapezoids.</li>
+                <li><strong>Simpson's rule:</strong> Approximates the integral using parabolic arcs.</li>
+                <li><strong>Gaussian quadrature:</strong> Uses weighted sums of function values at specific points.</li>
+                <li><strong>Monte Carlo integration:</strong> Uses random sampling to estimate integrals, particularly effective for high-dimensional integrals.</li>
+            </ul>
+            
+            <h3>Numerical Solution of Differential Equations</h3>
+            <p>Methods for solving ordinary differential equations include:</p>
+            <ul>
+                <li><strong>Euler method:</strong> A simple first-order method.</li>
+                <li><strong>Runge-Kutta methods:</strong> Higher-order methods that provide better accuracy.</li>
+                <li><strong>Predictor-corrector methods:</strong> Use a prediction step followed by a correction step.</li>
+                <li><strong>Boundary value problem methods:</strong> Such as the shooting method and finite difference methods.</li>
+            </ul>
+            
+            <p>For partial differential equations, methods include:</p>
+            <ul>
+                <li><strong>Finite difference methods:</strong> Approximate derivatives using differences between function values at grid points.</li>
+                <li><strong>Finite element methods:</strong> Divide the domain into elements and approximate the solution within each element.</li>
+                <li><strong>Spectral methods:</strong> Represent the solution as a sum of basis functions.</li>
+            </ul>
+            
+            <h3>Linear Algebra Algorithms</h3>
+            <p>Numerical linear algebra is essential for many physics problems, including:</p>
+            <ul>
+                <li><strong>Solving linear systems:</strong> Using methods such as Gaussian elimination, LU decomposition, and iterative methods.</li>
+                <li><strong>Eigenvalue problems:</strong> Using methods such as the power method, QR algorithm, and Lanczos algorithm.</li>
+                <li><strong>Singular value decomposition:</strong> Used in data analysis, image processing, and quantum information theory.</li>
+            </ul>
+            
+            <h3>Optimization Methods</h3>
+            <p>Optimization methods find the minimum or maximum of functions, important in many physics problems:</p>
+            <ul>
+                <li><strong>Gradient descent:</strong> Iteratively moves in the direction of steepest descent.</li>
+                <li><strong>Newton's method:</strong> Uses second derivatives to find minima more efficiently.</li>
+                <li><strong>Simulated annealing:</strong> A probabilistic technique inspired by the annealing process in metallurgy.</li>
+                <li><strong>Genetic algorithms:</strong> Evolutionary algorithms inspired by natural selection.</li>
+            </ul>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 7: Numerical Integration</p>
+                <p>Use the trapezoidal rule with n = 4 intervals to approximate the integral ∫<sub>0</sub><sup>1</sup> e<sup>-x²</sup> dx.</p>
+                
+                <div class="solution" id="solution7">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The trapezoidal rule approximates an integral as:</p>
+                    <p>∫<sub>a</sub><sup>b</sup> f(x) dx ≈ (b-a)/2n · [f(x₀) + 2f(x₁) + 2f(x₂) + ... + 2f(x<sub>n-1</sub>) + f(x<sub>n</sub>)]</p>
+                    
+                    <p>2. For n = 4 intervals over [0, 1], the step size is h = (1-0)/4 = 0.25.</p>
+                    <p>3. The points are x₀ = 0, x₁ = 0.25, x₂ = 0.5, x₃ = 0.75, x₄ = 1.</p>
+                    
+                    <p>4. Calculate the function values:</p>
+                    <p>f(x₀) = e<sup>-0²</sup> = 1</p>
+                    <p>f(x₁) = e<sup>-0.25²</sup> = e<sup>-0.0625</sup> ≈ 0.9394</p>
+                    <p>f(x₂) = e<sup>-0.5²</sup> = e<sup>-0.25</sup> ≈ 0.7788</p>
+                    <p>f(x₃) = e<sup>-0.75²</sup> = e<sup>-0.5625</sup> ≈ 0.5698</p>
+                    <p>f(x₄) = e<sup>-1²</sup> = e<sup>-1</sup> ≈ 0.3679</p>
+                    
+                    <p>5. Apply the trapezoidal rule:</p>
+                    <p>∫<sub>0</sub><sup>1</sup> e<sup>-x²</sup> dx ≈ 0.25/2 · [1 + 2(0.9394) + 2(0.7788) + 2(0.5698) + 0.3679]</p>
+                    <p>≈ 0.125 · [1 + 1.8788 + 1.5576 + 1.1396 + 0.3679]</p>
+                    <p>≈ 0.125 · 5.9439</p>
+                    <p>≈ 0.743</p>
+                    
+                    <p>6. The exact value of the integral is √π·erf(1)/2 ≈ 0.747, so our approximation is quite accurate.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution7')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Resources</h2>
+            <h3>Authoritative Textbooks</h3>
+            <ul>
+                <li><strong>Mathematical Methods for Physicists</strong> by George B. Arfken, Hans J. Weber, and Frank E. Harris — Comprehensive reference covering a wide range of mathematical methods used in physics.</li>
+                <li><strong>Mathematical Physics</strong> by Sadri Hassani — Rigorous treatment with emphasis on the mathematical foundations of physics.</li>
+                <li><strong>Mathematical Methods in the Physical Sciences</strong> by Mary L. Boas — Excellent for building problem-solving skills, with many worked examples.</li>
+                <li><strong>Methods of Theoretical Physics</strong> by Philip M. Morse and Herman Feshbach — Classic advanced reference for mathematical methods in physics.</li>
+                <li><strong>Group Theory in Physics</strong> by J.F. Cornwell — Comprehensive treatment of group theory with applications to physics.</li>
+            </ul>
+            
+            <h3>Online Lecture Notes & Resources</h3>
+            <ul>
+                <li><a href="https://ocw.mit.edu/courses/physics/8-05-quantum-physics-ii-fall-2013/lecture-notes/" target="_blank" rel="noopener noreferrer">MIT OCW — Mathematical Formalism of Quantum Mechanics</a></li>
+                <li><a href="https://www.damtp.cam.ac.uk/user/tong/teaching.html" target="_blank" rel="noopener noreferrer">David Tong (Cambridge) — Lecture Notes on Mathematical Physics</a></li>
+                <li><a href="https://www.math.ucdavis.edu/~hunter/pdes/pdes.html" target="_blank" rel="noopener noreferrer">UC Davis — Partial Differential Equations in Physics</a></li>
+                <li><a href="https://www.physics.umd.edu/courses/Phys374/fall09/files.html" target="_blank" rel="noopener noreferrer">University of Maryland — Mathematical Methods for Physics</a></li>
+            </ul>
+            
+            <h3>Video Lectures</h3>
+            <ul>
+                <li><a href="https://www.youtube.com/playlist?list=PLF6061160B55B0203" target="_blank" rel="noopener noreferrer">MIT 18.06 Linear Algebra (Gilbert Strang)</a></li>
+                <li><a href="https://www.youtube.com/playlist?list=PLUl4u3cNGP63oMNUHXqIUcrkS2PivhN3k" target="_blank" rel="noopener noreferrer">MIT 18.03 Differential Equations</a></li>
+                <li><a href="https://www.youtube.com/playlist?list=PLMsYJgjgZE8hh6d6ia2dP1NI0BKQHpIx8" target="_blank" rel="noopener noreferrer">NPTEL — Mathematical Physics</a></li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Related Topics</h2>
+            <div class="related-topics">
+                <a href="classical_mechanics_enhanced.html" class="related-topic">Classical Mechanics</a>
+                <a href="quantum_mechanics_enhanced.html" class="related-topic">Quantum Mechanics</a>
+                <a href="elctromagnetic_theory_enhanced.html" class="related-topic">Electrodynamics</a>
+                <a href="statistical_mechanics_enhanced.html" class="related-topic">Statistical Mechanics</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-nav">
+                <a href="index.html">Home</a> |
+                <a href="classical_mechanics_enhanced.html">Classical Mechanics</a> |
+                <a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a> |
+                <a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a> |
+                <a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a> |
+                <a href="mathematical_physics_enhanced.html">Mathematical Physics</a>
+            </div>
+            <p>"Mathematics is the language in which God has written the universe." — Galileo Galilei</p>
+            <p>© 2025 Physics Refresher Course | Last Updated: May 2025</p>
+        </footer>
+    </div>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+        
+        // Convert equation content to proper MathJax format when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const equations = document.querySelectorAll('.equation');
+            equations.forEach(function(equation) {
+                // Preserve the original text
+                const originalText = equation.textContent;
+                // Replace with properly delimited math
+                equation.innerHTML = '\\[' + originalText + '\\]';
+            });
+        });
+    </script>
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            if (solution.style.display === "none" || solution.style.display === "") {
+                solution.style.display = "block";
+            } else {
+                solution.style.display = "none";
+            }
+        }
+        
+        // Hide all solutions initially
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutions = document.querySelectorAll('.solution');
+            solutions.forEach(function(solution) {
+                solution.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

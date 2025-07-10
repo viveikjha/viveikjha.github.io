@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Basic Astrophysics — Physics Refresher Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            position: relative;
+            color: #2c1810;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.02) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="35" r="0.5" fill="%23d4af8c" opacity="0.4"/><circle cx="80" cy="65" r="0.3" fill="%23c19a6b" opacity="0.3"/><circle cx="45" cy="80" r="0.4" fill="%23b8935f" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #2c1810;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: #2c1810;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B4513;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        nav a.active {
+            color: #2c1810;
+            border-bottom: 2px solid #8B4513;
+        }
+
+        /* Main Content */
+        .content-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            color: #2c1810;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+        }
+
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.4rem;
+            color: #2c1810;
+            margin: 1.5rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Equation Styles */
+        .equation-box {
+            background: rgba(255, 252, 249, 0.9);
+            border-left: 4px solid #8B4513;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .equation {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .equation-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Interactive Elements */
+        .interactive-element {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .interactive-element img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Practice Problems */
+        .problem {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .problem-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+        }
+
+        .solution {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ddd;
+        }
+
+        .solution-toggle {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-family: 'Crimson Text', Georgia, serif;
+        }
+
+        /* Related Topics */
+        .related-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .related-topic {
+            background: rgba(255, 252, 249, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #8B4513;
+            transition: all 0.3s ease;
+        }
+
+        .related-topic:hover {
+            background: rgba(139, 69, 19, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(139, 69, 19, 0.1);
+            font-style: italic;
+            color: #8B4513;
+        }
+
+        .footer-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav a {
+            color: #8B4513;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Physics Refresher Course</h1>
+            <h2 class="page-title">Basic Astrophysics</h2>
+            <p class="subtitle">The fundamental principles and methods for understanding celestial objects and the universe, from stars and planets to galaxies and cosmology.</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="classical_mechanics_enhanced.html">Classical Mechanics</a></li>
+                <li><a href="radiative_transfer_enhanced.html">Radiative Transfer</a></li>
+                <li><a href="basic_astrophysics_enhanced.html" class="active">Basic Astrophysics</a></li>
+                <li><a href="galaxy_evolution_enhanced.html">Galaxy Evolution</a></li>
+                <li><a href="agn_physics_enhanced.html">AGN Physics</a></li>
+            </ul>
+        </nav>
+
+        <section class="content-section">
+            <h2>Introduction to Astrophysics</h2>
+            <p>Astrophysics is the branch of astronomy that employs the principles of physics and chemistry to understand the nature of celestial objects and their interactions. It seeks to explain the birth, life, and death of stars, the formation of planetary systems, the structure and evolution of galaxies, and the origin and fate of the universe itself. Unlike other branches of physics, astrophysics is primarily observational rather than experimental, as the objects of study are typically too distant, massive, energetic, or ancient to be replicated in laboratories.</p>
+            
+            <p>The historical development of astrophysics began in the 19th century with the application of spectroscopy to astronomical observations, allowing scientists to determine the chemical composition of stars. The 20th century saw revolutionary advances with the development of quantum mechanics, nuclear physics, and general relativity, which provided the theoretical framework for understanding stellar structure, nucleosynthesis, and cosmology. The advent of multi-wavelength astronomy—extending observations beyond the visible spectrum to radio, infrared, ultraviolet, X-ray, and gamma-ray wavelengths—has dramatically expanded our understanding of astrophysical phenomena.</p>
+            
+            <p>This module follows the comprehensive approach of Carroll and Ostlie, complemented by the physical insights of Shu and the observational perspective of Kutner, to provide a thorough grounding in the fundamental principles and methods of astrophysics. We will explore the physical processes that govern celestial objects across all scales, from planetary systems to the observable universe, emphasizing both theoretical understanding and observational evidence.</p>
+        </section>
+
+        <section class="content-section">
+            <h2>Observational Techniques and Astronomical Measurements</h2>
+            <p>Astronomical observations form the empirical foundation of astrophysics, providing the data that theories must explain and predict. Modern observational astronomy employs a wide range of techniques across the electromagnetic spectrum and beyond.</p>
+            
+            <h3>Telescopes and Detectors</h3>
+            <p>Telescopes are the primary instruments for astronomical observations, designed to collect and focus electromagnetic radiation. The two main types are:</p>
+            <ul>
+                <li><strong>Refracting telescopes:</strong> Use lenses to focus light.</li>
+                <li><strong>Reflecting telescopes:</strong> Use mirrors to focus light, avoiding chromatic aberration and allowing for larger apertures.</li>
+            </ul>
+            
+            <p>The resolving power of a telescope—its ability to distinguish between closely spaced objects—is limited by diffraction and is proportional to the ratio of wavelength to aperture diameter:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\theta = 1.22 \frac{\lambda}{D}</p>
+                <p class="equation-caption">Angular resolution (in radians) for a circular aperture, where λ is the wavelength and D is the aperture diameter</p>
+            </div>
+            
+            <p>Modern astronomical detectors include:</p>
+            <ul>
+                <li><strong>Charge-coupled devices (CCDs):</strong> Silicon-based detectors with high quantum efficiency and linear response, used in optical and near-infrared astronomy.</li>
+                <li><strong>Photomultiplier tubes:</strong> Sensitive detectors for low-light applications.</li>
+                <li><strong>Bolometers:</strong> Thermal detectors used primarily in infrared and submillimeter astronomy.</li>
+                <li><strong>Radio receivers:</strong> Used to detect radio waves, often in interferometric arrays for high resolution.</li>
+            </ul>
+            
+            <h3>Multi-wavelength Astronomy</h3>
+            <p>Different wavelength regimes provide complementary information about astrophysical objects and processes:</p>
+            <ul>
+                <li><strong>Radio (λ > 1 mm):</strong> Reveals non-thermal emission from active galaxies, pulsars, and the cosmic microwave background.</li>
+                <li><strong>Infrared (1 μm - 1 mm):</strong> Penetrates dust clouds, revealing star formation regions, cool stars, and distant galaxies.</li>
+                <li><strong>Optical (400 - 700 nm):</strong> The traditional window for astronomy, showing stars, galaxies, and nebulae.</li>
+                <li><strong>Ultraviolet (10 - 400 nm):</strong> Traces hot stars, active galactic nuclei, and the intergalactic medium.</li>
+                <li><strong>X-ray (0.01 - 10 nm):</strong> Reveals high-energy phenomena like accreting black holes, supernova remnants, and the hot intracluster medium.</li>
+                <li><strong>Gamma-ray (λ < 0.01 nm):</strong> Shows the most energetic processes in the universe, including gamma-ray bursts and active galactic nuclei.</li>
+            </ul>
+            
+            <h3>Astronomical Measurements</h3>
+            <p>Key measurements in observational astronomy include:</p>
+            <ul>
+                <li><strong>Flux and luminosity:</strong> The apparent brightness (flux) and intrinsic brightness (luminosity) of celestial objects.</li>
+                <li><strong>Spectroscopy:</strong> Analysis of the spectrum of light from an object, revealing its composition, temperature, density, and motion.</li>
+                <li><strong>Photometry:</strong> Precise measurement of brightness, often in multiple wavelength bands.</li>
+                <li><strong>Astrometry:</strong> Measurement of positions and motions of celestial objects.</li>
+                <li><strong>Polarimetry:</strong> Measurement of the polarization of light, revealing magnetic fields and scattering processes.</li>
+                <li><strong>Interferometry:</strong> Combining light from multiple telescopes to achieve higher angular resolution.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: The Electromagnetic Spectrum in Astronomy</h3>
+                <p>This diagram shows the electromagnetic spectrum and the types of astronomical objects and phenomena observed in different wavelength regimes.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/EM_Spectrum_Properties_edit.svg/800px-EM_Spectrum_Properties_edit.svg.png" alt="Electromagnetic spectrum in astronomy">
+                <p><em>Image: The electromagnetic spectrum, showing the wavelength ranges and corresponding astronomical observations.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 1: Telescope Resolution</p>
+                <p>The Hubble Space Telescope has a primary mirror with a diameter of 2.4 meters. What is its angular resolution in arcseconds at a wavelength of 500 nm (visible light)? How does this compare to the resolution of the James Webb Space Telescope (JWST), which has a primary mirror with an effective diameter of 6.5 meters and operates primarily in the infrared (at 2 μm)?</p>
+                
+                <div class="solution" id="solution1">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The angular resolution of a telescope is given by θ = 1.22λ/D, where θ is in radians, λ is the wavelength, and D is the aperture diameter.</p>
+                    
+                    <p>2. For the Hubble Space Telescope:</p>
+                    <p>λ = 500 nm = 5 × 10⁻⁷ m</p>
+                    <p>D = 2.4 m</p>
+                    <p>θ = 1.22 × (5 × 10⁻⁷ m) / (2.4 m) = 2.54 × 10⁻⁷ radians</p>
+                    
+                    <p>3. Convert to arcseconds (1 radian = 206,265 arcseconds):</p>
+                    <p>θ = 2.54 × 10⁻⁷ × 206,265 = 0.052 arcseconds</p>
+                    
+                    <p>4. For the James Webb Space Telescope:</p>
+                    <p>λ = 2 μm = 2 × 10⁻⁶ m</p>
+                    <p>D = 6.5 m</p>
+                    <p>θ = 1.22 × (2 × 10⁻⁶ m) / (6.5 m) = 3.75 × 10⁻⁷ radians</p>
+                    
+                    <p>5. Convert to arcseconds:</p>
+                    <p>θ = 3.75 × 10⁻⁷ × 206,265 = 0.077 arcseconds</p>
+                    
+                    <p>6. Comparison: Despite JWST's larger mirror, its angular resolution at its primary operating wavelength (infrared) is slightly worse than Hubble's in visible light. This is because resolution is proportional to wavelength, and infrared wavelengths are longer than visible wavelengths. However, JWST's larger mirror partially compensates for this effect, and its resolution in the infrared is far better than what Hubble can achieve at those wavelengths.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution1')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Stellar Astrophysics</h2>
+            <p>Stars are the fundamental building blocks of galaxies and the primary sites of nucleosynthesis, creating the elements heavier than hydrogen and helium. Understanding stellar structure, evolution, and populations is central to astrophysics.</p>
+            
+            <h3>Stellar Properties and Classification</h3>
+            <p>Stars are characterized by several observable properties:</p>
+            <ul>
+                <li><strong>Luminosity (L):</strong> The total energy emitted per unit time, typically expressed in solar luminosities (L<sub>☉</sub> = 3.828 × 10³³ erg/s).</li>
+                <li><strong>Effective temperature (T<sub>eff</sub>):</strong> The temperature of a blackbody with the same radius and luminosity as the star.</li>
+                <li><strong>Radius (R):</strong> Typically expressed in solar radii (R<sub>☉</sub> = 6.957 × 10¹⁰ cm).</li>
+                <li><strong>Mass (M):</strong> Typically expressed in solar masses (M<sub>☉</sub> = 1.989 × 10³³ g).</li>
+                <li><strong>Surface gravity (g):</strong> Determined by the mass and radius: g = GM/R².</li>
+                <li><strong>Chemical composition:</strong> Usually expressed in terms of the mass fractions of hydrogen (X), helium (Y), and metals (Z, elements heavier than helium).</li>
+            </ul>
+            
+            <p>The Hertzsprung-Russell (H-R) diagram is a plot of stellar luminosity versus effective temperature (or spectral type), revealing distinct populations of stars:</p>
+            <ul>
+                <li><strong>Main sequence:</strong> Stars in hydrostatic and thermal equilibrium, fusing hydrogen in their cores.</li>
+                <li><strong>Giants and supergiants:</strong> Evolved stars with expanded envelopes, fusing heavier elements.</li>
+                <li><strong>White dwarfs:</strong> Compact stellar remnants supported by electron degeneracy pressure.</li>
+            </ul>
+            
+            <h3>Stellar Structure and Energy Transport</h3>
+            <p>The structure of a star is determined by four fundamental equations:</p>
+            <ul>
+                <li><strong>Hydrostatic equilibrium:</strong> The balance between gravity and pressure gradients.</li>
+                <li><strong>Mass conservation:</strong> The relationship between density and enclosed mass.</li>
+                <li><strong>Energy transport:</strong> The mechanisms by which energy flows from the core to the surface (radiation, convection, or conduction).</li>
+                <li><strong>Energy generation:</strong> The nuclear reactions that power the star.</li>
+            </ul>
+            
+            <p>The equation of hydrostatic equilibrium is:</p>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{dP}{dr} = -\frac{GM(r)\rho(r)}{r^2}</p>
+                <p class="equation-caption">Hydrostatic equilibrium equation, where P is pressure, r is radius, G is the gravitational constant, M(r) is the mass enclosed within radius r, and ρ(r) is the density at radius r</p>
+            </div>
+            
+            <p>Energy transport in stars occurs through three mechanisms:</p>
+            <ul>
+                <li><strong>Radiative transport:</strong> Energy is carried by photons diffusing outward. This is the dominant mechanism in the interiors of high-mass stars.</li>
+                <li><strong>Convective transport:</strong> Energy is carried by the bulk motion of plasma. This is important in the outer layers of low-mass stars and the cores of high-mass stars.</li>
+                <li><strong>Conductive transport:</strong> Energy is carried by electrons. This is significant only in degenerate stellar cores, such as white dwarfs.</li>
+            </ul>
+            
+            <h3>Stellar Evolution</h3>
+            <p>Stars evolve through several distinct phases, determined primarily by their initial mass:</p>
+            <ul>
+                <li><strong>Protostellar phase:</strong> Gravitational collapse of a molecular cloud core, leading to the formation of a protostar surrounded by an accretion disk.</li>
+                <li><strong>Pre-main sequence:</strong> Contraction phase before hydrogen fusion begins, characterized by deuterium burning and Hayashi/Henyey tracks on the H-R diagram.</li>
+                <li><strong>Main sequence:</strong> The longest phase of stellar evolution, during which hydrogen is fused into helium in the core. The main sequence lifetime is inversely proportional to the stellar mass: t<sub>MS</sub> ∝ M<sup>-2.5</sup>.</li>
+                <li><strong>Post-main sequence:</strong> After core hydrogen depletion, stars evolve off the main sequence. Low- and intermediate-mass stars (M < 8 M<sub>☉</sub>) become red giants, undergo helium flash, fuse helium in their cores, and eventually lose their envelopes to form white dwarfs.</li>
+                <li><strong>High-mass stars (M > 8 M<sub>☉</sub>):</strong> Proceed through successive stages of nuclear fusion (hydrogen, helium, carbon, neon, oxygen, silicon) until they develop iron cores, which collapse to form neutron stars or black holes in supernova explosions.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Hertzsprung-Russell Diagram</h3>
+                <p>This diagram shows the relationship between stellar luminosity, temperature, and evolutionary state. The main sequence runs diagonally from the upper left (hot, luminous stars) to the lower right (cool, dim stars).</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/HRDiagram.png/800px-HRDiagram.png" alt="Hertzsprung-Russell diagram">
+                <p><em>Image: Hertzsprung-Russell diagram showing the main sequence, giants, supergiants, and white dwarfs.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 2: Stellar Luminosity and Radius</p>
+                <p>A star has an effective temperature of 4000 K and a radius of 50 R<sub>☉</sub>. Calculate its luminosity in solar units. If this star is a red giant that evolved from a main sequence star with the same mass as the Sun, estimate how much its radius has increased during its evolution.</p>
+                
+                <div class="solution" id="solution2">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The luminosity of a star is related to its radius and effective temperature by the Stefan-Boltzmann law:</p>
+                    <p>L = 4πR²σT<sup>4</sup></p>
+                    <p>where σ is the Stefan-Boltzmann constant.</p>
+                    
+                    <p>2. To find the luminosity in solar units, we can use the ratio:</p>
+                    <p>L/L<sub>☉</sub> = (R/R<sub>☉</sub>)² × (T/T<sub>☉</sub>)<sup>4</sup></p>
+                    <p>where T<sub>☉</sub> = 5778 K is the effective temperature of the Sun.</p>
+                    
+                    <p>3. Substitute the values:</p>
+                    <p>L/L<sub>☉</sub> = (50)² × (4000/5778)<sup>4</sup></p>
+                    <p>L/L<sub>☉</sub> = 2500 × (0.692)<sup>4</sup></p>
+                    <p>L/L<sub>☉</sub> = 2500 × 0.229</p>
+                    <p>L/L<sub>☉</sub> = 573</p>
+                    
+                    <p>4. The star's luminosity is about 573 times that of the Sun.</p>
+                    
+                    <p>5. To estimate the radius increase, we need to know the main sequence radius of a 1 M<sub>☉</sub> star, which is approximately 1 R<sub>☉</sub> (the Sun's radius).</p>
+                    
+                    <p>6. The radius has increased by a factor of:</p>
+                    <p>R<sub>giant</sub>/R<sub>MS</sub> = 50 R<sub>☉</sub>/1 R<sub>☉</sub> = 50</p>
+                    
+                    <p>7. Therefore, the star's radius has increased by a factor of 50 during its evolution from the main sequence to the red giant phase.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution2')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Galactic and Extragalactic Astrophysics</h2>
+            <p>Galaxies are vast systems of stars, gas, dust, and dark matter, held together by gravity. They are the fundamental building blocks of the large-scale structure of the universe.</p>
+            
+            <h3>Galactic Structure and Components</h3>
+            <p>Galaxies are classified into several morphological types:</p>
+            <ul>
+                <li><strong>Elliptical galaxies (E0-E7):</strong> Smooth, featureless systems with little gas and dust, containing primarily old stars.</li>
+                <li><strong>Spiral galaxies (Sa-Sd):</strong> Disk systems with spiral arms, containing gas, dust, and both young and old stellar populations.</li>
+                <li><strong>Lenticular galaxies (S0):</strong> Intermediate between elliptical and spiral galaxies, with a disk but no spiral arms.</li>
+                <li><strong>Irregular galaxies (Irr):</strong> Systems with no regular structure, often showing signs of recent star formation.</li>
+            </ul>
+            
+            <p>The Milky Way is a barred spiral galaxy (SBbc) with several distinct components:</p>
+            <ul>
+                <li><strong>Disk:</strong> A thin, rotating structure containing most of the galaxy's gas, dust, and young stars. The disk has a scale height of about 300 pc and a scale length of about 3 kpc.</li>
+                <li><strong>Bulge:</strong> A spheroidal component at the center of the galaxy, containing primarily old stars.</li>
+                <li><strong>Halo:</strong> A roughly spherical component extending far beyond the disk, containing old stars, globular clusters, and dark matter.</li>
+                <li><strong>Bar:</strong> An elongated structure of stars in the central region of the galaxy.</li>
+                <li><strong>Spiral arms:</strong> Regions of enhanced star formation, traced by young stars, HII regions, and molecular clouds.</li>
+            </ul>
+            
+            <h3>Galaxy Formation and Evolution</h3>
+            <p>Galaxies form and evolve through a combination of processes:</p>
+            <ul>
+                <li><strong>Hierarchical clustering:</strong> Small structures form first and merge to create larger structures, consistent with the ΛCDM cosmological model.</li>
+                <li><strong>Gas accretion:</strong> Galaxies acquire gas from the intergalactic medium, fueling star formation.</li>
+                <li><strong>Star formation:</strong> The conversion of gas into stars, regulated by feedback processes from supernovae and active galactic nuclei.</li>
+                <li><strong>Mergers and interactions:</strong> Collisions between galaxies, which can trigger starbursts, morphological transformations, and the growth of supermassive black holes.</li>
+                <li><strong>Environmental effects:</strong> Processes like ram pressure stripping, tidal interactions, and strangulation, which affect galaxies in dense environments like clusters.</li>
+            </ul>
+            
+            <h3>Active Galactic Nuclei</h3>
+            <p>Active galactic nuclei (AGN) are extremely luminous central regions of galaxies, powered by accretion onto supermassive black holes. Types of AGN include:</p>
+            <ul>
+                <li><strong>Seyfert galaxies:</strong> Spiral galaxies with bright, point-like nuclei showing broad emission lines.</li>
+                <li><strong>Radio galaxies:</strong> Elliptical galaxies with powerful radio jets.</li>
+                <li><strong>Quasars and QSOs:</strong> The most luminous AGN, often outshining their host galaxies.</li>
+                <li><strong>Blazars:</strong> AGN with jets pointed directly at the observer, showing rapid variability and high polarization.</li>
+            </ul>
+            
+            <p>The unified model of AGN proposes that these different types are intrinsically similar but appear different due to viewing angle and the presence or absence of a dusty torus that can obscure the central engine.</p>
+            
+            <h3>Galaxy Clusters and Large-Scale Structure</h3>
+            <p>Galaxies are not distributed randomly in the universe but form a cosmic web of filaments, sheets, and voids. Galaxy clusters are the largest gravitationally bound structures, containing hundreds to thousands of galaxies and hot, X-ray-emitting gas (the intracluster medium). The properties of galaxy clusters provide important constraints on cosmological models and the nature of dark matter.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Galaxy Classification</h3>
+                <p>This diagram shows the Hubble sequence of galaxy morphologies, from elliptical galaxies (left) to spiral and barred spiral galaxies (right).</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Hubble_sequence_photo.png/800px-Hubble_sequence_photo.png" alt="Hubble sequence of galaxy morphologies">
+                <p><em>Image: The Hubble sequence of galaxy morphologies, showing the progression from elliptical to spiral galaxies.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 3: Galaxy Rotation Curve</p>
+                <p>A spiral galaxy has a rotation curve that remains flat at 220 km/s beyond a radius of 5 kpc. Assuming the galaxy's mass distribution can be approximated as spherically symmetric, calculate the mass enclosed within 20 kpc. What does this imply about the presence of dark matter in the galaxy?</p>
+                
+                <div class="solution" id="solution3">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. For a test particle in a circular orbit around a spherically symmetric mass distribution, the orbital velocity is related to the enclosed mass by:</p>
+                    <p>v² = GM(r)/r</p>
+                    <p>where v is the orbital velocity, G is the gravitational constant, M(r) is the mass enclosed within radius r, and r is the orbital radius.</p>
+                    
+                    <p>2. Solving for the enclosed mass:</p>
+                    <p>M(r) = v²r/G</p>
+                    
+                    <p>3. Substitute the values:</p>
+                    <p>v = 220 km/s = 2.2 × 10⁵ m/s</p>
+                    <p>r = 20 kpc = 6.17 × 10²⁰ m</p>
+                    <p>G = 6.67 × 10⁻¹¹ m³ kg⁻¹ s⁻²</p>
+                    
+                    <p>4. Calculate the enclosed mass:</p>
+                    <p>M(20 kpc) = (2.2 × 10⁵)² × (6.17 × 10²⁰) / (6.67 × 10⁻¹¹)</p>
+                    <p>M(20 kpc) = 4.84 × 10⁴⁰ / (6.67 × 10⁻¹¹)</p>
+                    <p>M(20 kpc) = 7.26 × 10⁵⁰ kg</p>
+                    
+                    <p>5. Convert to solar masses (1 M<sub>☉</sub> = 1.99 × 10³⁰ kg):</p>
+                    <p>M(20 kpc) = 7.26 × 10⁵⁰ / (1.99 × 10³⁰) = 3.65 × 10²⁰ M<sub>☉</sub></p>
+                    
+                    <p>6. This is a more practical unit: M(20 kpc) ≈ 3.65 × 10¹¹ M<sub>☉</sub></p>
+                    
+                    <p>7. Implications for dark matter: If the galaxy's mass were dominated by visible matter (stars and gas), we would expect the rotation curve to decline with radius beyond the visible disk (Keplerian decline, v ∝ r⁻¹/²). The flat rotation curve implies that the mass continues to increase linearly with radius (M(r) ∝ r), which is consistent with the presence of a dark matter halo extending well beyond the visible disk of the galaxy.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution3')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Cosmology</h2>
+            <p>Cosmology is the study of the origin, evolution, and structure of the universe as a whole. Modern cosmology is based on Einstein's theory of general relativity and is supported by a wealth of observational evidence.</p>
+            
+            <h3>The Expanding Universe</h3>
+            <p>The expansion of the universe was discovered by Edwin Hubble in 1929, who observed that distant galaxies are receding from us with velocities proportional to their distances. This relationship, known as Hubble's law, is expressed as:</p>
+            
+            <div class="equation-box">
+                <p class="equation">v = H_0 d</p>
+                <p class="equation-caption">Hubble's law, where v is the recession velocity, d is the distance, and H₀ is the Hubble constant</p>
+            </div>
+            
+            <p>The current best estimate of the Hubble constant is H₀ = 67.4 ± 0.5 km/s/Mpc from the Planck satellite measurements of the cosmic microwave background, although there is tension with local measurements that give higher values.</p>
+            
+            <p>The expansion of the universe is described by the scale factor a(t), which relates physical distances at time t to those at the present time t₀: d(t) = a(t) × d(t₀). The scale factor is normalized so that a(t₀) = 1.</p>
+            
+            <h3>The Friedmann Equations</h3>
+            <p>The dynamics of the expanding universe are governed by the Friedmann equations, derived from Einstein's field equations of general relativity for a homogeneous and isotropic universe (the cosmological principle):</p>
+            
+            <div class="equation-box">
+                <p class="equation">\left(\frac{\dot{a}}{a}\right)^2 = \frac{8\pi G}{3}\rho - \frac{kc^2}{a^2} + \frac{\Lambda c^2}{3}</p>
+                <p class="equation-caption">First Friedmann equation, where ȧ is the time derivative of the scale factor, ρ is the energy density, k is the curvature parameter, and Λ is the cosmological constant</p>
+            </div>
+            
+            <div class="equation-box">
+                <p class="equation">\frac{\ddot{a}}{a} = -\frac{4\pi G}{3}\left(\rho + \frac{3p}{c^2}\right) + \frac{\Lambda c^2}{3}</p>
+                <p class="equation-caption">Second Friedmann equation, where ä is the second time derivative of the scale factor and p is the pressure</p>
+            </div>
+            
+            <p>The evolution of the universe depends on the relative contributions of different components to the total energy density:</p>
+            <ul>
+                <li><strong>Matter (baryonic and dark):</strong> ρ<sub>m</sub> ∝ a⁻³, as the number density of particles decreases with the expanding volume.</li>
+                <li><strong>Radiation:</strong> ρ<sub>r</sub> ∝ a⁻⁴, due to both the decreasing number density and the redshifting of photon energies.</li>
+                <li><strong>Dark energy:</strong> ρ<sub>Λ</sub> = constant, if it is a cosmological constant.</li>
+                <li><strong>Curvature:</strong> ρ<sub>k</sub> ∝ a⁻², representing the contribution of spatial curvature to the dynamics.</li>
+            </ul>
+            
+            <h3>The ΛCDM Model</h3>
+            <p>The Lambda Cold Dark Matter (ΛCDM) model is the current standard model of cosmology, which includes:</p>
+            <ul>
+                <li><strong>Dark energy (Λ):</strong> A component with negative pressure that accelerates the expansion of the universe, constituting about 68% of the total energy density.</li>
+                <li><strong>Cold dark matter (CDM):</strong> Non-baryonic matter that interacts only gravitationally, constituting about 27% of the total energy density.</li>
+                <li><strong>Baryonic matter:</strong> Ordinary matter made of protons, neutrons, and electrons, constituting about 5% of the total energy density.</li>
+                <li><strong>Radiation:</strong> Photons and neutrinos, constituting a negligible fraction of the total energy density today but dominant in the early universe.</li>
+                <li><strong>Flat spatial geometry:</strong> The total energy density is equal to the critical density, resulting in a flat (Euclidean) spatial geometry.</li>
+            </ul>
+            
+            <p>The ΛCDM model successfully explains a wide range of observations, including the cosmic microwave background, the large-scale structure of the universe, the abundance of light elements, and the accelerating expansion of the universe.</p>
+            
+            <h3>The Early Universe and Big Bang Nucleosynthesis</h3>
+            <p>The early universe was hot and dense, with the temperature decreasing as the universe expanded. Key epochs in the early universe include:</p>
+            <ul>
+                <li><strong>Planck epoch (t < 10⁻⁴³ s):</strong> Quantum gravity effects are important, and our current physics breaks down.</li>
+                <li><strong>Grand unification epoch (10⁻⁴³ s < t < 10⁻³⁶ s):</strong> The strong, weak, and electromagnetic forces are unified.</li>
+                <li><strong>Electroweak epoch (10⁻³⁶ s < t < 10⁻¹² s):</strong> The electromagnetic and weak forces are unified.</li>
+                <li><strong>Quark epoch (10⁻¹² s < t < 10⁻⁶ s):</strong> Quarks and gluons form a quark-gluon plasma.</li>
+                <li><strong>Hadron epoch (10⁻⁶ s < t < 1 s):</strong> Quarks combine to form hadrons (protons and neutrons).</li>
+                <li><strong>Lepton epoch (1 s < t < 10 s):</strong> Leptons (electrons, positrons, neutrinos) dominate the energy density.</li>
+                <li><strong>Nucleosynthesis (10 s < t < 20 minutes):</strong> Protons and neutrons combine to form light nuclei (deuterium, helium, lithium).</li>
+                <li><strong>Recombination (t ≈ 380,000 years):</strong> Electrons combine with nuclei to form neutral atoms, and the universe becomes transparent to radiation, releasing the cosmic microwave background.</li>
+            </ul>
+            
+            <p>Big Bang nucleosynthesis (BBN) is the production of light elements in the early universe, which depends sensitively on the baryon-to-photon ratio. The observed abundances of deuterium, helium-3, helium-4, and lithium-7 provide strong evidence for the Big Bang model and constrain the baryon density of the universe.</p>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Cosmic Timeline</h3>
+                <p>This diagram shows the evolution of the universe from the Big Bang to the present day, highlighting key epochs and transitions.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/CMB_Timeline300_no_WMAP.jpg/800px-CMB_Timeline300_no_WMAP.jpg" alt="Cosmic timeline">
+                <p><em>Image: Timeline of the universe, from the Big Bang to the present day.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 4: Cosmic Redshift and Distance</p>
+                <p>A distant galaxy is observed to have a redshift z = 0.5. Calculate the recession velocity of this galaxy (assuming it is due entirely to the Hubble flow). If the Hubble constant is H₀ = 70 km/s/Mpc, what is the distance to this galaxy? How does this distance compare to the particle horizon (the maximum distance from which light could have reached us since the Big Bang)?</p>
+                
+                <div class="solution" id="solution4">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The redshift z is related to the recession velocity v by the relativistic Doppler formula:</p>
+                    <p>1 + z = √[(1 + v/c)/(1 - v/c)]</p>
+                    
+                    <p>2. Solving for v:</p>
+                    <p>(1 + z)² = (1 + v/c)/(1 - v/c)</p>
+                    <p>(1 + z)²(1 - v/c) = 1 + v/c</p>
+                    <p>(1 + z)² - (1 + z)²(v/c) = 1 + v/c</p>
+                    <p>(1 + z)² - 1 = v/c[(1 + z)² + 1]</p>
+                    <p>v/c = [(1 + z)² - 1]/[(1 + z)² + 1]</p>
+                    
+                    <p>3. Substitute z = 0.5:</p>
+                    <p>v/c = [(1 + 0.5)² - 1]/[(1 + 0.5)² + 1]</p>
+                    <p>v/c = [2.25 - 1]/[2.25 + 1]</p>
+                    <p>v/c = 1.25/3.25 = 0.385</p>
+                    
+                    <p>4. Convert to km/s:</p>
+                    <p>v = 0.385 × c = 0.385 × 3 × 10⁵ km/s = 1.15 × 10⁵ km/s</p>
+                    
+                    <p>5. For small redshifts (z << 1), the distance is simply d = cz/H₀, but for z = 0.5, we need to account for the expansion history of the universe. In a flat ΛCDM universe, the proper distance is:</p>
+                    <p>d = (c/H₀) ∫<sub>0</sub><sup>z</sup> dz'/√[Ω<sub>m</sub>(1+z')³ + Ω<sub>Λ</sub>]</p>
+                    
+                    <p>6. For a rough estimate, assuming Ω<sub>m</sub> = 0.3 and Ω<sub>Λ</sub> = 0.7 (standard ΛCDM parameters), the integral can be approximated as:</p>
+                    <p>d ≈ (c/H₀) × 0.5 × 1.2 = 0.6c/H₀</p>
+                    
+                    <p>7. Substitute H₀ = 70 km/s/Mpc:</p>
+                    <p>d ≈ 0.6 × 3 × 10⁵ km/s / (70 km/s/Mpc) ≈ 2570 Mpc ≈ 8.4 × 10⁹ light-years</p>
+                    
+                    <p>8. The particle horizon in a flat ΛCDM universe is approximately 46 billion light-years. Therefore, the distance to this galaxy (8.4 billion light-years) is about 18% of the particle horizon.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution4')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Planetary Systems</h2>
+            <p>Planetary systems consist of planets, dwarf planets, moons, asteroids, comets, and other small bodies orbiting a central star. The study of planetary systems encompasses both our own Solar System and the thousands of exoplanetary systems discovered around other stars.</p>
+            
+            <h3>The Solar System</h3>
+            <p>Our Solar System consists of the Sun, eight planets, numerous dwarf planets, moons, and smaller bodies. The planets are divided into two main categories:</p>
+            <ul>
+                <li><strong>Terrestrial planets (Mercury, Venus, Earth, Mars):</strong> Small, rocky worlds with relatively high densities, located in the inner Solar System.</li>
+                <li><strong>Giant planets:</strong>
+                    <ul>
+                        <li><strong>Gas giants (Jupiter, Saturn):</strong> Large planets composed primarily of hydrogen and helium, with extensive systems of rings and moons.</li>
+                        <li><strong>Ice giants (Uranus, Neptune):</strong> Intermediate-sized planets with substantial amounts of ices (water, ammonia, methane) in addition to hydrogen and helium.</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <p>The Solar System also includes the asteroid belt between Mars and Jupiter, the Kuiper Belt beyond Neptune, and the Oort Cloud at the outer edge of the Solar System.</p>
+            
+            <h3>Exoplanetary Systems</h3>
+            <p>Exoplanets are planets orbiting stars other than the Sun. Over 5,000 exoplanets have been confirmed, with thousands more candidates awaiting confirmation. Detection methods include:</p>
+            <ul>
+                <li><strong>Radial velocity:</strong> Detecting the Doppler shift in the star's spectrum caused by the gravitational pull of an orbiting planet.</li>
+                <li><strong>Transit:</strong> Observing the slight dimming of a star as a planet passes in front of it.</li>
+                <li><strong>Direct imaging:</strong> Directly observing the planet's light, separated from the much brighter star.</li>
+                <li><strong>Gravitational microlensing:</strong> Detecting the gravitational lensing effect of a planet-star system on a background star.</li>
+                <li><strong>Astrometry:</strong> Measuring the tiny wobble in a star's position caused by an orbiting planet.</li>
+            </ul>
+            
+            <p>Exoplanetary systems show a remarkable diversity, with many configurations that differ significantly from our Solar System, including:</p>
+            <ul>
+                <li><strong>Hot Jupiters:</strong> Gas giants orbiting very close to their host stars.</li>
+                <li><strong>Super-Earths and mini-Neptunes:</strong> Planets with masses between those of Earth and Neptune, which have no analog in our Solar System.</li>
+                <li><strong>Compact multi-planet systems:</strong> Systems with several planets orbiting close to their host star, often in or near mean-motion resonances.</li>
+                <li><strong>Circumbinary planets:</strong> Planets orbiting binary star systems.</li>
+            </ul>
+            
+            <h3>Planetary Formation and Evolution</h3>
+            <p>Planets form from the protoplanetary disk of gas and dust surrounding a young star. The current model of planet formation involves several stages:</p>
+            <ul>
+                <li><strong>Dust growth:</strong> Micron-sized dust grains collide and stick together, growing to centimeter and meter sizes.</li>
+                <li><strong>Planetesimal formation:</strong> Meter-sized objects overcome the "meter-size barrier" through mechanisms like the streaming instability to form kilometer-sized planetesimals.</li>
+                <li><strong>Planetary embryo formation:</strong> Planetesimals grow through mutual collisions and gravitational focusing to form Moon- to Mars-sized planetary embryos.</li>
+                <li><strong>Giant impacts:</strong> Planetary embryos collide to form terrestrial planets.</li>
+                <li><strong>Gas accretion:</strong> Sufficiently massive rocky cores (> 10 Earth masses) can accrete gas from the disk to form gas giants.</li>
+            </ul>
+            
+            <p>After formation, planetary systems evolve through processes like:</p>
+            <ul>
+                <li><strong>Orbital migration:</strong> Changes in planetary orbits due to interactions with the protoplanetary disk or other planets.</li>
+                <li><strong>Dynamical instabilities:</strong> Gravitational interactions that can lead to planet-planet scattering, ejections, or collisions.</li>
+                <li><strong>Tidal evolution:</strong> Changes in rotation rates and orbital parameters due to tidal forces between planets and their host stars or moons.</li>
+                <li><strong>Atmospheric evolution:</strong> Changes in planetary atmospheres due to escape processes, impacts, and internal processes like volcanism.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Exoplanet Detection Methods</h3>
+                <p>This diagram illustrates the main methods used to detect exoplanets, showing how each technique works and the types of planets it is most sensitive to.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/PIA23778-ExoplanetDetection-TransitMethod-20200210.jpg/800px-PIA23778-ExoplanetDetection-TransitMethod-20200210.jpg" alt="Transit method for exoplanet detection">
+                <p><em>Image: Illustration of the transit method for detecting exoplanets, showing how the light curve of a star changes as a planet passes in front of it.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 5: Exoplanet Transit Depth</p>
+                <p>An exoplanet with a radius of 1.5 R<sub>⊕</sub> (Earth radii) transits a star with a radius of 0.8 R<sub>☉</sub> (solar radii). Calculate the transit depth (the fractional decrease in the star's brightness during the transit). If the star has an apparent magnitude of m = 10, what is the change in magnitude during the transit?</p>
+                
+                <div class="solution" id="solution5">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The transit depth ΔF/F is the ratio of the planet's cross-sectional area to the star's cross-sectional area:</p>
+                    <p>ΔF/F = (R<sub>p</sub>/R<sub>*</sub>)²</p>
+                    
+                    <p>2. Convert the planet radius to solar radii:</p>
+                    <p>R<sub>p</sub> = 1.5 R<sub>⊕</sub> = 1.5 × (6371 km / 695700 km) R<sub>☉</sub> = 1.5 × 0.00916 R<sub>☉</sub> = 0.01374 R<sub>☉</sub></p>
+                    
+                    <p>3. Calculate the transit depth:</p>
+                    <p>ΔF/F = (0.01374 / 0.8)² = (0.01718)² = 0.000295</p>
+                    
+                    <p>4. This means the star's brightness decreases by about 0.0295% during the transit.</p>
+                    
+                    <p>5. The change in magnitude is related to the flux ratio by:</p>
+                    <p>Δm = -2.5 log₁₀(1 - ΔF/F)</p>
+                    
+                    <p>6. Calculate the magnitude change:</p>
+                    <p>Δm = -2.5 log₁₀(1 - 0.000295) = -2.5 log₁₀(0.999705) = -2.5 × (-0.000128) = 0.00032</p>
+                    
+                    <p>7. The change in magnitude during the transit is about 0.00032 magnitudes, which is very small but detectable with precise photometry.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution5')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>High-Energy Astrophysics</h2>
+            <p>High-energy astrophysics studies the most energetic processes and objects in the universe, which emit radiation in the X-ray and gamma-ray bands and produce high-energy particles like cosmic rays and neutrinos.</p>
+            
+            <h3>Compact Objects</h3>
+            <p>Compact objects are the remnants of stellar evolution, characterized by extreme densities and strong gravitational fields:</p>
+            <ul>
+                <li><strong>White dwarfs:</strong> The remnants of low- and intermediate-mass stars (M < 8 M<sub>☉</sub>), supported against gravity by electron degeneracy pressure. Typical properties include:
+                    <ul>
+                        <li>Mass: 0.5-1.4 M<sub>☉</sub> (upper limit is the Chandrasekhar mass)</li>
+                        <li>Radius: ~0.01 R<sub>☉</sub> (~7000 km)</li>
+                        <li>Density: ~10⁶ g/cm³</li>
+                        <li>Surface temperature: 5000-100,000 K</li>
+                    </ul>
+                </li>
+                <li><strong>Neutron stars:</strong> The remnants of massive stars (8 M<sub>☉</sub> < M < 20-30 M<sub>☉</sub>), supported against gravity by neutron degeneracy pressure. Typical properties include:
+                    <ul>
+                        <li>Mass: 1.4-2.5 M<sub>☉</sub></li>
+                        <li>Radius: ~10 km</li>
+                        <li>Density: ~10¹⁴-10¹⁵ g/cm³</li>
+                        <li>Surface temperature: 10⁵-10⁶ K</li>
+                        <li>Magnetic field: 10⁸-10¹⁵ G</li>
+                        <li>Rotation period: milliseconds to seconds</li>
+                    </ul>
+                </li>
+                <li><strong>Black holes:</strong> Objects with gravity so strong that nothing, not even light, can escape from within the event horizon. Characterized by only three parameters: mass, spin, and charge (the "no-hair theorem"). Classified by mass into:
+                    <ul>
+                        <li>Stellar-mass black holes: 3-100 M<sub>☉</sub>, formed from the collapse of massive stars</li>
+                        <li>Intermediate-mass black holes: 10²-10⁵ M<sub>☉</sub>, possibly formed from the mergers of stellar-mass black holes or the collapse of massive Population III stars</li>
+                        <li>Supermassive black holes: 10⁵-10¹⁰ M<sub>☉</sub>, found at the centers of galaxies, formed through complex processes involving gas accretion, stellar captures, and mergers</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <h3>Accretion Processes</h3>
+            <p>Accretion is the process by which matter falls onto a compact object, converting gravitational potential energy into radiation. Accretion is one of the most efficient energy-generation mechanisms in the universe, with efficiencies up to 40% for maximally spinning black holes (compared to ~0.7% for nuclear fusion).</p>
+            
+            <p>Key aspects of accretion include:</p>
+            <ul>
+                <li><strong>Accretion disks:</strong> Rotating disks of gas that form when matter with angular momentum falls toward a compact object. The viscosity in the disk transports angular momentum outward, allowing matter to spiral inward.</li>
+                <li><strong>Eddington limit:</strong> The maximum luminosity an accreting object can achieve before radiation pressure exceeds gravity and halts the accretion flow:
+                    <div class="equation-box">
+                        <p class="equation">L_{Edd} = \frac{4\pi G M m_p c}{\sigma_T} \approx 1.3 \times 10^{38} \left(\frac{M}{M_\odot}\right) \text{ erg/s}</p>
+                        <p class="equation-caption">Eddington luminosity, where M is the mass of the accreting object, m<sub>p</sub> is the proton mass, and σ<sub>T</sub> is the Thomson cross-section</p>
+                    </div>
+                </li>
+                <li><strong>Jets:</strong> Collimated outflows of plasma that can be launched from the inner regions of accretion disks around black holes and neutron stars, often reaching relativistic velocities.</li>
+            </ul>
+            
+            <h3>High-Energy Phenomena</h3>
+            <p>High-energy astrophysical phenomena include:</p>
+            <ul>
+                <li><strong>X-ray binaries:</strong> Binary star systems where a compact object (neutron star or black hole) accretes matter from a companion star, producing X-ray emission. Types include:
+                    <ul>
+                        <li>High-mass X-ray binaries (HMXBs): The donor is a massive O or B star.</li>
+                        <li>Low-mass X-ray binaries (LMXBs): The donor is a low-mass star, typically transferring mass through Roche-lobe overflow.</li>
+                    </ul>
+                </li>
+                <li><strong>Pulsars:</strong> Rapidly rotating neutron stars with strong magnetic fields, emitting beams of radiation that sweep across our line of sight like a lighthouse. The pulse period equals the rotation period of the neutron star.</li>
+                <li><strong>Supernovae:</strong> Explosive deaths of stars, classified into:
+                    <ul>
+                        <li>Type Ia: Thermonuclear explosions of white dwarfs that exceed the Chandrasekhar mass.</li>
+                        <li>Types Ib, Ic, II: Core-collapse supernovae from massive stars that have exhausted their nuclear fuel.</li>
+                    </ul>
+                </li>
+                <li><strong>Gamma-ray bursts (GRBs):</strong> Brief, intense flashes of gamma rays, the most energetic explosions in the universe. Classified into:
+                    <ul>
+                        <li>Long GRBs (> 2 s): Associated with the core-collapse of massive stars (hypernovae).</li>
+                        <li>Short GRBs (< 2 s): Associated with the mergers of compact objects (neutron star-neutron star or neutron star-black hole).</li>
+                    </ul>
+                </li>
+                <li><strong>Active galactic nuclei (AGN):</strong> Extremely luminous central regions of galaxies, powered by accretion onto supermassive black holes.</li>
+            </ul>
+            
+            <h3>Gravitational Waves</h3>
+            <p>Gravitational waves are ripples in spacetime caused by the acceleration of massive objects, predicted by Einstein's theory of general relativity. They were directly detected for the first time in 2015 by the LIGO and Virgo collaborations, opening a new window on the universe.</p>
+            
+            <p>Sources of gravitational waves include:</p>
+            <ul>
+                <li><strong>Compact binary mergers:</strong> The inspiral and merger of binary systems containing black holes and/or neutron stars.</li>
+                <li><strong>Supernovae:</strong> Asymmetric core-collapse supernovae can produce gravitational waves.</li>
+                <li><strong>Rotating neutron stars:</strong> Non-axisymmetric neutron stars emit continuous gravitational waves.</li>
+                <li><strong>Early universe:</strong> Processes in the early universe, such as inflation and phase transitions, may have produced a stochastic background of gravitational waves.</li>
+            </ul>
+            
+            <div class="interactive-element">
+                <h3>Interactive Visualization: Black Hole Accretion Disk</h3>
+                <p>This diagram shows the structure of an accretion disk around a black hole, illustrating the hot inner regions where X-rays are emitted and the relativistic jets that can be launched from the vicinity of the black hole.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Black_hole_accretion_disk.jpg/800px-Black_hole_accretion_disk.jpg" alt="Black hole accretion disk">
+                <p><em>Image: Artist's impression of an accretion disk around a black hole, showing the hot inner regions and relativistic jets.</em></p>
+            </div>
+            
+            <div class="problem">
+                <p class="problem-title">Problem 6: Neutron Star Spin-down</p>
+                <p>A pulsar with a period P = 0.1 s is observed to have a period derivative Ṗ = 10⁻¹⁵ s/s. Assuming the pulsar is a rotating magnetic dipole with moment of inertia I = 10⁴⁵ g·cm², calculate the pulsar's age, spin-down luminosity, and surface magnetic field strength.</p>
+                
+                <div class="solution" id="solution6">
+                    <p><strong>Solution:</strong></p>
+                    <p>1. The characteristic age of a pulsar is given by:</p>
+                    <p>τ = P/(2Ṗ)</p>
+                    <p>τ = 0.1 s / (2 × 10⁻¹⁵ s/s) = 5 × 10¹³ s</p>
+                    <p>τ ≈ 1.6 × 10⁶ years</p>
+                    
+                    <p>2. The spin-down luminosity (rate of rotational energy loss) is:</p>
+                    <p>Ė = -4π²IṖ/P³</p>
+                    <p>Ė = -4π² × 10⁴⁵ g·cm² × 10⁻¹⁵ s/s / (0.1 s)³</p>
+                    <p>Ė = -4π² × 10⁴⁵ × 10⁻¹⁵ / 10⁻³ erg/s</p>
+                    <p>Ė = -4π² × 10³³ erg/s</p>
+                    <p>Ė ≈ -3.9 × 10³⁴ erg/s</p>
+                    <p>The negative sign indicates that the pulsar is losing energy. The absolute value of Ė is the spin-down luminosity.</p>
+                    
+                    <p>3. The surface magnetic field strength at the equator is given by:</p>
+                    <p>B = 3.2 × 10¹⁹ √(PṖ) G</p>
+                    <p>B = 3.2 × 10¹⁹ √(0.1 × 10⁻¹⁵) G</p>
+                    <p>B = 3.2 × 10¹⁹ × 10⁻⁸ G</p>
+                    <p>B = 3.2 × 10¹¹ G</p>
+                    
+                    <p>4. This is a typical middle-aged pulsar with a moderately strong magnetic field.</p>
+                </div>
+                <button class="solution-toggle" onclick="toggleSolution('solution6')">Show/Hide Solution</button>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Resources</h2>
+            <h3>Authoritative Textbooks</h3>
+            <ul>
+                <li><strong>An Introduction to Modern Astrophysics</strong> by Bradley W. Carroll and Dale A. Ostlie — Comprehensive undergraduate textbook covering all aspects of astrophysics.</li>
+                <li><strong>The Physical Universe: An Introduction to Astronomy</strong> by Frank H. Shu — Excellent introduction with emphasis on physical principles.</li>
+                <li><strong>Astrophysical Concepts</strong> by Martin Harwit — Concise treatment of fundamental concepts in astrophysics.</li>
+                <li><strong>Galactic Astronomy</strong> by James Binney and Michael Merrifield — Detailed treatment of the structure and dynamics of galaxies.</li>
+                <li><strong>High Energy Astrophysics</strong> by Malcolm S. Longair — Comprehensive coverage of high-energy processes and objects.</li>
+                <li><strong>Principles of Cosmology and Gravitation</strong> by Michael V. Berry — Clear introduction to cosmology and general relativity.</li>
+            </ul>
+            
+            <h3>Online Lecture Notes & Resources</h3>
+            <ul>
+                <li><a href="https://www.astro.princeton.edu/~gk/AST301/" target="_blank" rel="noopener noreferrer">Princeton University — Introduction to Astrophysics</a></li>
+                <li><a href="https://ocw.mit.edu/courses/physics/8-286-the-early-universe-fall-2013/" target="_blank" rel="noopener noreferrer">MIT OCW — The Early Universe</a></li>
+                <li><a href="https://www.astro.caltech.edu/~george/ay20/" target="_blank" rel="noopener noreferrer">Caltech — Basic Astronomy and the Galaxy</a></li>
+                <li><a href="https://www.astro.umd.edu/~miller/teaching/astr422/" target="_blank" rel="noopener noreferrer">University of Maryland — Cosmology</a></li>
+                <li><a href="https://www.astro.princeton.edu/~burrows/classes/403/" target="_blank" rel="noopener noreferrer">Princeton University — Stars and Star Formation</a></li>
+            </ul>
+            
+            <h3>Online Tools and Databases</h3>
+            <ul>
+                <li><a href="https://exoplanetarchive.ipac.caltech.edu/" target="_blank" rel="noopener noreferrer">NASA Exoplanet Archive</a> — Comprehensive database of exoplanets and their properties.</li>
+                <li><a href="https://www.sdss.org/" target="_blank" rel="noopener noreferrer">Sloan Digital Sky Survey</a> — Massive astronomical survey providing data on millions of celestial objects.</li>
+                <li><a href="https://heasarc.gsfc.nasa.gov/" target="_blank" rel="noopener noreferrer">High Energy Astrophysics Science Archive Research Center</a> — Archive of data from high-energy astrophysics missions.</li>
+                <li><a href="https://ned.ipac.caltech.edu/" target="_blank" rel="noopener noreferrer">NASA/IPAC Extragalactic Database</a> — Database of extragalactic objects.</li>
+                <li><a href="https://www.cosmos.esa.int/web/planck/pla" target="_blank" rel="noopener noreferrer">Planck Legacy Archive</a> — Data from the Planck mission, including cosmic microwave background maps.</li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Related Topics</h2>
+            <div class="related-topics">
+                <a href="radiative_transfer_enhanced.html" class="related-topic">Radiative Transfer</a>
+                <a href="galaxy_evolution_enhanced.html" class="related-topic">Galaxy Evolution</a>
+                <a href="agn_physics_enhanced.html" class="related-topic">AGN Physics</a>
+                <a href="classical_mechanics_enhanced.html" class="related-topic">Classical Mechanics</a>
+                <a href="quantum_mechanics_enhanced.html" class="related-topic">Quantum Mechanics</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-nav">
+                <a href="index.html">Home</a> |
+                <a href="classical_mechanics_enhanced.html">Classical Mechanics</a> |
+                <a href="elctromagnetic_theory_enhanced.html">Electrodynamics</a> |
+                <a href="quantum_mechanics_enhanced.html">Quantum Mechanics</a> |
+                <a href="statistical_mechanics_enhanced.html">Statistical Mechanics</a> |
+                <a href="mathematical_physics_enhanced.html">Mathematical Physics</a>
+            </div>
+            <p>"The cosmos is within us. We are made of star-stuff." — Carl Sagan</p>
+            <p>© 2025 Physics Refresher Course | Last Updated: May 2025</p>
+        </footer>
+    </div>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+        
+        // Convert equation content to proper MathJax format when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const equations = document.querySelectorAll('.equation');
+            equations.forEach(function(equation) {
+                // Preserve the original text
+                const originalText = equation.textContent;
+                // Replace with properly delimited math
+                equation.innerHTML = '\\[' + originalText + '\\]';
+            });
+        });
+    </script>
+
+    <script>
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            if (solution.style.display === "none" || solution.style.display === "") {
+                solution.style.display = "block";
+            } else {
+                solution.style.display = "none";
+            }
+        }
+        
+        // Hide all solutions initially
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutions = document.querySelectorAll('.solution');
+            solutions.forEach(function(solution) {
+                solution.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
