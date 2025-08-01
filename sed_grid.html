@@ -7,7 +7,7 @@
     <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/fflate/umd/index.min.js"></script>
     <style>
-        body { font-family: sans-serif; margin: 0; padding: 20px; padding-bottom: 100px; /* Add padding to bottom */ }
+        body { font-family: sans-serif; margin: 0; padding: 20px; padding-bottom: 150px; /* Add padding to bottom */ }
         #controls { margin-bottom: 20px; }
         .dropdown { margin: 5px; }
         #plot { width: 100%; height: 60vh; }
@@ -23,25 +23,30 @@
     <div id="plot"></div>
     <div id="param-values"></div>
 
-    <div id="bottom-controls">
-        <a href="intro.html" target="_blank" style="text-decoration: none;">
-            <button class="about-btn">About</button>
-        </a>
-        <label for="photometry-upload" class="upload-btn">Upload Photometry (CSV)</label>
-        <input type="file" id="photometry-upload" accept=".csv" style="display: none;">
-        
-        <details id="csv-info-box">
-            <summary>CSV File Format</summary>
-            <div class="details-content">
-                <p>The uploaded CSV file should contain three columns (no header):</p>
-                <ul style="margin-top: 5px; margin-bottom: 15px; padding-left: 20px;">
-                    <li>Wavelength [Å]</li>
-                    <li>Flux</li>
-                    <li>Flux Error</li>
-                </ul>
-                <a href="https://viveikjha.github.io/demo_flux.csv" download="demo_flux.csv" class="info-link">Download Demo CSV</a>
-            </div>
-        </details>
+    <div id="bottom-container">
+        <div id="bottom-controls">
+            <a href="intro.html" target="_blank" style="text-decoration: none;">
+                <button class="about-btn">About</button>
+            </a>
+            <label for="photometry-upload" class="upload-btn">Upload Photometry (CSV)</label>
+            <input type="file" id="photometry-upload" accept=".csv" style="display: none;">
+            
+            <details id="csv-info-box">
+                <summary>CSV File Format</summary>
+                <div class="details-content">
+                    <p>The uploaded CSV file should contain three columns (no header):</p>
+                    <ul style="margin-top: 5px; margin-bottom: 15px; padding-left: 20px;">
+                        <li>Wavelength [Å]</li>
+                        <li>Flux</li>
+                        <li>Flux Error</li>
+                    </ul>
+                    <a href="https://viveikjha.github.io/demo_flux.csv" download="demo_flux.csv" class="info-link">Download Demo CSV</a>
+                </div>
+            </details>
+        </div>
+        <footer>
+            <p>Developed and Maintained by <a href="https://viveikjha.github.io" target="_blank" rel="noopener noreferrer">Vivek Kumar Jha</a></p>
+        </footer>
     </div>
 
     <style>
@@ -99,16 +104,22 @@
         }
         #param-values span { font-weight: bold; }
 
-        #bottom-controls {
+        #bottom-container {
             position: fixed;
-            bottom: 20px;
+            bottom: 0;
             left: 0;
             right: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #bottom-controls {
             display: flex;
             justify-content: center;
             align-items: flex-end;
             gap: 20px;
-            z-index: 1000;
         }
 
         #csv-info-box {
@@ -150,6 +161,19 @@
         #csv-info-box .info-link:hover {
             background-color: #4f8cff;
             transform: translateY(-1px);
+        }
+        footer {
+            text-align: center;
+            padding: 10px 20px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        footer a {
+            color: #4f8cff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 
