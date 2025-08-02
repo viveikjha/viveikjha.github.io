@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SED Grid – Interactive Spectral Energy Distribution Viewer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #14b8a6; /* Teal accent */
+      --primary-dark: #0f766e;
+      --text: #212529; /* Dark text for light bg */
+      --text-light: #495057;
+      --border: #dee2e6;
+      --radius: 16px;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+      --surface-bg: #ffffff; /* White surface */
+      --page-bg: #f8f9fa; /* Light page background */
+    }
+
+    html {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-image: url('bkg.png');
+      background-color: var(--page-bg);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      line-height: 1.7;
+      font-size: 1.05rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100%;
+    }
+
+    .page-header {
+      width: 100%;
+      padding: 4rem 1rem 2rem 1rem;
+      text-align: center;
+      background-color: var(--primary);
+    }
+
+    .page-header h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: -2px;
+      color: #fff;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .page-header p {
+        margin-top: 0.5rem;
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .container {
+      background: var(--surface-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      max-width: 780px;
+      width: calc(100% - 2rem);
+      margin: 2rem 1rem;
+      padding: 2rem 2.5rem;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+    
+    h2:first-of-type {
+        margin-top: 0;
+    }
+
+    p {
+      color: var(--text-light);
+      margin: 0.7rem 0 1.2rem 0;
+    }
+
+    ul {
+      padding-left: 1.5em;
+      margin: 0.5rem 0 1.2rem 0;
+    }
+
+    li {
+      margin-bottom: 0.6em;
+      color: var(--text-light);
+    }
+
+    code {
+      background: rgba(20, 184, 166, 0.1);
+      color: #0d9488;
+      padding: 0.2em 0.45em;
+      border-radius: 6px;
+      font-size: 0.95em;
+      font-family: 'JetBrains Mono', 'Fira Mono', 'Menlo', monospace;
+      border: 1px solid rgba(20, 184, 166, 0.2);
+    }
+
+    .section {
+      margin-bottom: 1.5rem;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    
+    a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: var(--primary-dark);
+    }
+
+    .button-container {
+        text-align: center;
+        margin: 3rem 0 1.5rem 0;
+    }
+
+    .explore-button {
+        display: inline-block;
+        background: linear-gradient(45deg, var(--primary), #3b82f6);
+        color: #fff;
+        padding: 1rem 3rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        border: none;
+    }
+
+    .explore-button:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        color: #fff;
+        text-decoration: none;
+    }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-top: auto;
+      padding: 1.5rem 1rem;
+      background: #e9ecef;
+      border-top: 1px solid var(--border);
+    }
+    
+    footer a {
+        color: var(--text);
+    }
+    
+    footer a:hover {
+        color: var(--primary);
+    }
+
+    @media (max-width: 600px) {
+      .page-header h1 {
+        font-size: 2.5rem;
+      }
+      .container {
+        padding: 1.5rem;
+        width: calc(100% - 2rem);
+        margin: 1rem;
+      }
+      h2 {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <h1>SED Grid</h1>
+    <p>An Interactive Spectral Energy Distribution Viewer</p>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2>Overview</h2>
+      <p>
+        <strong>SED Grid</strong> is a modern, interactive tool for exploring precomputed spectral energy distribution (SED) grids from advanced stellar population synthesis (SPS) models. Designed for researchers, students, and enthusiasts, it helps you intuitively visualize how model SEDs change across physical parameter spaces.
+        The current implementation is powered by <strong>Prospector</strong>, with support for <strong>BAGPIPES</strong> planned in future versions.
+        <br>
+        <br>
+        <strong style="color: #f59e0b;">
+            <em>
+            Note: When loading for the first time, it might take some time to plot the SEDs, depending on your internet connection.
+            </em>
+        </strong>
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Key Features</h2>
+      <ul>
+        <li>Visualizes large SED grids from SPS models (e.g., Prospector)</li>
+        <li>Parameter selection via intuitive dropdowns (Age, Metallicity, Dust, etc.)</li>
+        <li>Dynamic filtering and plotting of SEDs based on your selections.</li>
+        <li>Compact summary panel for selected parameters.</li>
+        <li>Handles partial selections and displays multiple curves as needed.</li>
+        <li>Fully browser-based — no backend required.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Model Parameters</h2>
+      <p>The SEDs are sampled over a 7D parameter grid:</p>
+      <ul>
+        <li><code>tage</code> — Stellar population age (Gyr)</li>
+        <li><code>logzsol</code> — Metallicity (log solar units)</li>
+        <li><code>dust2</code> — Dust attenuation (optical depth)</li>
+        <li><code>imf_type</code> — IMF choice (e.g., Chabrier, Salpeter)</li>
+        <li><code>mass</code> — Stellar mass (log₁₀ M<sub>☉</sub>)</li>
+        <li><code>sfh</code> — Star formation history model (e.g., delayed-τ)</li>
+        <li><code>tau</code> — τ timescale (Gyr) for SFH</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>How It Works</h2>
+      <p>
+        The tool loads a compressed JSON grid of SEDs directly in your browser. Each SED matches a unique set of model parameters. Select parameter values via dropdowns; if any are set to <em>All</em>, all matching SEDs are shown. A single SED appears only when all parameters are fixed. The idea is to allow you to explore the parameter space interactively, making it easier to understand how different parameters affect the SED.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Underlying Models</h2>
+      <p>
+        The current SED grids are generated using <a href="https://prospect.readthedocs.io" target="_blank">Prospector</a>, an open-source Bayesian inference framework for fitting SEDs with flexible stellar population models. It builds upon <em>FSPS</em> and is widely used for interpreting galaxy spectra and photometry.
+      </p>
+      <p>
+        Future versions of SED Grid aim to integrate <a href="https://bagpipes.readthedocs.io" target="_blank">BAGPIPES</a>, offering users the ability to compare and interact with models across different population synthesis codes.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Data & Technical Notes</h2>
+      <ul>
+        <li>SED grid generated with <strong>Prospector</strong> SPS framework</li>
+        <li>Uses <strong>Plotly.js</strong> for interactive plots and <strong>fflate.js</strong> for decompression</li>
+        <li>Runs entirely in your browser — no external dependencies beyond JS libraries</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Planned Extensions</h2>
+      <ul>
+        <li>User photometry upload for visual comparison (multi band).</li>
+        <li>Support for BAGPIPES and other SPS engines.</li>
+        <li>Interactive fitting against observed SEDs.</li>
+        <li>On-hover inspection and parameter brushing.</li>     
+        <li>Expanded grid: nebular emission, AGN components, and finer parameter sampling.</li>
+      </ul>
+    </section>
+
+    <div class="button-container">
+        <a href="sed_grid_disp.html" class="explore-button">Explore SED Grid</a>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 | SED Grid | Built and managed by <a href="https://vivekjha.netlify.app" target="_blank">Vivek Kumar Jha</a>
+  </footer>
+</body>
+</html>
