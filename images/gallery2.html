@@ -68,7 +68,7 @@
     .carousel__slide{
       position: relative;
       min-width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 16 / 9; /* force landscape slides */
       background: #0d1216;
       display: grid;
       place-items: center;
@@ -243,11 +243,7 @@
       filter: saturate(1.02);
     }
     .card__meta{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 12px;
-      gap: 10px;
+      display: none; /* hide filenames/titles */
     }
     .card__title{
       margin: 0;
@@ -425,7 +421,7 @@
       </div>
       <label class="search">
         <span class="visually-hidden">Search images</span>
-        <input id="search" type="search" inputmode="search" placeholder="Search by filename…" aria-label="Search images" />
+        <input id="search" type="search" inputmode="search" placeholder="Search images…" aria-label="Search images" />
       </label>
     </section>
 
@@ -472,7 +468,7 @@
     "use strict";
 
     // ------------ Data (loaded from images.json) ------------
-    let CAROUSEL = []; // built from first N images
+    let CAROUSEL = []; // built from first N landscape images
     let IMAGES = [];   // built from images.json
 
     // ------------ Elements ------------
@@ -512,6 +508,31 @@
         thumb: `gallery/thumbnails/${base}_thumb${ext}`,
         full: `gallery/${filename}`,
       };
+    }
+
+    // Load image dims
+    function getImageSize(url){
+      return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve({ w: img.naturalWidth || img.width, h: img.naturalHeight || img.height });
+        img.onerror = () => resolve(null);
+        img.src = url;
+      });
+    }
+
+    async function buildCarousel(){
+      const MAX = 6;
+      const picks = [];
+      for (let i = 0; i < IMAGES.length && picks.length < MAX; i++){
+        const it = IMAGES[i];
+        const meta = await getImageSize(it.full);
+        if (meta && meta.w > meta.h){
+          picks.push(it);
+        }
+      }
+      CAROUSEL = picks;
+      renderCarousel();
+      if (isAutoplay) startAutoplay();
     }
 
     // ------------ Gallery State ------------
@@ -559,7 +580,7 @@
         const btn = document.createElement("button");
         btn.className = "card__btn";
         btn.type = "button";
-        btn.setAttribute("aria-label", `${item.title}`);
+        btn.setAttribute("aria-label", `Open image ${pos + 1}`);
         btn.dataset.pos = String(pos);
 
         const media = document.createElement("div");
@@ -568,7 +589,7 @@
         const img = document.createElement("img");
         img.className = "card__img";
         img.src = item.thumb;
-        img.alt = item.title;
+        img.alt = "";
         img.loading = "lazy";
         img.decoding = "async";
         img.sizes = "(max-width: 600px) 100vw, (max-width: 1100px) 33vw, 300px";
@@ -576,19 +597,8 @@
 
         media.appendChild(img);
 
-        const meta = document.createElement("div");
-        meta.className = "card__meta";
-
-        const h = document.createElement("h3");
-        h.className = "card__title";
-        h.textContent = item.title;
-
-        const badge = document.createElement("span");
-        badge.className = "card__badge";
-        badge.textContent = "gallery";
-
-        meta.append(h, badge);
-        btn.append(media, meta);
+        // Hide filename/title meta entirely
+        btn.append(media);
         card.append(btn);
         frag.append(card);
       }
@@ -692,14 +702,14 @@
       const globalIndex = state.visible[state.currentIndexInVisible];
       const item = IMAGES[globalIndex];
       if (!item) return;
-      el.lbCaption.textContent = `${item.title}`;
+      el.lbCaption.textContent = "";
       el.lbCounter.textContent = `${state.currentIndexInVisible + 1} / ${state.visible.length}`;
 
       const temp = new Image();
-      temp.alt = item.title;
+      temp.alt = "";
       temp.onload = () => {
         el.lbImg.src = temp.src;
-        el.lbImg.alt = item.title;
+        el.lbImg.alt = "";
       };
       temp.src = item.full;
 
@@ -752,14 +762,10 @@
         const img = document.createElement("img");
         img.className = "carousel__img";
         img.src = item.full;
-        img.alt = item.title;
+        img.alt = "";
         img.decoding = "async";
 
-        const cap = document.createElement("div");
-        cap.className = "carousel__caption";
-        cap.textContent = item.title;
-
-        slide.append(img, cap);
+        slide.append(img);
         frag.append(slide);
       });
       el.crslTrack.append(frag);
@@ -910,14 +916,12 @@
         const files = await res.json(); // array of filenames
         IMAGES = files.map((f, i) => filenameToItem(f, i));
 
-        // Build carousel from first 6 images (or fewer)
-        CAROUSEL = IMAGES.slice(0, 6);
-
         // Initial renders
         setActiveFilterButton();
         renderGallery();
-        renderCarousel();
-        if (isAutoplay) startAutoplay();
+
+        // Build carousel from first N landscape images
+        await buildCarousel();
       } catch(err){
         console.error("Error fetching images:", err);
         el.empty.hidden = false;
