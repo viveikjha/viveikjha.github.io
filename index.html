@@ -6,51 +6,195 @@
   <title>Vivek Kumar Jha | Home</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Fira+Mono&display=swap" rel="stylesheet">
-  <!-- Cover Page Overlay -->
-<div id="coverPage" style="
-position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;
-background: url('images/astro_bkg.jpg') center center / cover no-repeat;
-display:flex;flex-direction:column;align-items:center;justify-content:center;
-transition:opacity 0.6s;
-">
-<h1 style="color:#fff; font-size:3.5rem; font-family:'Montserrat', sans-serif; font-weight:900; text-shadow:0 2px 16px rgba(0,0,0,0.2); margin-bottom:2.2rem; text-align:center; letter-spacing:1px;">
-  Hi, I’m Vivek Kumar Jha
-</h1>
-<div style="height:5rem;"></div>
-<div style="color:#fff; font-size:1.8rem; font-family:'Montserrat', sans-serif; font-weight:500; text-shadow:0 1px 10px rgba(0,0,0,0.2); letter-spacing:1px; text-align:center; margin-bottom:2.5rem;">
-  Astrophysicist and a curious wanderer—exploring our World and beyond!
-</div>
-<div style="color:#fff; font-size:1.8rem; font-family:'Montserrat', sans-serif; font-weight:500; text-shadow:0 1px 10px rgba(0,0,0,0.2); letter-spacing:1px; text-align:center; margin-bottom:8rem;">
-  Welcome to my Website
-</div>
-<button id="enterBtn" style="
-  background: transparent;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 700;
-  border: 2px solid #fff;
-  border-radius: 2em;
-  padding: 0.7em 2.5em;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  transition: background 0.2s, color 0.2s;
-  cursor: pointer;
-  margin-top: 2.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
-">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   
-  Enter <i class="bi bi-arrow-right-circle" style="font-size:1.4em;"></i>
-</button>
-</div>
+  <style>
+    /* Hide main content initially */
+    .main-layout, .toggle-switch {
+      visibility: hidden;
+    }
+
+    #coverPage {
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('images/astro_bkg.jpg') center center / cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease-in-out;
+      animation: pan-background 40s linear infinite;
+      background-size: 150% auto;
+      overflow: hidden; /* Prevents scrollbars from parallax effect */
+    }
+
+    /* Animated Grid Overlay */
+    #coverPage::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: grid-scroll 20s linear infinite;
+      z-index: 1;
+    }
+
+    /* Vignette effect to focus the center */
+    #coverPage::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        box-shadow: inset 0 0 150px 50px rgba(0,0,0,0.5);
+        z-index: 1;
+    }
+
+    .cover-content {
+        position: relative;
+        z-index: 2; /* Ensure content is above overlays */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        transition: transform 0.1s linear; /* For parallax effect */
+    }
+
+    .typing-title {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: .1em solid #fff;
+      font-size: clamp(2.5rem, 6vw, 4.5rem); /* Responsive font size */
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      margin-bottom: 1.5rem;
+      letter-spacing: -2px;
+      color: #fff;
+      animation: 
+        typing 3.5s steps(30, end) forwards, 
+        blink-caret .75s step-end 1 forwards;
+    }
+
+    .subtitle {
+      color: #eee;
+      font-size: clamp(1.2rem, 3vw, 1.8rem); /* Responsive font size */
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      letter-spacing: 0.5px;
+      margin-bottom: 1.5rem;
+      max-width: 800px;
+      line-height: 1.4;
+    }
+
+    #enterBtn {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #fff;
+      font-size: 1.1rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 2em;
+      padding: 0.8em 2.8em;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8em;
+    }
+
+    #enterBtn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Animations */
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100%; border-right-color: transparent; }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: white; }
+    }
+    @keyframes pan-background {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes grid-scroll {
+      from { background-position: 0 0; }
+      to { background-position: -40px -40px; }
+    }
+  </style>
+
+  <!-- Cover Page Overlay -->
+  <div id="coverPage">
+    <div class="cover-content">
+      <h1 class="typing-title">Hi, I’m Vivek Kumar Jha</h1>
+      <div class="subtitle">
+        Astrophysicist and a curious wanderer—exploring our World and beyond!
+      </div>
+      <div class="subtitle" style="margin-bottom: 3rem;">
+        Welcome to my Website
+      </div>
+      <button id="enterBtn">
+        Enter <i class="bi bi-arrow-right-circle" style="font-size:1.5em;"></i>
+      </button>
+    </div>
+  </div>
+
 <script>
+  // Parallax effect for cover page content
+  document.addEventListener('DOMContentLoaded', function () {
+    const coverContent = document.querySelector('.cover-content');
+    if (coverContent) {
+      document.addEventListener('mousemove', function (e) {
+        const { clientX, clientY } = e;
+        const { innerWidth, innerHeight } = window;
+        const moveX = (clientX / innerWidth - 0.5) * 30; // Multiplier controls intensity
+        const moveY = (clientY / innerHeight - 0.5) * 30;
+        coverContent.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      });
+    }
+  });
   document.addEventListener('DOMContentLoaded', function () {
     const cover = document.getElementById('coverPage');
     const btn = document.getElementById('enterBtn');
+    const mainLayout = document.querySelector('.main-layout');
+    const toggleSwitch = document.querySelector('.toggle-switch');
+
     btn.addEventListener('click', function () {
+      // Fade out the cover page
       cover.style.opacity = '0';
-      setTimeout(() => cover.style.display = 'none', 600);
+      
+      // Make the main content and toggle switch visible
+      if (mainLayout) mainLayout.style.visibility = 'visible';
+      if (toggleSwitch) toggleSwitch.style.visibility = 'visible';
+
+      // Remove the cover page from the DOM after the transition
+      setTimeout(() => {
+        if (cover) cover.style.display = 'none';
+      }, 600); // Match the CSS transition duration
     });
   });
 </script>
