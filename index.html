@@ -68,7 +68,11 @@ transition:opacity 0.6s;
       --sidebar-dark: #181828;
     }
     body {
-      background: linear-gradient(135deg, #f7f8fa 0%, #f7f7f7 100%);
+      background-color: #f7f8fa;
+      background-image: 
+        linear-gradient(135deg, #f7f8fa 0%, #f7f7f7 100%),
+        radial-gradient(rgba(0,0,0,0.04) 1px, transparent 0);
+      background-size: cover, 4px 4px;
       font-family: 'Montserrat', 'Segoe UI', sans-serif;
       color: var(--text);
       min-height: 100vh;
@@ -76,7 +80,11 @@ transition:opacity 0.6s;
       overflow-x: hidden;
     }
     .dark-mode {
-      background: linear-gradient(135deg, #0b0c0c 0%, #131314 100%);
+      background-color: #131314;
+      background-image: 
+        linear-gradient(135deg, #0b0c0c 0%, #131314 100%),
+        radial-gradient(rgba(255,255,255,0.05) 1px, transparent 0);
+      background-size: cover, 4px 4px;
       color: var(--text-dark);
     }
     .main-layout {
@@ -90,7 +98,9 @@ transition:opacity 0.6s;
       top: 0;
       height: 100vh;
       width: 270px;
-      background: var(--sidebar);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.4));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 0 2rem 2rem 0;
       box-shadow: 4px 0 32px rgba(0,0,0,0.08);
       padding: 2.5rem 1.5rem 2rem 1.5rem;
@@ -101,7 +111,8 @@ transition:opacity 0.6s;
       transition: background 0.4s;
     }
     .dark-mode .sidebar {
-      background: var(--sidebar-dark);
+      background: linear-gradient(135deg, rgba(25, 26, 36, 0.7), rgba(30, 32, 48, 0.6));
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     .sidebar .avatar {
       width: 90px;
@@ -149,7 +160,7 @@ transition:opacity 0.6s;
       color: #fff;
     }
     .glass-card {
-      background: var(--glass);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.4));
       border-radius: 1.5rem;
       box-shadow: 0 8px 32px rgba(255,94,98,0.08);
       backdrop-filter: blur(8px);
@@ -166,8 +177,8 @@ transition:opacity 0.6s;
       box-shadow: 0 12px 32px rgba(31, 161, 90, 0.18);
     }
     .dark-mode .glass-card {
-      background: var(--glass-dark);
-      border-color: rgba(17, 85, 19, 0.08);
+      background: linear-gradient(135deg, rgba(25, 26, 36, 0.7), rgba(30, 32, 48, 0.6));
+      border-color: rgba(255, 255, 255, 0.1);
     }
     .glass-card .card-title {
       font-size: 1.3rem;
