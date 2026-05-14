@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Motivation - Timeless Wisdom</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --chinese-red: #C41E3A;
+            --chinese-gold: #D4AF37;
+            --saffron: #FF9933;
+            --deep-red: #8B0000;
+            --cream: #F5F5DC;
+            --dark-brown: #3E2723;
+            --lotus-pink: #FFB6C1;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Chinese Cloud Pattern Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(196, 30, 58, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Decorative Border Pattern */
+        .border-pattern {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 3px solid var(--chinese-gold);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .border-pattern::before,
+        .border-pattern::after {
+            content: '☥';
+            position: absolute;
+            color: var(--chinese-gold);
+            font-size: 30px;
+        }
+
+        .border-pattern::before {
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .border-pattern::after {
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%) rotate(180deg);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        /* Lotus Decoration */
+        .lotus-top {
+            font-size: 60px;
+            color: var(--lotus-pink);
+            margin-bottom: 20px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            color: var(--chinese-gold);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            margin-bottom: 15px;
+            letter-spacing: 8px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::before,
+        h1::after {
+            content: '◆';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--saffron);
+            font-size: 1.5rem;
+        }
+
+        h1::before {
+            left: -60px;
+        }
+
+        h1::after {
+            right: -60px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--cream);
+            font-style: italic;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+
+        .divider {
+            width: 300px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--chinese-gold), var(--saffron), var(--chinese-gold), transparent);
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '❋';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--chinese-gold);
+            font-size: 20px;
+        }
+
+        .divider::before {
+            left: -30px;
+        }
+
+        .divider::after {
+            right: -30px;
+        }
+
+        /* Grid Layout */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        /* Book Card */
+        .book-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            border: 2px solid var(--chinese-gold);
+            border-radius: 10px;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--chinese-red), var(--saffron), var(--chinese-gold));
+        }
+
+        .book-card::after {
+            content: '☫';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 40px;
+            opacity: 0.1;
+            color: var(--chinese-gold);
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+            border-color: var(--saffron);
+        }
+
+        /* Corner Decorations */
+        .corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--chinese-gold);
+        }
+
+        .corner-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+        .corner-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+        .corner-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+        .book-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: var(--chinese-gold);
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .book-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--saffron), transparent);
+        }
+
+        .book-description {
+            font-size: 1.1rem;
+            color: var(--cream);
+            line-height: 1.8;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(255, 153, 51, 0.1));
+            border: 2px dashed var(--chinese-gold);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--chinese-gold);
+            font-style: italic;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .image-placeholder:hover {
+            opacity: 1;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(255, 153, 51, 0.2));
+        }
+
+        /* Om Symbol Decoration */
+        .om-symbol {
+            position: fixed;
+            font-size: 200px;
+            opacity: 0.03;
+            color: var(--saffron);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .om-1 { top: 10%; left: 5%; }
+        .om-2 { bottom: 10%; right: 5%; transform: rotate(180deg); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 40px;
+            border-top: 2px solid var(--chinese-gold);
+            color: var(--cream);
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .footer-symbol {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--chinese-gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+            
+            h1::before,
+            h1::after {
+                display: none;
+            }
+            
+            .books-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .container {
+                padding: 40px 20px;
+            }
+        }
+
+        /* Animation on Scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="border-pattern"></div>
+    <div class="om-symbol om-1">ॐ</div>
+    <div class="om-symbol om-2">ॐ</div>
+
+    <div class="container">
+        <header class="header">
+            <div class="lotus-top">🪷</div>
+            <h1>Daily Motivation</h1>
+            <div class="divider"></div>
+            <p class="subtitle">"Timeless Wisdom from the East for the Modern Seeker"</p>
+            <p style="color: var(--chinese-gold); margin-top: 10px; font-size: 1.2rem;">☥ Wisdom • Discipline • Enlightenment ☥</p>
+        </header>
+
+        <div class="books-grid">
+            <!-- Bhagavad Gita -->
+            <div class="book-card fade-in">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                
+                <div class="image-placeholder">Image Space</div>
+                
+                <h2 class="book-title">Bhagavad Gītā</h2>
+                <p class="book-description">
+                    Vyāsa's masterful synthesis of Vedānta, Yoga, and Bhakti. Krishna's counsel to Arjuna 
+                    on the battlefield of life—teaching <em>niṣkāma karma</em> (selfless action), devotion, 
+                    and the eternal nature of the soul amidst the chaos of worldly duty.
+                </p>
+            </div>
+
+            <!-- Tirukkural -->
+            <div class="book-card fade-in">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                
+                <div class="image-placeholder">Image Space</div>
+                
+                <h2 class="book-title">Tirukkuṟa</h2>
+                <p class="book-description">
+                    Thiruvalluvar's timeless Tamil classic of 1,330 couplets on virtue (<em>aram</em>), 
+                    wealth (<em>poruḷ</em>), and love (<em>inbam</em>). A universal ethical code offering 
+                    practical wisdom for householders, rulers, and seekers of righteous living.
+                </p>
+            </div>
+
+            <!-- Tao Te Ching -->
+            <div class="book-card fade-in">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                
+                <div class="image-placeholder">Image Space</div>
+                
+                <h2 class="book-title"><a href="https://sacred-texts.com/tao/taote.htm"target=None>Tao Te Ching</a></h2>
+                <p class="book-description">
+                    Laozi's profound meditation on the <em>Tao</em> (the Way) and the art of <em>wu-wei</em> 
+                    (effortless action). Eighty-one verses of poetic wisdom teaching harmony with nature, 
+                    simplicity, humility, and the power of yielding like water.
+                </p>
+            </div>
+
+            <!-- Analects -->
+            <div class="book-card fade-in">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                
+                <div class="image-placeholder">Image Space</div>
+                
+                <h2 class="book-title">The Analects</h2>
+                <p class="book-description">
+                    Confucius's collected sayings and dialogues on virtue, governance, and human relationships. 
+                    A foundational text on cultivating moral character, filial piety, and the qualities of the 
+                    exemplary person (<em>jūnzǐ</em>) through ritual propriety and benevolence.
+                </p>
+            </div>
+
+            <!-- Great Learning -->
+            <div class="book-card fade-in">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                
+                <div class="image-placeholder">Image Space</div>
+                
+                <h2 class="book-title">The Great Learning</h2>
+                <p class="book-description">
+                    A Confucian classic on self-cultivation and social harmony. It outlines the path from 
+                    investigating things and extending knowledge, to making thoughts sincere, rectifying 
+                    the heart-mind, cultivating the self, regulating the family, governing the state, 
+                    and bringing peace to all under heaven.
+                </p>
+            </div>
+
+            <!-- Doctrine of the Mean -->
+            <div class="book-card fade-in">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                
+                <div class="image-placeholder">Image Space</div>
+                
+                <h2 class="book-title">Doctrine of the Mean</h2>
+                <p class="book-description">
+                    Also known as the <em>Zhōngyōng</em>, this text explores the principle of balance and 
+                    harmony in all things. It teaches the cultivation of equilibrium, timely action, and 
+                    the maintenance of inner sincerity as the foundation of virtuous living and cosmic order.
+                </p>
+            </div>
+
+            <!-- Four Noble Truths -->
+            <div class="book-card fade-in">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                
+                <div class="image-placeholder">Image Space</div>
+                
+                <h2 class="book-title">The Four Noble Truths</h2>
+                <p class="book-description">
+                    The Buddha's foundational teaching on the nature of existence: the truth of suffering 
+                    (<em>duḥkha</em>), its origin in craving and attachment, its cessation through liberation, 
+                    and the path leading to that cessation. A profound diagnosis of the human condition.
+                </p>
+            </div>
+
+            <!-- Noble Eightfold Path -->
+            <div class="book-card fade-in">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+                
+                <div class="image-placeholder">Image Space</div>
+                
+                <h2 class="book-title">The Noble Eightfold Path</h2>
+                <p class="book-description">
+                    The practical path to liberation comprising: Right View, Right Intention, Right Speech, 
+                    Right Action, Right Livelihood, Right Effort, Right Mindfulness, and Right Concentration. 
+                    A comprehensive guide to ethical conduct, mental discipline, and wisdom.
+                </p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-symbol">☯ 🕉 </div>
+            <p>"The journey of a thousand miles begins beneath one's feet."</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">— Laozi & The Sages of East and West</p>
+        </footer>
+    </div>
+
+    <script>
+        // Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+        // Add subtle parallax effect to Om symbols
+        document.addEventListener('mousemove', (e) => {
+            const oms = document.querySelectorAll('.om-symbol');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            oms.forEach((om, index) => {
+                const speed = (index + 1) * 10;
+                const xOffset = (0.5 - x) * speed;
+                const yOffset = (0.5 - y) * speed;
+                om.style.transform = `translate(${xOffset}px, ${yOffset}px) rotate(${index * 180}deg)`;
+            });
+        });
+
+        // Add click interaction to book cards
+        document.querySelectorAll('.book-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Console Easter Egg
+        console.log('%c🪷 Daily Motivation 🕉', 'color: #D4AF37; font-size: 24px; font-weight: bold;');
+        console.log('%c"May wisdom guide your path, seeker."', 'color: #FF9933; font-style: italic;');
+    </script>
+</body>
+</html>
