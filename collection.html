@@ -10,7 +10,7 @@
 :root{color-scheme:dark;--bg:#0b1020;--text:#f3f6fc;--muted:#aab6ca;--line:rgba(255,255,255,.12);--accent:#9fd7ff}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:radial-gradient(ellipse at 12% 0%,rgba(58,102,180,.22),transparent 38rem),radial-gradient(ellipse at 92% 10%,rgba(134,75,164,.18),transparent 34rem),var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-a{color:inherit}.wrap{width:min(1120px,calc(100% - 40px));margin:0 auto}
+a{color:inherit}.wrap{width:min(1120px,calc(100% -  clamp(24px,5vw,48px)));margin:0 auto}
 header{padding:72px 0 48px}.eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:.16em;font-size:.78rem;font-weight:750}
 h1{margin:12px 0 14px;font-size:clamp(2.6rem,7vw,5.2rem);line-height:.98;letter-spacing:-.055em}
 .intro{max-width:760px;color:var(--muted);font-size:clamp(1.05rem,2vw,1.25rem)}.intro strong{color:var(--text)}
@@ -19,13 +19,13 @@ h1{margin:12px 0 14px;font-size:clamp(2.6rem,7vw,5.2rem);line-height:.98;letter-
 .dot{width:7px;height:7px;border-radius:50%;background:#83e0b5}
 .section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:16px 0 22px}
 h2{margin:0;font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-.035em}.section-head p{margin:0;color:var(--muted);font-size:.92rem}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.card{position:relative;overflow:hidden;min-height:218px;padding:22px;border:1px solid rgba(255,255,255,.2);border-radius:18px;display:flex;flex-direction:column;align-items:flex-start;background:var(--card);box-shadow:0 12px 30px rgba(0,0,0,.14);transition:transform .18s ease,box-shadow .18s ease}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.8vw,20px);align-items:stretch}
+.card{position:relative;isolation:isolate;overflow:hidden;min-width:0;min-height:218px;padding:clamp(17px,2vw,24px);border:1px solid rgba(255,255,255,.2);border-radius:clamp(14px,1.8vw,20px);display:flex;flex-direction:column;align-items:flex-start;background:var(--card);box-shadow:0 12px 30px rgba(0,0,0,.14);transition:transform .18s ease,box-shadow .18s ease}
 .card:after{content:"";position:absolute;inset:auto -34px -60px auto;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.12);pointer-events:none}
 .card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(0,0,0,.28)}
 .number{font-size:.76rem;font-weight:800;letter-spacing:.1em;opacity:.78}
-.card h3{margin:9px 0 7px;font-size:1.25rem;line-height:1.2;letter-spacing:-.02em}
-.card p{margin:0 0 20px;color:rgba(255,255,255,.9);font-size:.94rem;max-width:36ch}
+.card h3{margin:9px 0 7px;font-size:clamp(1.12rem,1.6vw,1.3rem);line-height:1.22;letter-spacing:-.02em;overflow-wrap:anywhere}
+.card p{margin:0 0 20px;color:rgba(255,255,255,.9);font-size:clamp(.9rem,1.2vw,.96rem);max-width:42ch;overflow-wrap:anywhere}
 .card a{margin-top:auto;text-decoration:none;font-size:.9rem;font-weight:800;border-bottom:1px solid rgba(255,255,255,.65);padding-bottom:2px;position:relative;z-index:1}
 .card a:focus-visible,.top-link:focus-visible{outline:3px solid white;outline-offset:4px}
 .c1{--card:linear-gradient(135deg,#176b87,#219eb1)}.c2{--card:linear-gradient(135deg,#6544a5,#9a67d3)}.c3{--card:linear-gradient(135deg,#3b5d9b,#628bd6)}.c4{--card:linear-gradient(135deg,#a34b35,#d97849)}.c5{--card:linear-gradient(135deg,#34744e,#56a36e)}.c6{--card:linear-gradient(135deg,#9a4c77,#d16a9e)}
@@ -33,7 +33,9 @@ h2{margin:0;font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-.035em}.section-h
 .c13{--card:linear-gradient(135deg,#7c4055,#b9637d)}.c14{--card:linear-gradient(135deg,#3f6844,#76a85d)}.c15{--card:linear-gradient(135deg,#315a75,#4c8ca8)}.c16{--card:linear-gradient(135deg,#73532d,#b88a4a)}.c17{--card:linear-gradient(135deg,#8c3d39,#c9655e)}.c18{--card:linear-gradient(135deg,#4e5e9e,#788de0)}
 .about{margin:54px 0 0;padding:26px 0 34px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1.5fr;gap:28px}
 .about p{margin:0;color:var(--muted)}footer{border-top:1px solid var(--line);padding:22px 0 34px;color:var(--muted);font-size:.88rem}.top-link{color:var(--accent);text-decoration:none}
-@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr)}}@media(max-width:560px){.wrap{width:min(100% - 28px,1120px)}header{padding:48px 0 34px}.grid{grid-template-columns:1fr}.card{min-height:190px}.section-head{align-items:start;flex-direction:column}.about{grid-template-columns:1fr;gap:10px;margin-top:38px}}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.card{min-height:200px}}
+@media(max-width:600px){.wrap{width:calc(100% - 30px)}header{padding:clamp(34px,9vw,52px) 0 32px}.grid{grid-template-columns:minmax(0,1fr);gap:12px}.card{min-height:0;padding:19px 20px;border-radius:16px}.card p{max-width:60ch;margin-bottom:16px}.section-head{align-items:flex-start;flex-direction:column;gap:8px}.section-head p{font-size:.88rem}.about{grid-template-columns:1fr;gap:10px;margin-top:38px}.hero-row{gap:10px}.pill{font-size:.82rem;padding:7px 11px}}
+@media(max-width:360px){.wrap{width:calc(100% - 24px)}.card{padding:17px}.number{font-size:.7rem}.card h3{font-size:1.08rem}.card p{font-size:.9rem}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
@@ -41,13 +43,13 @@ h2{margin:0;font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-.035em}.section-h
 <header id="top"><div class="wrap">
 <div class="eyebrow">Astrophysics · Web projects · Experiments</div>
 <h1>Ideas, made<br>useful on the web.</h1>
-<p class="intro">I'm <strong>Vivek Kumar Jha</strong>, an astrophysics postdoc who enjoys building things. This is a collection of websites, scientific tools, research resources, and personal experiments—from astronomy calculators to a household catalogue. Most began with a question, a workflow, or a small problem I wanted to solve.</p>
+<p class="intro">I'm <strong>Vivek Kumar Jha</strong>, a postdoc in astrophysics who enjoys building things. This is a collection of websites, scientific tools, research resources, and personal experiments—from astronomy calculators to a household catalogue. Most began with a question, a workflow, or a small problem I wanted to solve.</p>
 <div class="hero-row"><span class="pill"><span class="dot"></span> 18 projects online</span><span class="pill">Built alongside my research</span><a class="top-link" href="#projects">Explore the projects ↓</a></div>
 </div></header>
 <main class="wrap"><section id="projects" aria-labelledby="projects-title">
 <div class="section-head"><div><div class="eyebrow">The collection</div><h2 id="projects-title">Projects & experiments</h2></div><p>18 independent projects · Open any card to visit</p></div>
 <div class="grid">
-<article class="card c1"><span class="number">PROJECT 01</span><h3>ManageHome</h3><p>A practical household catalogue for setting up and maintaining a home.</p><a href="https://managehome.vercel.app/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c1"><span class="number">PROJECT 01</span><h3>Manage Home</h3><p>A practical household catalogue for setting up and maintaining a home.</p><a href="https://managehome.vercel.app/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
 <article class="card c2"><span class="number">PROJECT 02</span><h3>RSIP</h3><p>A Rubin SED inference pipeline for exploring galaxy properties from photometry.</p><a href="https://viveikjha.github.io/rsip/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
 <article class="card c3"><span class="number">PROJECT 03</span><h3>SED Grid</h3><p>Interactive exploration of stellar population spectral energy distributions.</p><a href="https://viveikjha.github.io/sed_grid/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
 <article class="card c4"><span class="number">PROJECT 04</span><h3>TIL Physics</h3><p>Short, topic-focused explainers on physics and astrophysics.</p><a href="https://viveikjha.github.io/tilphysics/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
@@ -68,5 +70,5 @@ h2{margin:0;font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-.035em}.section-h
 </div></section>
 <section class="about" aria-labelledby="about-title"><div><div class="eyebrow">A little about me</div><h2 id="about-title">Built out of curiosity</h2></div><p>I'm an astrophysicist. These projects are a side practice in making ideas tangible: sometimes a research workflow needs a tool, sometimes a topic deserves a visual explanation, and sometimes a small everyday problem is worth solving. Sometimes on a Sunday afternoon, I am sitting with my tea cup and come up with these ideas, which then are thrown to capable LLMs! This collection will keep growing as new ideas come along.</p></section>
 </main>
-<footer><div class="wrap"><span>Vivek Jha · Projects & Experiments</span><span style="float:right"><a class="top-link" href="#top">Back to top ↑</a></span></div></footer>
+<footer><div class="wrap"><span>Vivek Kumar Jha · Projects & Experiments</span><span style="float:right"><a class="top-link" href="#top">Back to top ↑</a></span></div></footer>
 </body></html>
