@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bathroom &amp; Cleaning Supplies — 16 Sub-Categories</title>
+<style>
+  :root { font-family: 'Segoe UI', Inter, system-ui, sans-serif; color: #1f2937; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f1f5f9; padding: 24px; }
+  .page { max-width: 860px; margin: 0 auto; background: #ffffff; padding: 34px 38px; border-radius: 14px; }
+
+  /* ---------- Header banner ---------- */
+  .banner {
+    background: linear-gradient(135deg, #0891b2 0%, #0ea5e9 50%, #10b981 100%);
+    color: #fff; border-radius: 16px; padding: 26px 30px;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  }
+  .banner h1 { font-size: 27px; letter-spacing: .3px; }
+  .banner .sub { margin-top: 6px; font-size: 13px; opacity: .92; }
+  .banner .home-icon { font-size: 46px; }
+
+  /* ---------- Summary strip ---------- */
+  .summary { display: flex; gap: 12px; margin: 16px 0 22px; flex-wrap: wrap; }
+  .stat {
+    flex: 1; min-width: 120px; border-radius: 12px; padding: 12px 16px;
+    color: #fff; text-align: center; box-shadow: 0 2px 6px rgba(15,23,42,.12);
+  }
+  .stat b { display: block; font-size: 22px; }
+  .stat span { font-size: 11.5px; text-transform: uppercase; letter-spacing: .8px; opacity: .95; }
+  .s1 { background: #06b6d4; } .s2 { background: #10b981; }
+  .s3 { background: #f59e0b; } .s4 { background: #8b5cf6; }
+
+  /* ---------- Domain sections ---------- */
+  .domain {
+    border: 2px solid; border-radius: 14px; margin-bottom: 18px; overflow: hidden;
+  }
+  .domain-head {
+    display: flex; align-items: center; gap: 12px; padding: 11px 18px; color: #fff;
+  }
+  .domain-head .icon {
+    width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,.22);
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+  .domain-head h2 { font-size: 17px; flex: 1; }
+  .domain-head .count {
+    font-size: 11px; background: rgba(255,255,255,.25);
+    padding: 4px 12px; border-radius: 999px; font-weight: 600; letter-spacing: .4px;
+  }
+  .domain-body { padding: 14px 18px 16px; background: #ffffff; }
+
+  .d1 { border-color: #06b6d4; } .d1 .domain-head { background: #06b6d4; }
+  .d2 { border-color: #10b981; } .d2 .domain-head { background: #10b981; }
+
+  /* ---------- Sub-category cards ---------- */
+  .subcat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .subcat {
+    border: 1.5px solid; border-radius: 12px; padding: 10px 14px 12px; background: #f8fafc;
+    break-inside: avoid; page-break-inside: avoid;
+  }
+  .d1 .subcat { border-color: #a5f3fc; }
+  .d2 .subcat { border-color: #a7f3d0; }
+  .subcat h3 {
+    font-size: 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+  }
+  .subcat .num {
+    display: inline-block; font-size: 10px; font-weight: 700; color: #fff;
+    border-radius: 999px; padding: 2px 8px; letter-spacing: .4px;
+  }
+  .d1 .num { background: #06b6d4; } .d2 .num { background: #10b981; }
+
+  /* ---------- Items ---------- */
+  .item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; padding: 3.5px 0; }
+  .box {
+    width: 14px; height: 14px; min-width: 14px; border: 2px solid #cbd5e1;
+    border-radius: 4px; display: inline-block;
+  }
+  .optional { color: #64748b; font-style: italic; }
+
+  /* ---------- Footer ---------- */
+  .foot {
+    margin-top: 6px; border-top: 2px dashed #cbd5e1; padding-top: 12px;
+    font-size: 11.5px; color: #64748b; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px;
+  }
+  .legend { display: flex; gap: 18px; margin: 4px 0 0; font-size: 11.5px; color: #475569; }
+  .legend .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+
+  /* ---------- Print / PDF rules ---------- */
+  @page { size: A4; margin: 10mm; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { max-width: none; padding: 0; border-radius: 0; box-shadow: none; }
+    .domain, .subcat { box-shadow: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="banner">
+    <div>
+      <h1>🛁 Bathroom &amp; Cleaning Supplies</h1>
+      <div class="sub">Family of 3 &nbsp;•&nbsp; 2 BHK Apartment &nbsp;•&nbsp; 2 Domains • 16 Sub-Categories</div>
+    </div>
+    <div class="home-icon">🧼</div>
+  </div>
+
+  <!-- Summary strip -->
+  <div class="summary">
+    <div class="stat s1"><b>2</b><span>Domains</span></div>
+    <div class="stat s2"><b>16</b><span>Sub-Categories</span></div>
+    <div class="stat s3"><b>85</b><span>Items Listed</span></div>
+    <div class="stat s4"><b>☑</b><span>Tick = In Stock</span></div>
+  </div>
+
+  <!-- DOMAIN 1 -->
+  <div class="domain d1">
+    <div class="domain-head">
+      <div class="icon">🛁</div>
+      <h2>Domain 1 &nbsp;•&nbsp; Bathroom &amp; Personal Care</h2>
+      <div class="count">8 SUB-CATEGORIES • 39 ITEMS</div>
+    </div>
+    <div class="domain-body">
+      <div class="subcat-grid">
+
+        <div class="subcat">
+          <h3><span class="num">1</span> Bath &amp; Shower</h3>
+          <div class="item"><span class="box"></span> Soap bars</div>
+          <div class="item"><span class="box"></span> Body wash</div>
+          <div class="item"><span class="box"></span> Loofah / bath scrubs</div>
+          <div class="item"><span class="box"></span> Bucket + mug ×2</div>
+          <div class="item"><span class="box"></span> <span class="optional">Shower curtain / gel</span></div>
+          <div class="item"><span class="box"></span> Bath mat</div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">2</span> Oral Care</h3>
+          <div class="item"><span class="box"></span> Toothbrushes ×3 + spares</div>
+          <div class="item"><span class="box"></span> Toothpaste</div>
+          <div class="item"><span class="box"></span> Tongue cleaner</div>
+          <div class="item"><span class="box"></span> Mouthwash</div>
+          <div class="item"><span class="box"></span> Dental floss</div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">3</span> Hair Care</h3>
+          <div class="item"><span class="box"></span> Shampoo</div>
+          <div class="item"><span class="box"></span> <span class="optional">Conditioner</span></div>
+          <div class="item"><span class="box"></span> Hair oil</div>
+          <div class="item"><span class="box"></span> Combs</div>
+          <div class="item"><span class="box"></span> <span class="optional">Hair serum</span></div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">4</span> Skin &amp; Face</h3>
+          <div class="item"><span class="box"></span> Face wash</div>
+          <div class="item"><span class="box"></span> Moisturizer</div>
+          <div class="item"><span class="box"></span> Sunscreen</div>
+          <div class="item"><span class="box"></span> Talcum powder</div>
+          <div class="item"><span class="box"></span> Lip balm</div>
+          <div class="item"><span class="box"></span> Petroleum jelly</div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">5</span> Shaving &amp; Grooming</h3>
+          <div class="item"><span class="box"></span> Razor + blades</div>
+          <div class="item"><span class="box"></span> Shaving cream / gel</div>
+          <div class="item"><span class="box"></span> After-shave</div>
+          <div class="item"><span class="box"></span> Nail cutter set</div>
+          <div class="item"><span class="box"></span> Ear buds</div>
+          <div class="item"><span class="box"></span> Tweezers</div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">6</span> Feminine &amp; Personal Hygiene</h3>
+          <div class="item"><span class="box"></span> Pads / tampons / menstrual cup</div>
+          <div class="item"><span class="box"></span> <span class="optional">Panty liners</span></div>
+          <div class="item"><span class="box"></span> <span class="optional">Intimate wash</span></div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">7</span> Towels &amp; Bathroom Linen</h3>
+          <div class="item"><span class="box"></span> Bath towels ×3+</div>
+          <div class="item"><span class="box"></span> Hand towels ×2</div>
+          <div class="item"><span class="box"></span> Face towels</div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">8</span> Toilet Consumables</h3>
+          <div class="item"><span class="box"></span> Toilet paper</div>
+          <div class="item"><span class="box"></span> Facial tissues</div>
+          <div class="item"><span class="box"></span> Hand sanitizer</div>
+          <div class="item"><span class="box"></span> Handwash (pump)</div>
+          <div class="item"><span class="box"></span> Disposable gloves</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMAIN 2 -->
+  <div class="domain d2">
+    <div class="domain-head">
+      <div class="icon">🧹</div>
+      <h2>Domain 2 &nbsp;•&nbsp; Household Cleaning</h2>
+      <div class="count">8 SUB-CATEGORIES • 46 ITEMS</div>
+    </div>
+    <div class="domain-body">
+      <div class="subcat-grid">
+
+        <div class="subcat">
+          <h3><span class="num">9</span> Floor &amp; Surface Cleaning</h3>
+          <div class="item"><span class="box"></span> Broom</div>
+          <div class="item"><span class="box"></span> Dustpan</div>
+          <div class="item"><span class="box"></span> Mop (pocha) + refills</div>
+          <div class="item"><span class="box"></span> Floor squeegee / wiper</div>
+          <div class="item"><span class="box"></span> Floor cleaner (phenyl / disinfectant)</div>
+          <div class="item"><span class="box"></span> Separate bucket</div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">10</span> Dish Washing</h3>
+          <div class="item"><span class="box"></span> Dishwash bar / gel / powder</div>
+          <div class="item"><span class="box"></span> Scrubbers (coconut + steel + plastic)</div>
+          <div class="item"><span class="box"></span> Sink strainer</div>
+          <div class="item"><span class="box"></span> Drain mesh</div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">11</span> Laundry Care</h3>
+          <div class="item"><span class="box"></span> Detergent powder / liquid</div>
+          <div class="item"><span class="box"></span> Stain remover</div>
+          <div class="item"><span class="box"></span> <span class="optional">Fabric softener</span></div>
+          <div class="item"><span class="box"></span> Bleach</div>
+          <div class="item"><span class="box"></span> Clothes brush</div>
+          <div class="item"><span class="box"></span> Clothes clips / pegs</div>
+          <div class="item"><span class="box"></span> Drying rope</div>
+          <div class="item"><span class="box"></span> Laundry bag / baskets</div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">12</span> Toilet &amp; Bathroom Cleaning</h3>
+          <div class="item"><span class="box"></span> Toilet cleaner (acid type)</div>
+          <div class="item"><span class="box"></span> Bathroom / tile cleaner</div>
+          <div class="item"><span class="box"></span> Toilet brush + holder</div>
+          <div class="item"><span class="box"></span> Tile brush</div>
+          <div class="item"><span class="box"></span> <span class="optional">Limescale / descaler</span></div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">13</span> Glass, Dusting &amp; Polish</h3>
+          <div class="item"><span class="box"></span> Glass cleaner</div>
+          <div class="item"><span class="box"></span> Surface disinfectant spray</div>
+          <div class="item"><span class="box"></span> Microfiber cloths</div>
+          <div class="item"><span class="box"></span> Dusters</div>
+          <div class="item"><span class="box"></span> <span class="optional">Furniture polish</span></div>
+          <div class="item"><span class="box"></span> Cobweb broom</div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">14</span> Dustbins &amp; Garbage</h3>
+          <div class="item"><span class="box"></span> Dustbins ×2–3 (kitchen / bath / rooms)</div>
+          <div class="item"><span class="box"></span> Garbage bags — 2 sizes</div>
+          <div class="item"><span class="box"></span> Bin liners</div>
+          <div class="item"><span class="box"></span> <span class="optional">Compost bin</span></div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">15</span> Cleaning Tools &amp; Protection</h3>
+          <div class="item"><span class="box"></span> Rubber gloves ×2 pairs</div>
+          <div class="item"><span class="box"></span> Apron</div>
+          <div class="item"><span class="box"></span> Old toothbrush (grout / joints)</div>
+          <div class="item"><span class="box"></span> Wipes + junk rags</div>
+          <div class="item"><span class="box"></span> Spray bottles</div>
+          <div class="item"><span class="box"></span> <span class="optional">Step-stool</span></div>
+        </div>
+
+        <div class="subcat">
+          <h3><span class="num">16</span> Pest Control &amp; Freshness</h3>
+          <div class="item"><span class="box"></span> Mosquito liquid vaporizer + refills</div>
+          <div class="item"><span class="box"></span> Coils / sprays</div>
+          <div class="item"><span class="box"></span> Cockroach gel / spray</div>
+          <div class="item"><span class="box"></span> Ant powder</div>
+          <div class="item"><span class="box"></span> Naphthalene balls (wardrobes)</div>
+          <div class="item"><span class="box"></span> Camphor</div>
+          <div class="item"><span class="box"></span> Room freshener</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend + footer -->
+  <div class="legend">
+    <span><span class="swatch" style="background:#06b6d4"></span>Bathroom &amp; Personal Care</span>
+    <span><span class="swatch" style="background:#10b981"></span>Household Cleaning</span>
+    &nbsp;&nbsp;<i>Italic = optional item</i>
+  </div>
+  <div class="foot">
+    <span>☑ Tick once stocked — unticked = add to next shopping run</span>
+    <span>Family of 3 • 2 BHK • Bathroom &amp; Cleaning</span>
+  </div>
+</div>
+</body>
+</html>
