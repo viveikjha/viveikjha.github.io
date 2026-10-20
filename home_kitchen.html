@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kitchen &amp; Pantry Inventory — 12 Categories</title>
+<style>
+  :root { font-family: 'Segoe UI', Inter, system-ui, sans-serif; color: #1f2937; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f1f5f9; padding: 24px; }
+  .page { max-width: 860px; margin: 0 auto; background: #ffffff; padding: 34px 38px; border-radius: 14px; }
+
+  /* ---------- Header banner ---------- */
+  .banner {
+    background: linear-gradient(135deg, #b45309 0%, #dc2626 50%, #db2777 100%);
+    color: #fff; border-radius: 16px; padding: 26px 30px;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  }
+  .banner h1 { font-size: 27px; letter-spacing: .3px; }
+  .banner .sub { margin-top: 6px; font-size: 13px; opacity: .92; }
+  .banner .home-icon { font-size: 46px; }
+
+  /* ---------- Summary strip ---------- */
+  .summary { display: flex; gap: 12px; margin: 16px 0 22px; flex-wrap: wrap; }
+  .stat {
+    flex: 1; min-width: 120px; border-radius: 12px; padding: 12px 16px;
+    color: #fff; text-align: center; box-shadow: 0 2px 6px rgba(15,23,42,.12);
+  }
+  .stat b { display: block; font-size: 22px; }
+  .stat span { font-size: 11.5px; text-transform: uppercase; letter-spacing: .8px; opacity: .95; }
+  .s1 { background: #0ea5e9; } .s2 { background: #10b981; }
+  .s3 { background: #f59e0b; } .s4 { background: #8b5cf6; }
+
+  /* ---------- Category sections ---------- */
+  .room {
+    border: 2px solid; border-radius: 14px; margin-bottom: 18px;
+    overflow: hidden; break-inside: avoid; page-break-inside: avoid;
+  }
+  .room-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 18px; color: #fff;
+  }
+  .room-head .icon {
+    width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,.22);
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+  .room-head h2 { font-size: 17px; flex: 1; }
+  .room-head .count {
+    font-size: 11px; background: rgba(255,255,255,.25);
+    padding: 4px 12px; border-radius: 999px; font-weight: 600; letter-spacing: .4px;
+  }
+  .room-body { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; padding: 14px 18px 16px; }
+
+  .item { display: flex; align-items: center; gap: 9px; font-size: 13px; padding: 4.5px 2px; }
+  .box {
+    width: 15px; height: 15px; min-width: 15px; border: 2px solid #cbd5e1;
+    border-radius: 4px; display: inline-block;
+  }
+  .qty {
+    margin-left: auto; font-size: 10.5px; font-weight: 700; color: #475569;
+    background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 999px; padding: 2px 9px;
+  }
+  .optional { color: #64748b; font-style: italic; }
+  .dot {
+    width: 13px; height: 13px; min-width: 13px; border-radius: 50%; display: inline-block;
+    border: 1px solid rgba(0,0,0,.15);
+  }
+
+  /* ---------- Category color themes ---------- */
+  .c1  { border-color: #d97706; } .c1  .room-head { background: #d97706; }
+  .c2  { border-color: #eab308; } .c2  .room-head { background: #eab308; }
+  .c3  { border-color: #ef4444; } .c3  .room-head { background: #ef4444; }
+  .c4  { border-color: #f97316; } .c4  .room-head { background: #f97316; }
+  .c5  { border-color: #06b6d4; } .c5  .room-head { background: #06b6d4; }
+  .c6  { border-color: #0ea5e9; } .c6  .room-head { background: #0ea5e9; }
+  .c7  { border-color: #10b981; } .c7  .room-head { background: #10b981; }
+  .c8  { border-color: #ec4899; } .c8  .room-head { background: #ec4899; }
+  .c9  { border-color: #8b5cf6; } .c9  .room-head { background: #8b5cf6; }
+  .c10 { border-color: #f43f5e; } .c10 .room-head { background: #f43f5e; }
+  .c11 { border-color: #14b8a6; } .c11 .room-head { background: #14b8a6; }
+  .c12 { border-color: #64748b; } .c12 .room-head { background: #64748b; }
+
+  /* ---------- Footer ---------- */
+  .foot {
+    margin-top: 6px; border-top: 2px dashed #cbd5e1; padding-top: 12px;
+    font-size: 11.5px; color: #64748b; display: flex; justify-content: space-between;
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 4px 0 0; font-size: 11.5px; color: #475569; }
+  .legend .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+
+  /* ---------- Print / PDF rules ---------- */
+  @page { size: A4; margin: 10mm; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { max-width: none; padding: 0; border-radius: 0; box-shadow: none; }
+    .room { box-shadow: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="banner">
+    <div>
+      <h1>🍛 Kitchen &amp; Pantry Inventory</h1>
+      <div class="sub">Family of 3 &nbsp;•&nbsp; 2 BHK Apartment &nbsp;•&nbsp; 12-Category Checklist</div>
+    </div>
+    <div class="home-icon">🛒</div>
+  </div>
+
+  <!-- Summary strip -->
+  <div class="summary">
+    <div class="stat s1"><b>12</b><span>Categories</span></div>
+    <div class="stat s2"><b>100</b><span>Items Listed</span></div>
+    <div class="stat s3"><b>☑</b><span>Tick = In Stock</span></div>
+    <div class="stat s4"><b>□</b><span>Empty = Buy Next</span></div>
+  </div>
+
+  <!-- 1. Cereals & Grains -->
+  <div class="room c1">
+    <div class="room-head">
+      <div class="icon">🌾</div>
+      <h2>1 &nbsp;•&nbsp; Cereals &amp; Grains</h2>
+      <div class="count">12 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Everyday rice (Sona Masoori / parmal)</div>
+      <div class="item"><span class="box"></span> Basmati (pulao / biryani)</div>
+      <div class="item"><span class="box"></span> Wheat / atta</div>
+      <div class="item"><span class="box"></span> Dosa / idli batter</div>
+      <div class="item"><span class="box"></span> Besan (gram flour)</div>
+      <div class="item"><span class="box"></span> Maida</div>
+      <div class="item"><span class="box"></span> Sooji / rava</div>
+      <div class="item"><span class="box"></span> Poha</div>
+      <div class="item"><span class="box"></span> Sabudana (vrat)</div>
+      <div class="item"><span class="box"></span> Oats</div>
+      <div class="item"><span class="box"></span> Dalia</div>
+      <div class="item"><span class="box"></span> Vermicelli (semiyan)</div>
+    </div>
+  </div>
+
+  <!-- 2. Pulses & Seeds -->
+  <div class="room c2">
+    <div class="room-head">
+      <div class="icon">🫘</div>
+      <h2>2 &nbsp;•&nbsp; Pulses &amp; Seeds</h2>
+      <div class="count">13 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Arhar (toor)</div>
+      <div class="item"><span class="box"></span> Masoor</div>
+      <div class="item"><span class="box"></span> Moong</div>
+      <div class="item"><span class="box"></span> Black chana</div>
+      <div class="item"><span class="box"></span> White chana</div>
+      <div class="item"><span class="box"></span> Peanut</div>
+      <div class="item"><span class="box"></span> Urad</div>
+      <div class="item"><span class="box"></span> Rajma</div>
+      <div class="item"><span class="box"></span> Lobia (chawli)</div>
+      <div class="item"><span class="box"></span> Dried peas (matar)</div>
+      <div class="item"><span class="box"></span> Mustard seeds (rai / sarson)</div>
+      <div class="item"><span class="box"></span> Methi dana</div>
+      <div class="item"><span class="box"></span> Kalonji (nigella)</div>
+    </div>
+  </div>
+
+  <!-- 3. Spices -->
+  <div class="room c3">
+    <div class="room-head">
+      <div class="icon">🌶️</div>
+      <h2>3 &nbsp;•&nbsp; Spices — Whole &amp; Powders</h2>
+      <div class="count">24 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Haldi</div>
+      <div class="item"><span class="box"></span> Jeera</div>
+      <div class="item"><span class="box"></span> Ajwain</div>
+      <div class="item"><span class="box"></span> Dhaniya</div>
+      <div class="item"><span class="box"></span> Saunf</div>
+      <div class="item"><span class="box"></span> Kali mirch</div>
+      <div class="item"><span class="box"></span> Whole red chilli (sabut lal mirch)</div>
+      <div class="item"><span class="box"></span> Star anise</div>
+      <div class="item"><span class="box"></span> Elaichi (badi + choti)</div>
+      <div class="item"><span class="box"></span> Laung</div>
+      <div class="item"><span class="box"></span> Cinnamon</div>
+      <div class="item"><span class="box"></span> Bay leaf (tej patta)</div>
+      <div class="item"><span class="box"></span> Hing</div>
+      <div class="item"><span class="box"></span> <span class="optional">Jaifal–javitri (nutmeg–mace)</span></div>
+      <div class="item"><span class="box"></span> Chilli powder</div>
+      <div class="item"><span class="box"></span> Amchur</div>
+      <div class="item"><span class="box"></span> Garam masala</div>
+      <div class="item"><span class="box"></span> Sambar masala</div>
+      <div class="item"><span class="box"></span> Rasam powder</div>
+      <div class="item"><span class="box"></span> Pulihora mix</div>
+      <div class="item"><span class="box"></span> Bisi bele bath masala</div>
+      <div class="item"><span class="box"></span> Fish fry masala</div>
+      <div class="item"><span class="box"></span> Chicken masala</div>
+      <div class="item"><span class="box"></span> <span class="optional">Chat masala</span></div>
+    </div>
+  </div>
+
+  <!-- 4. Poultry & Meat -->
+  <div class="room c4">
+    <div class="room-head">
+      <div class="icon">🍗</div>
+      <h2>4 &nbsp;•&nbsp; Poultry &amp; Meat</h2>
+      <div class="count">3 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Eggs</div>
+      <div class="item"><span class="box"></span> Chicken</div>
+      <div class="item"><span class="box"></span> Mutton</div>
+    </div>
+  </div>
+
+  <!-- 5. Fish & Seafood -->
+  <div class="room c5">
+    <div class="room-head">
+      <div class="icon">🐟</div>
+      <h2>5 &nbsp;•&nbsp; Fish &amp; Seafood</h2>
+      <div class="count">2 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Fish (various kinds)</div>
+      <div class="item"><span class="box"></span> Prawn</div>
+    </div>
+  </div>
+
+  <!-- 6. Dairy -->
+  <div class="room c6">
+    <div class="room-head">
+      <div class="icon">🥛</div>
+      <h2>6 &nbsp;•&nbsp; Dairy</h2>
+      <div class="count">9 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Milk</div>
+      <div class="item"><span class="box"></span> Curd (dahi)</div>
+      <div class="item"><span class="box"></span> Butter</div>
+      <div class="item"><span class="box"></span> Ghee</div>
+      <div class="item"><span class="box"></span> Paneer</div>
+      <div class="item"><span class="box"></span> Cream / malai</div>
+      <div class="item"><span class="box"></span> Condensed milk</div>
+      <div class="item"><span class="box"></span> Cheese slices</div>
+      <div class="item"><span class="box"></span> Milk powder</div>
+    </div>
+  </div>
+
+  <!-- 7. Vegetables -->
+  <div class="room c7">
+    <div class="room-head">
+      <div class="icon">🥦</div>
+      <h2>7 &nbsp;•&nbsp; Vegetables — 5-Colour Format</h2>
+      <div class="count">12 ROWS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="dot" style="background:#22c55e"></span> <b>Green:</b> leafy greens, bhindi, capsicum, beans, lauki, brinjal</div>
+      <div class="item"><span class="dot" style="background:#e2e8f0"></span> <b>White:</b> potato, cauliflower, cabbage, radish</div>
+      <div class="item"><span class="dot" style="background:#facc15"></span> <b>Yellow:</b> carrot, pumpkin</div>
+      <div class="item"><span class="dot" style="background:#ef4444"></span> <b>Red:</b> tomato, beetroot, red capsicum</div>
+      <div class="item"><span class="dot" style="background:#a855f7"></span> <b>Purple:</b> brinjal, purple cabbage <span class="optional">(+ sweet potato)</span></div>
+      <div class="item"><span class="box"></span> Olives</div>
+      <div class="item"><span class="box"></span> Onion</div>
+      <div class="item"><span class="box"></span> Ginger</div>
+      <div class="item"><span class="box"></span> Garlic</div>
+      <div class="item"><span class="box"></span> Curry leaves, Mint, Coriander</div>
+      <div class="item"><span class="box"></span> Lemon</div>
+      <div class="item"><span class="box"></span> Green chilli</div>
+    </div>
+  </div>
+
+  <!-- 8. Fruits -->
+  <div class="room c8">
+    <div class="room-head">
+      <div class="icon">🍎</div>
+      <h2>8 &nbsp;•&nbsp; Fruits</h2>
+      <div class="count">1 ROW</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Seasonal fruits (as available)</div>
+    </div>
+  </div>
+
+  <!-- 9. Chutney & Pickles -->
+  <div class="room c9">
+    <div class="room-head">
+      <div class="icon">🥫</div>
+      <h2>9 &nbsp;•&nbsp; Chutney, Pickles &amp; Papad</h2>
+      <div class="count">3 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Chutney</div>
+      <div class="item"><span class="box"></span> Pickles</div>
+      <div class="item"><span class="box"></span> Papad</div>
+    </div>
+  </div>
+
+  <!-- 10. Snacks -->
+  <div class="room c10">
+    <div class="room-head">
+      <div class="icon">🍪</div>
+      <h2>10 &nbsp;•&nbsp; Snacks &amp; Munchies</h2>
+      <div class="count">7 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Roasted chana</div>
+      <div class="item"><span class="box"></span> Peanuts</div>
+      <div class="item"><span class="box"></span> Biscuits</div>
+      <div class="item"><span class="box"></span> Namkeen</div>
+      <div class="item"><span class="box"></span> Dry fruits &amp; nuts (almond, cashew, raisin, dates, walnut, pista)</div>
+      <div class="item"><span class="box"></span> Bread</div>
+      <div class="item"><span class="box"></span> Cornflakes / muesli</div>
+    </div>
+  </div>
+
+  <!-- 11. Drinks -->
+  <div class="room c11">
+    <div class="room-head">
+      <div class="icon">☕</div>
+      <h2>11 &nbsp;•&nbsp; Drinks &amp; Beverages</h2>
+      <div class="count">5 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Tea (3–4 kinds)</div>
+      <div class="item"><span class="box"></span> Coffee</div>
+      <div class="item"><span class="box"></span> Kokum</div>
+      <div class="item"><span class="box"></span> Rasna (hot days)</div>
+      <div class="item"><span class="box"></span> Health-drink powder for kids</div>
+    </div>
+  </div>
+
+  <!-- 12. Kitchen Basics -->
+  <div class="room c12">
+    <div class="room-head">
+      <div class="icon">🧂</div>
+      <h2>12 &nbsp;•&nbsp; Kitchen Basics — Oils, Salt &amp; Sweeteners</h2>
+      <div class="count">9 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Cooking oil (mustard / groundnut / sunflower / refined)</div>
+      <div class="item"><span class="box"></span> Coconut oil</div>
+      <div class="item"><span class="box"></span> Iodized salt</div>
+      <div class="item"><span class="box"></span> Kala namak (chaat)</div>
+      <div class="item"><span class="box"></span> Sendha namak (vrat)</div>
+      <div class="item"><span class="box"></span> Sugar</div>
+      <div class="item"><span class="box"></span> Jaggery (gud)</div>
+      <div class="item"><span class="box"></span> Honey</div>
+      <div class="item"><span class="box"></span> Vinegar</div>
+    </div>
+  </div>
+
+  <!-- Legend + footer -->
+  <div class="legend">
+    <span><span class="swatch" style="background:#d97706"></span>Cereals</span>
+    <span><span class="swatch" style="background:#eab308"></span>Pulses</span>
+    <span><span class="swatch" style="background:#ef4444"></span>Spices</span>
+    <span><span class="swatch" style="background:#f97316"></span>Poultry</span>
+    <span><span class="swatch" style="background:#06b6d4"></span>Fish</span>
+    <span><span class="swatch" style="background:#0ea5e9"></span>Dairy</span>
+    <span><span class="swatch" style="background:#10b981"></span>Vegetables</span>
+    <span><span class="swatch" style="background:#ec4899"></span>Fruits</span>
+    <span><span class="swatch" style="background:#8b5cf6"></span>Pickles</span>
+    <span><span class="swatch" style="background:#f43f5e"></span>Snacks</span>
+    <span><span class="swatch" style="background:#14b8a6"></span>Drinks</span>
+    <span><span class="swatch" style="background:#64748b"></span>Basics</span>
+    &nbsp;&nbsp;<i>Italic = optional item</i>
+  </div>
+  <div class="foot">
+    <span>☑ Tick once stocked — unticked = add to next grocery run</span>
+    <span>Family of 3 • 2 BHK • Kitchen &amp; Pantry</span>
+  </div>
+</div>
+</body>
+</html>
