@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kitchen Equipment &amp; Essentials Inventory</title>
+<style>
+  :root { font-family: 'Segoe UI', Inter, system-ui, sans-serif; color: #1f2937; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f1f5f9; padding: 24px; }
+  .page { max-width: 860px; margin: 0 auto; background: #ffffff; padding: 34px 38px; border-radius: 14px; }
+
+  /* ---------- Header banner ---------- */
+  .banner {
+    background: linear-gradient(135deg, #0f766e 0%, #0e7490 52%, #2563eb 100%);
+    color: #fff; border-radius: 16px; padding: 26px 30px;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  }
+  .banner h1 { font-size: 27px; letter-spacing: .3px; }
+  .banner .sub { margin-top: 6px; font-size: 13px; opacity: .92; }
+  .banner .home-icon { font-size: 46px; }
+
+  /* ---------- Summary strip ---------- */
+  .summary { display: flex; gap: 12px; margin: 16px 0 22px; flex-wrap: wrap; }
+  .stat {
+    flex: 1; min-width: 120px; border-radius: 12px; padding: 12px 16px;
+    color: #fff; text-align: center; box-shadow: 0 2px 6px rgba(15,23,42,.12);
+  }
+  .stat b { display: block; font-size: 22px; }
+  .stat span { font-size: 11.5px; text-transform: uppercase; letter-spacing: .8px; opacity: .95; }
+  .s1 { background: #0ea5e9; } .s2 { background: #10b981; }
+  .s3 { background: #f59e0b; } .s4 { background: #8b5cf6; }
+
+  /* ---------- Category sections ---------- */
+  .room {
+    border: 2px solid; border-radius: 14px; margin-bottom: 18px;
+    overflow: hidden; break-inside: avoid; page-break-inside: avoid;
+  }
+  .room-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 18px; color: #fff;
+  }
+  .room-head .icon {
+    width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,.22);
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+  .room-head h2 { font-size: 17px; flex: 1; }
+  .room-head .count {
+    font-size: 11px; background: rgba(255,255,255,.25);
+    padding: 4px 12px; border-radius: 999px; font-weight: 600; letter-spacing: .4px;
+  }
+  .room-body { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; padding: 14px 18px 16px; }
+  .item { display: flex; align-items: center; gap: 9px; font-size: 13px; padding: 4.5px 2px; }
+  .box {
+    width: 15px; height: 15px; min-width: 15px; border: 2px solid #cbd5e1;
+    border-radius: 4px; display: inline-block;
+  }
+  .qty {
+    margin-left: auto; font-size: 10.5px; font-weight: 700; color: #475569;
+    background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 999px; padding: 2px 9px;
+  }
+  .optional { color: #64748b; font-style: italic; }
+  .dot {
+    width: 13px; height: 13px; min-width: 13px; border-radius: 50%; display: inline-block;
+    border: 1px solid rgba(0,0,0,.15);
+  }
+
+  /* ---------- Category color themes ---------- */
+  .c1  { border-color: #0d9488; } .c1  .room-head { background: #0d9488; }
+  .c2  { border-color: #0284c7; } .c2  .room-head { background: #0284c7; }
+  .c3  { border-color: #6366f1; } .c3  .room-head { background: #6366f1; }
+  .c4  { border-color: #0891b2; } .c4  .room-head { background: #0891b2; }
+  .c5  { border-color: #16a34a; } .c5  .room-head { background: #16a34a; }
+  .c6  { border-color: #64748b; } .c6  .room-head { background: #64748b; }
+
+  /* ---------- Footer ---------- */
+  .foot {
+    margin-top: 6px; border-top: 2px dashed #cbd5e1; padding-top: 12px;
+    font-size: 11.5px; color: #64748b; display: flex; justify-content: space-between; gap: 12px;
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 4px 0 0; font-size: 11.5px; color: #475569; }
+  .legend .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+
+  /* ---------- Print / PDF rules ---------- */
+  @page { size: A4; margin: 10mm; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { max-width: none; padding: 0; border-radius: 0; box-shadow: none; }
+    .room { box-shadow: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  @media (max-width: 620px) {
+    body { padding: 10px; }
+    .page { padding: 20px 16px; }
+    .banner { padding: 20px; }
+    .banner h1 { font-size: 22px; }
+    .room-body { grid-template-columns: 1fr; }
+    .room-head { gap: 8px; padding: 10px 12px; }
+    .room-head h2 { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="banner">
+    <div>
+      <h1>🍳 Kitchen Equipment &amp; Essentials</h1>
+      <div class="sub">Family of 3 &nbsp;•&nbsp; 2 BHK Apartment &nbsp;•&nbsp; 6-Category Checklist</div>
+    </div>
+    <div class="home-icon">🍽️</div>
+  </div>
+
+  <!-- Summary strip -->
+  <div class="summary">
+    <div class="stat s1"><b>6</b><span>Categories</span></div>
+    <div class="stat s2"><b>69</b><span>Items Listed</span></div>
+    <div class="stat s3"><b>☑</b><span>Tick = In Stock</span></div>
+    <div class="stat s4"><b>□</b><span>Empty = Buy Next</span></div>
+  </div>
+
+  <!-- 1. Cookware -->
+  <div class="room c1">
+    <div class="room-head">
+      <div class="icon">🍲</div>
+      <h2>1 &nbsp;•&nbsp; Cookware — Pots, Pans &amp; Vessels</h2>
+      <div class="count">10 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Pressure cooker</div>
+      <div class="item"><span class="box"></span> Small saucepan / pot</div>
+      <div class="item"><span class="box"></span> Medium cooking pot / patila</div>
+      <div class="item"><span class="box"></span> Large cooking pot</div>
+      <div class="item"><span class="box"></span> Kadhai</div>
+      <div class="item"><span class="box"></span> Frying pan / skillet</div>
+      <div class="item"><span class="box"></span> Tawa / flat griddle</div>
+      <div class="item"><span class="box"></span> <span class="optional">Idli steamer / steamer insert</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Separate dosa tawa</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Small tadka / tempering pan</span></div>
+    </div>
+  </div>
+
+  <!-- 2. Cutlery & Tableware -->
+  <div class="room c2">
+    <div class="room-head">
+      <div class="icon">🥄</div>
+      <h2>2 &nbsp;•&nbsp; Cutlery &amp; Tableware</h2>
+      <div class="count">12 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Dinner plates <span class="qty">6</span></div>
+      <div class="item"><span class="box"></span> Small plates <span class="qty">6</span></div>
+      <div class="item"><span class="box"></span> Bowls / katoris <span class="qty">9</span></div>
+      <div class="item"><span class="box"></span> Spoons <span class="qty">9</span></div>
+      <div class="item"><span class="box"></span> Forks <span class="qty">6</span></div>
+      <div class="item"><span class="box"></span> Table knives <span class="qty">3</span></div>
+      <div class="item"><span class="box"></span> Glasses / tumblers <span class="qty">6</span></div>
+      <div class="item"><span class="box"></span> Tea cups / mugs <span class="qty">3–6</span></div>
+      <div class="item"><span class="box"></span> Water jug <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Extra cups for guests</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Soup bowls</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Dessert spoons</span></div>
+    </div>
+  </div>
+
+  <!-- 3. Cooking Tools -->
+  <div class="room c3">
+    <div class="room-head">
+      <div class="icon">🔪</div>
+      <h2>3 &nbsp;•&nbsp; Cooking Tools &amp; Essentials</h2>
+      <div class="count">19 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Spatula / turner <span class="qty">2</span></div>
+      <div class="item"><span class="box"></span> Stirring spoon <span class="qty">2</span></div>
+      <div class="item"><span class="box"></span> Slotted spoon <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Tongs <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Whisk <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Peeler <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Grater <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Kitchen knife <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Small paring knife <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Chopping boards <span class="qty">2</span></div>
+      <div class="item"><span class="box"></span> Kitchen scissors <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Rolling pin and chakla <span class="qty">1 set</span></div>
+      <div class="item"><span class="box"></span> Strainers / sieves <span class="qty">2 sizes</span></div>
+      <div class="item"><span class="box"></span> Colander <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Mixing bowls <span class="qty">2–3</span></div>
+      <div class="item"><span class="box"></span> Measuring cup and spoons <span class="qty">1 set</span></div>
+      <div class="item"><span class="box"></span> Bottle / can opener <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Mortar and pestle <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Kitchen towels <span class="qty">3–4</span></div>
+    </div>
+  </div>
+
+  <!-- 4. Serving Ware -->
+  <div class="room c4">
+    <div class="room-head">
+      <div class="icon">🍽️</div>
+      <h2>4 &nbsp;•&nbsp; Serving Ware</h2>
+      <div class="count">8 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Serving bowls <span class="qty">2–3</span></div>
+      <div class="item"><span class="box"></span> Serving platters <span class="qty">1–2</span></div>
+      <div class="item"><span class="box"></span> Serving spoons <span class="qty">2–3</span></div>
+      <div class="item"><span class="box"></span> Serving ladle <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Rice serving spoon <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Condiment / chutney bowls <span class="qty">2–4</span></div>
+      <div class="item"><span class="box"></span> Serving tray <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Guest-serving set</span></div>
+    </div>
+  </div>
+
+  <!-- 5. Storage Containers -->
+  <div class="room c5">
+    <div class="room-head">
+      <div class="icon">🫙</div>
+      <h2>5 &nbsp;•&nbsp; Storage Containers &amp; Food Keeping</h2>
+      <div class="count">11 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Airtight dry-food containers (various sizes)</div>
+      <div class="item"><span class="box"></span> Pantry jars for grains / pulses</div>
+      <div class="item"><span class="box"></span> Spice jars / masala dabba</div>
+      <div class="item"><span class="box"></span> Refrigerator food containers</div>
+      <div class="item"><span class="box"></span> Leftover containers</div>
+      <div class="item"><span class="box"></span> Lunch boxes</div>
+      <div class="item"><span class="box"></span> Water bottles</div>
+      <div class="item"><span class="box"></span> Reusable food bags</div>
+      <div class="item"><span class="box"></span> Oil / ghee dispenser bottles</div>
+      <div class="item"><span class="box"></span> Freezer-safe containers</div>
+      <div class="item"><span class="box"></span> <span class="optional">Reusable wraps / food covers</span></div>
+    </div>
+  </div>
+
+  <!-- 6. Optional & Special Purpose -->
+  <div class="room c6">
+    <div class="room-head">
+      <div class="icon">✳️</div>
+      <h2>6 &nbsp;•&nbsp; Optional &amp; Special-Purpose Items</h2>
+      <div class="count">9 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> <span class="optional">Baking / roasting tray</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Oven-safe dish</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Cake / loaf tin</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Pizza cutter</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Pastry brush</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Extra steamer insert</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Separate dosa tawa, if needed</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Kitchen thermometer</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Salad spinner</span></div>
+    </div>
+  </div>
+
+  <!-- Legend + footer -->
+  <div class="legend">
+    <span><span class="swatch" style="background:#0d9488"></span>Cookware</span>
+    <span><span class="swatch" style="background:#0284c7"></span>Tableware</span>
+    <span><span class="swatch" style="background:#6366f1"></span>Tools</span>
+    <span><span class="swatch" style="background:#0891b2"></span>Serving</span>
+    <span><span class="swatch" style="background:#16a34a"></span>Storage</span>
+    <span><span class="swatch" style="background:#64748b"></span>Optional</span>
+    &nbsp;&nbsp;<i>Italic = optional item</i>
+  </div>
+  <div class="foot">
+    <span>☑ Tick once owned — unticked = consider for next purchase</span>
+    <span>Family of 3 • 2 BHK • Kitchen Equipment</span>
+  </div>
+</div>
+</body>
+</html>
