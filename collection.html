@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="Web projects, astronomy tools, research resources, and personal experiments by Vivek Jha.">
+<title>Projects & Experiments — Vivek Kumar Jha</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--text:#f3f6fc;--muted:#aab6ca;--line:rgba(255,255,255,.12);--accent:#9fd7ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 12% 0%,rgba(58,102,180,.22),transparent 38rem),radial-gradient(ellipse at 92% 10%,rgba(134,75,164,.18),transparent 34rem),var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:inherit}.wrap{width:min(1120px,calc(100% - 40px));margin:0 auto}
+header{padding:72px 0 48px}.eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:.16em;font-size:.78rem;font-weight:750}
+h1{margin:12px 0 14px;font-size:clamp(2.6rem,7vw,5.2rem);line-height:.98;letter-spacing:-.055em}
+.intro{max-width:760px;color:var(--muted);font-size:clamp(1.05rem,2vw,1.25rem)}.intro strong{color:var(--text)}
+.hero-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:28px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:8px 13px;color:#dce7f8;font-size:.9rem;background:rgba(255,255,255,.035)}
+.dot{width:7px;height:7px;border-radius:50%;background:#83e0b5}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:16px 0 22px}
+h2{margin:0;font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-.035em}.section-head p{margin:0;color:var(--muted);font-size:.92rem}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{position:relative;overflow:hidden;min-height:218px;padding:22px;border:1px solid rgba(255,255,255,.2);border-radius:18px;display:flex;flex-direction:column;align-items:flex-start;background:var(--card);box-shadow:0 12px 30px rgba(0,0,0,.14);transition:transform .18s ease,box-shadow .18s ease}
+.card:after{content:"";position:absolute;inset:auto -34px -60px auto;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.12);pointer-events:none}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(0,0,0,.28)}
+.number{font-size:.76rem;font-weight:800;letter-spacing:.1em;opacity:.78}
+.card h3{margin:9px 0 7px;font-size:1.25rem;line-height:1.2;letter-spacing:-.02em}
+.card p{margin:0 0 20px;color:rgba(255,255,255,.9);font-size:.94rem;max-width:36ch}
+.card a{margin-top:auto;text-decoration:none;font-size:.9rem;font-weight:800;border-bottom:1px solid rgba(255,255,255,.65);padding-bottom:2px;position:relative;z-index:1}
+.card a:focus-visible,.top-link:focus-visible{outline:3px solid white;outline-offset:4px}
+.c1{--card:linear-gradient(135deg,#176b87,#219eb1)}.c2{--card:linear-gradient(135deg,#6544a5,#9a67d3)}.c3{--card:linear-gradient(135deg,#3b5d9b,#628bd6)}.c4{--card:linear-gradient(135deg,#a34b35,#d97849)}.c5{--card:linear-gradient(135deg,#34744e,#56a36e)}.c6{--card:linear-gradient(135deg,#9a4c77,#d16a9e)}
+.c7{--card:linear-gradient(135deg,#3f6179,#6299b6)}.c8{--card:linear-gradient(135deg,#655d29,#a99c43)}.c9{--card:linear-gradient(135deg,#8b552c,#c58b4a)}.c10{--card:linear-gradient(135deg,#315f9c,#448fce)}.c11{--card:linear-gradient(135deg,#2d6b69,#50a9a2)}.c12{--card:linear-gradient(135deg,#4c4b78,#7979b7)}
+.c13{--card:linear-gradient(135deg,#7c4055,#b9637d)}.c14{--card:linear-gradient(135deg,#3f6844,#76a85d)}.c15{--card:linear-gradient(135deg,#315a75,#4c8ca8)}.c16{--card:linear-gradient(135deg,#73532d,#b88a4a)}.c17{--card:linear-gradient(135deg,#8c3d39,#c9655e)}.c18{--card:linear-gradient(135deg,#4e5e9e,#788de0)}
+.about{margin:54px 0 0;padding:26px 0 34px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1.5fr;gap:28px}
+.about p{margin:0;color:var(--muted)}footer{border-top:1px solid var(--line);padding:22px 0 34px;color:var(--muted);font-size:.88rem}.top-link{color:var(--accent);text-decoration:none}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr)}}@media(max-width:560px){.wrap{width:min(100% - 28px,1120px)}header{padding:48px 0 34px}.grid{grid-template-columns:1fr}.card{min-height:190px}.section-head{align-items:start;flex-direction:column}.about{grid-template-columns:1fr;gap:10px;margin-top:38px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header id="top"><div class="wrap">
+<div class="eyebrow">Astrophysics · Web projects · Experiments</div>
+<h1>Ideas, made<br>useful on the web.</h1>
+<p class="intro">I'm <strong>Vivek Kumar Jha</strong>, an astrophysics postdoc who enjoys building things. This is a collection of websites, scientific tools, research resources, and personal experiments—from astronomy calculators to a household catalogue. Most began with a question, a workflow, or a small problem I wanted to solve.</p>
+<div class="hero-row"><span class="pill"><span class="dot"></span> 18 projects online</span><span class="pill">Built alongside my research</span><a class="top-link" href="#projects">Explore the projects ↓</a></div>
+</div></header>
+<main class="wrap"><section id="projects" aria-labelledby="projects-title">
+<div class="section-head"><div><div class="eyebrow">The collection</div><h2 id="projects-title">Projects & experiments</h2></div><p>18 independent projects · Open any card to visit</p></div>
+<div class="grid">
+<article class="card c1"><span class="number">PROJECT 01</span><h3>ManageHome</h3><p>A practical household catalogue for setting up and maintaining a home.</p><a href="https://managehome.vercel.app/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c2"><span class="number">PROJECT 02</span><h3>RSIP</h3><p>A Rubin SED inference pipeline for exploring galaxy properties from photometry.</p><a href="https://viveikjha.github.io/rsip/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c3"><span class="number">PROJECT 03</span><h3>SED Grid</h3><p>Interactive exploration of stellar population spectral energy distributions.</p><a href="https://viveikjha.github.io/sed_grid/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c4"><span class="number">PROJECT 04</span><h3>TIL Physics</h3><p>Short, topic-focused explainers on physics and astrophysics.</p><a href="https://viveikjha.github.io/tilphysics/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c5"><span class="number">PROJECT 05</span><h3>AGN Review Papers</h3><p>A curated reading list of review literature on active galactic nuclei.</p><a href="https://viveikjha.github.io/agn_reviews.html" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c6"><span class="number">PROJECT 06</span><h3>Special Mathematical Functions</h3><p>An interactive reference for mathematical functions used in physics.</p><a href="https://vivekjha.github.io/tilphysics/plot_functions2.html" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c7"><span class="number">PROJECT 07</span><h3>World Clock</h3><p>Global clocks and time representations in one compact utility.</p><a href="https://vivekjha.netlify.app/time" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c8"><span class="number">PROJECT 08</span><h3>Sidereal Time Explorer</h3><p>Local sidereal time and observing-time context for observatory locations.</p><a href="https://vivekjha.netlify.app/astro/lst_cal" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c9"><span class="number">PROJECT 09</span><h3>Research Utility Toolkit</h3><p>Handy tools for citations, word counts, and PDF workflows.</p><a href="https://vivekjha.netlify.app/astro/utils" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c10"><span class="number">PROJECT 10</span><h3>Astronomy Calculators</h3><p>Calculators for coordinates, cosmology, extinction, airmass, and more.</p><a href="https://vivekjha.netlify.app/astro/astro_cal" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c11"><span class="number">PROJECT 11</span><h3>Multi-Site LST</h3><p>A time display for comparing observatory locations around the world.</p><a href="https://vivekjha.netlify.app/astro/lst_mult" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c12"><span class="number">PROJECT 12</span><h3>Astro Tools Portal</h3><p>A central hub for astronomy calculators, databases, libraries, and sky atlases.</p><a href="https://vivekjha.netlify.app/astro" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c13"><span class="number">PROJECT 13</span><h3>Photography Gallery</h3><p>A personal photo gallery with search, filtering, and image browsing.</p><a href="https://vivekjha.netlify.app/images/gallery" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c14"><span class="number">PROJECT 14</span><h3>Research Portfolio</h3><p>A living overview of my research and publications, updated as papers appear.</p><a href="https://vivekjha.netlify.app/research" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c15"><span class="number">PROJECT 15</span><h3>CosmicVarta</h3><p>A platform communicating Indian astronomy research to a wider audience.</p><a href="https://cosmicvarta.in/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c16"><span class="number">PROJECT 16</span><h3>Substack</h3><p>Personal writing, essays, and ideas beyond the research paper.</p><a href="https://vkjha.substack.com/" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c17"><span class="number">PROJECT 17</span><h3>Reading & News Sources</h3><p>A curated directory of news, science, and cultural publications.</p><a href="https://vivekjha.netlify.app/news" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+<article class="card c18"><span class="number">PROJECT 18</span><h3>Timeless Wisdom</h3><p>A reading and reflection resource featuring philosophical and spiritual texts.</p><a href="https://vivekjha.netlify.app/motivation" target="_blank" rel="noopener noreferrer">Visit project ↗</a></article>
+</div></section>
+<section class="about" aria-labelledby="about-title"><div><div class="eyebrow">A little about me</div><h2 id="about-title">Built out of curiosity</h2></div><p>I'm an astrophysicist. These projects are a side practice in making ideas tangible: sometimes a research workflow needs a tool, sometimes a topic deserves a visual explanation, and sometimes a small everyday problem is worth solving. Sometimes on a Sunday afternoon, I am sitting with my tea cup and come up with these ideas, which then are thrown to capable LLMs! This collection will keep growing as new ideas come along.</p></section>
+</main>
+<footer><div class="wrap"><span>Vivek Jha · Projects & Experiments</span><span style="float:right"><a class="top-link" href="#top">Back to top ↑</a></span></div></footer>
+</body></html>
