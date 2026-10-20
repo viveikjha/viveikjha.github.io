@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2BHK Home Appliance &amp; Gadget Inventory (2026)</title>
+<style>
+  :root { font-family: 'Segoe UI', Inter, system-ui, sans-serif; color: #1f2937; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f1f5f9; padding: 24px; }
+  .page { max-width: 860px; margin: 0 auto; background: #ffffff; padding: 34px 38px; border-radius: 14px; }
+
+  /* ---------- Header banner ---------- */
+  .banner {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 55%, #db2777 100%);
+    color: #fff; border-radius: 16px; padding: 26px 30px;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  }
+  .banner h1 { font-size: 27px; letter-spacing: .3px; }
+  .banner .sub { margin-top: 6px; font-size: 13px; opacity: .92; }
+  .banner .home-icon { font-size: 46px; }
+
+  /* ---------- Summary strip ---------- */
+  .summary { display: flex; gap: 12px; margin: 16px 0 22px; flex-wrap: wrap; }
+  .stat {
+    flex: 1; min-width: 120px; border-radius: 12px; padding: 12px 16px;
+    color: #fff; text-align: center; box-shadow: 0 2px 6px rgba(15,23,42,.12);
+  }
+  .stat b { display: block; font-size: 22px; }
+  .stat span { font-size: 11.5px; text-transform: uppercase; letter-spacing: .8px; opacity: .95; }
+  .s1 { background: #0ea5e9; } .s2 { background: #10b981; }
+  .s3 { background: #f59e0b; } .s4 { background: #8b5cf6; }
+
+  /* ---------- Room sections ---------- */
+  .room {
+    border: 2px solid; border-radius: 14px; margin-bottom: 18px;
+    overflow: hidden; break-inside: avoid; page-break-inside: avoid;
+  }
+  .room-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 18px; color: #fff;
+  }
+  .room-head .icon {
+    width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,.22);
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+  .room-head h2 { font-size: 17px; flex: 1; }
+  .room-head .count {
+    font-size: 11px; background: rgba(255,255,255,.25);
+    padding: 4px 12px; border-radius: 999px; font-weight: 600; letter-spacing: .4px;
+  }
+  .room-body { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; padding: 14px 18px 16px; }
+
+  .item { display: flex; align-items: center; gap: 9px; font-size: 13px; padding: 4.5px 2px; }
+  .box {
+    width: 15px; height: 15px; min-width: 15px; border: 2px solid #cbd5e1;
+    border-radius: 4px; display: inline-block;
+  }
+  .qty {
+    margin-left: auto; font-size: 10.5px; font-weight: 700; color: #475569;
+    background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 999px; padding: 2px 9px;
+  }
+  .optional { color: #64748b; font-style: italic; }
+
+  /* ---------- Room color themes ---------- */
+  .r-living  { border-color: #6366f1; } .r-living  .room-head { background: #6366f1; }
+  .r-kitchen { border-color: #ef4444; } .r-kitchen .room-head { background: #ef4444; }
+  .r-master  { border-color: #0d9488; } .r-master  .room-head { background: #0d9488; }
+  .r-second  { border-color: #8b5cf6; } .r-second  .room-head { background: #8b5cf6; }
+  .r-bath    { border-color: #0ea5e9; } .r-bath    .room-head { background: #0ea5e9; }
+  .r-utility { border-color: #f59e0b; } .r-utility .room-head { background: #f59e0b; }
+
+  /* ---------- Footer ---------- */
+  .foot {
+    margin-top: 6px; border-top: 2px dashed #cbd5e1; padding-top: 12px;
+    font-size: 11.5px; color: #64748b; display: flex; justify-content: space-between;
+  }
+  .legend { display: flex; gap: 18px; margin: 4px 0 0; font-size: 11.5px; color: #475569; }
+  .legend .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+
+  /* ---------- Print / PDF rules ---------- */
+  @page { size: A4; margin: 10mm; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { max-width: none; padding: 0; border-radius: 0; box-shadow: none; }
+    .room { box-shadow: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="banner">
+    <div>
+      <h1>🏠 Home Appliance &amp; Gadget Inventory (2026)</h1>
+      <div class="sub">Family of 3 &nbsp;•&nbsp; 2 BHK Apartment &nbsp;•&nbsp; Room-wise Checklist</div>
+    </div>
+    <div class="home-icon">🛋️</div>
+  </div>
+
+  <!-- Summary strip -->
+  <div class="summary">
+    <div class="stat s1"><b>6</b><span>Zones / Rooms</span></div>
+    <div class="stat s2"><b>44</b><span>Items Listed</span></div>
+    <div class="stat s3"><b>☑</b><span>Tick = Have It</span></div>
+    <div class="stat s4"><b>□</b><span>Empty = To Buy</span></div>
+  </div>
+
+  <!-- Living Room -->
+  <div class="room r-living">
+    <div class="room-head">
+      <div class="icon">🛋️</div>
+      <h2>Living Room</h2>
+      <div class="count">9 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Smart TV 43"–55" <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Wi-Fi router + extender <span class="qty">1+1</span></div>
+      <div class="item"><span class="box"></span> Soundbar / 2.1 speakers <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Smart speaker (Alexa / Google) <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Split AC 1.5 ton (inverter) <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Robot vacuum <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Ceiling fan <span class="qty">1–2</span></div>
+      <div class="item"><span class="box"></span> Table / floor lamps <span class="qty">2</span></div>
+      <div class="item"><span class="box"></span> Extension boards + smart plugs <span class="qty">3</span></div>
+    </div>
+  </div>
+
+  <!-- Kitchen -->
+  <div class="room r-kitchen">
+    <div class="room-head">
+      <div class="icon">🍳</div>
+      <h2>Kitchen</h2>
+      <div class="count">10 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Refrigerator 250–300 L <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Water purifier (RO / UV) <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Microwave / OTG <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Induction plate <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Mixer-grinder <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Electric kettle + toaster <span class="qty">1+1</span></div>
+      <div class="item"><span class="box"></span> Gas stove 3–4 burner + chimney <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Rice cooker / air fryer</span> <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Exhaust fan <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Dishwasher</span> <span class="qty">1</span></div>
+    </div>
+  </div>
+
+  <!-- Master Bedroom -->
+  <div class="room r-master">
+    <div class="room-head">
+      <div class="icon">🛏️</div>
+      <h2>Master Bedroom</h2>
+      <div class="count">6 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Split AC 1–1.5 ton <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Fast phone chargers / dock <span class="qty">2</span></div>
+      <div class="item"><span class="box"></span> Ceiling fan <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Study / bedside lamp <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">TV 32"–43"</span> <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Air purifier</span> <span class="qty">1</span></div>
+    </div>
+  </div>
+
+  <!-- Second Bedroom -->
+  <div class="room r-second">
+    <div class="room-head">
+      <div class="icon">🧒</div>
+      <h2>Second Bedroom — Kids / Guest + WFH</h2>
+      <div class="count">6 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Study desk + ergonomic chair <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Laptop / desktop + monitor <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Table fan / AC 1 ton <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Desk lamp <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Wi-Fi extender <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Whiteboard / corkboard</span> <span class="qty">1</span></div>
+    </div>
+  </div>
+
+  <!-- Bathrooms -->
+  <div class="room r-bath">
+    <div class="room-head">
+      <div class="icon">🚿</div>
+      <h2>Bathrooms (2)</h2>
+      <div class="count">6 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Washing machine 6.5–7 kg <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Exhaust fans <span class="qty">2</span></div>
+      <div class="item"><span class="box"></span> Geyser / instant water heater <span class="qty">1–2</span></div>
+      <div class="item"><span class="box"></span> Hair dryer <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Electric trimmer <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Sensor night lights</span> <span class="qty">2</span></div>
+    </div>
+  </div>
+
+  <!-- Balcony / Utility & Entry -->
+  <div class="room r-utility">
+    <div class="room-head">
+      <div class="icon">🧺</div>
+      <h2>Balcony / Utility &amp; Entry</h2>
+      <div class="count">7 ITEMS</div>
+    </div>
+    <div class="room-body">
+      <div class="item"><span class="box"></span> Vacuum cleaner (handheld / wet-dry) <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Iron / garment steamer <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Video doorbell / smart lock <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Inverter + battery (1–2 kVA) <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> Security cameras <span class="qty">1–2</span></div>
+      <div class="item"><span class="box"></span> Clothes drying stand <span class="qty">1</span></div>
+      <div class="item"><span class="box"></span> <span class="optional">Clothes dryer</span> <span class="qty">1</span></div>
+    </div>
+  </div>
+
+  <!-- Legend + footer -->
+  <div class="legend">
+    <span><span class="swatch" style="background:#6366f1"></span>Living</span>
+    <span><span class="swatch" style="background:#ef4444"></span>Kitchen</span>
+    <span><span class="swatch" style="background:#0d9488"></span>Master Bed</span>
+    <span><span class="swatch" style="background:#8b5cf6"></span>Bed 2 / WFH</span>
+    <span><span class="swatch" style="background:#0ea5e9"></span>Bathrooms</span>
+    <span><span class="swatch" style="background:#f59e0b"></span>Utility</span>
+    &nbsp;&nbsp;<i>Italic = optional item</i>
+  </div>
+  <div class="foot">
+    <span>☑ Tick the box once the item is in place — unticked = to buy</span>
+    <span>Family of 3 • 2 BHK</span>
+  </div>
+</div>
+</body>
+</html>
