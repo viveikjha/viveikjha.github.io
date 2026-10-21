@@ -173,6 +173,79 @@
       grid-template-columns: 1fr;
     }
   }
+
+  /* Publication-inspired solid cards */
+  .card.brand-card {
+    background: var(--brand-bg);
+    color: var(--brand-fg);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 1.1rem;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.07);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .card.brand-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 16px rgba(0, 0, 0, 0.16);
+  }
+  .card.brand-card .card-title,
+  .card.brand-card .card-link,
+  .card.brand-card .card-description {
+    color: var(--brand-fg);
+  }
+  .card.brand-card .card-link {
+    border-bottom-color: transparent;
+    text-decoration: none;
+  }
+  .card.brand-card .card-link:hover {
+    border-bottom-color: currentColor;
+  }
+  .card.brand-card .card-description {
+    opacity: 0.9;
+    line-height: 1.45;
+  }
+  /* Preserve each publication's logo on a neutral plaque.
+     The card itself keeps its publication-inspired solid accent. */
+  .card.brand-card .card-image {
+    min-height: 84px;
+    height: auto;
+    padding: 0.65rem;
+    margin-bottom: 1rem;
+    background: #fffdf8;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 7px;
+  }
+  .card.brand-card .card-image img {
+    display: block;
+    filter: none;
+    max-height: 64px;
+    max-width: 94%;
+    object-fit: contain;
+  }
+  .card.brand-card .logo-fallback {
+    background: #fffdf8;
+    color: #26313b;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .card.brand-card[data-brand="Al Jazeera English"] { --brand-bg: #F2B632; --brand-fg: #17212B; }
+  .card.brand-card[data-brand="Channel NewsAsia"] { --brand-bg: #123B5D; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="The Hindu"] { --brand-bg: #8E1B24; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="The Guardian"] { --brand-bg: #052962; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="BBC News"] { --brand-bg: #B5121B; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="Reuters"] { --brand-bg: #F05A28; --brand-fg: #1D1D1D; }
+  .card.brand-card[data-brand="Nature"] { --brand-bg: #174C3C; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="Science Magazine"] { --brand-bg: #1B4F91; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="Scientific American"] { --brand-bg: #142E50; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="Physics World"] { --brand-bg: #B51E2B; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="Quanta Magazine"] { --brand-bg: #183B56; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="The Public Domain Review"] { --brand-bg: #6B4B2A; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="The Conversation"] { --brand-bg: #1B5E75; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="The Atlantic"] { --brand-bg: #173B5E; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="Aeon"] { --brand-bg: #641B2B; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="BLM"] { --brand-bg: #7A2338; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="Works in Progress"] { --brand-bg: #D9E5C5; --brand-fg: #1E2B1A; }
+
 </style>
 </head>
 <body>
@@ -186,9 +259,9 @@
     <h2 class="section-title">News Outlets</h2>
     <div class="cards-grid">
 
-      <div class="card">
+      <div class="card brand-card" data-brand="Al Jazeera English">
         <div class="card-image">
-          <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Aljazeera_eng.svg/400px-Aljazeera_eng.svg.png" alt="Al Jazeera English" onerror="this.parentElement.innerHTML='<div class=logo-fallback>AJ</div>'" />
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aljazeera_eng.svg?width=500" alt="Al Jazeera English" onerror="this.parentElement.innerHTML='<div class=logo-fallback>AJ</div>'" />
         </div>
         <div class="card-content">
           <h3 class="card-title">
@@ -198,9 +271,9 @@
         </div>
       </div>
       
-      <div class="card">
+      <div class="card brand-card" data-brand="Channel NewsAsia">
         <div class="card-image">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/CNA_new_logo.svg/320px-CNA_new_logo.svg.png" alt="Channel NewsAsia" onerror="this.parentElement.innerHTML='<div class=logo-fallback>CNA</div>'" />
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/CNA_new_logo.svg?width=320" alt="Channel NewsAsia" onerror="this.parentElement.innerHTML='<div class=logo-fallback>CNA</div>'" />
         </div>
         <div class="card-content">
           <h3 class="card-title">
@@ -210,9 +283,9 @@
         </div>
       </div>
       
-      <div class="card">
+      <div class="card brand-card" data-brand="The Hindu">
         <div class="card-image">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/The_Hindu_logo.svg/420px-The_Hindu_logo.svg.png" alt="The Hindu" onerror="this.parentElement.innerHTML='<div class=logo-fallback>TH</div>'" />
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/The_Hindu_logo.svg?width=500" alt="The Hindu" onerror="this.parentElement.innerHTML='<div class=logo-fallback>TH</div>'" />
         </div>
         <div class="card-content">
           <h3 class="card-title">
@@ -222,7 +295,7 @@
         </div>
       </div>
       
-      <div class="card">
+      <div class="card brand-card" data-brand="The Guardian">
         <div class="card-image">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Guardian_2018.svg/500px-The_Guardian_2018.svg.png" alt="The Guardian" onerror="this.parentElement.innerHTML='<div class=logo-fallback>G</div>'" />
         </div>
@@ -234,7 +307,7 @@
         </div>
       </div>
       
-      <div class="card">
+      <div class="card brand-card" data-brand="BBC News">
         <div class="card-image">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/BBC_Logo_2021.svg/500px-BBC_Logo_2021.svg.png" alt="BBC News" onerror="this.parentElement.innerHTML='<div class=logo-fallback>BBC</div>'" />
         </div>
@@ -246,7 +319,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card brand-card" data-brand="Reuters">
         <div class="card-image">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Reuters_logo_2024.svg/500px-Reuters_logo_2024.svg.png" alt="Reuters" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Reuters</div>'" />
         </div>
@@ -266,9 +339,9 @@
     <h2 class="section-title">Scientific & Academic</h2>
     <div class="cards-grid">
 
-      <div class="card">
+      <div class="card brand-card" data-brand="Nature">
         <div class="card-image">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Nature_journal_logo.svg/2880px-Nature_journal_logo.svg.png" alt="Nature" onerror="this.parentElement.innerHTML='<div class=logo-fallback>N</div>'" />
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Nature_journal_logo.svg?width=500" alt="Nature" onerror="this.parentElement.innerHTML='<div class=logo-fallback>N</div>'" />
         </div>
         <div class="card-content">
           <h3 class="card-title">
@@ -278,9 +351,9 @@
         </div>
       </div>
       
-      <div class="card">
+      <div class="card brand-card" data-brand="Science Magazine">
         <div class="card-image">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Science_AAAS_logo.svg/460px-Science_AAAS_logo.svg.png" onerror="this.parentElement.innerHTML='<div class=logo-fallback>SM</div>'" />
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Science_AAAS_logo.svg?width=500" alt="Science Magazine" onerror="this.parentElement.innerHTML='<div class=logo-fallback>SM</div>'" />
         </div>
         <div class="card-content">
           <h3 class="card-title">
@@ -291,7 +364,7 @@
       </div>
 
 
-      <div class="card">
+      <div class="card brand-card" data-brand="Scientific American">
         <div class="card-image">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Scientific_American_logo.svg/250px-Scientific_American_logo.svg.png" alt="Scientific American" onerror="this.parentElement.innerHTML='<div class=logo-fallback>SA</div>'" />
         </div>
@@ -305,7 +378,7 @@
       
      
 
-      <div class="card">
+      <div class="card brand-card" data-brand="Physics World">
         <div class="card-image">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Physics_World_red_logo.svg/500px-Physics_World_red_logo.svg.png" alt="Physics World" onerror="this.parentElement.innerHTML='<div class=logo-fallback>PW</div>'" />
           
@@ -318,9 +391,9 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card brand-card" data-brand="Quanta Magazine">
         <div class="card-image">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Quanta_Magazine_Logo_05.2022.svg/550px-Quanta_Magazine_Logo_05.2022.svg.png" alt="Quanta Magazine" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Quanta</div>'" />
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Quanta_Magazine_Logo_05.2022.svg?width=550" alt="Quanta Magazine" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Quanta</div>'" />
         </div>
         <div class="card-content">
           <h3 class="card-title">
@@ -330,7 +403,7 @@
         </div>
       </div>
       
-      <div class="card">
+      <div class="card brand-card" data-brand="The Public Domain Review">
         <div class="card-image">
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Logo_for_The_Public_Domain_Review.jpg" alt="The Public Domain Review" onerror="this.parentElement.innerHTML='<div class=logo-fallback>PDR</div>'" />
         </div>
@@ -352,7 +425,7 @@
     <h2 class="section-title">Intellectual & Cultural Commentary</h2>
     <div class="cards-grid">
 
-        <div class="card">
+        <div class="card brand-card" data-brand="The Conversation">
             <div class="card-image">
               <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/The_Conversation_website_text_logo.svg/500px-The_Conversation_website_text_logo.svg.png" alt="The Conversation" onerror="this.parentElement.innerHTML='<div class=logo-fallback>The Conversation</div>'" />
             </div>
@@ -365,7 +438,7 @@
           </div>
           
       
-      <div class="card">
+      <div class="card brand-card" data-brand="The Atlantic">
         <div class="card-image">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/The-Atlantic-logo-vector.svg/500px-The-Atlantic-logo-vector.svg.png" alt="The Atlantic" onerror="this.parentElement.innerHTML='<div class=logo-fallback>TA</div>'" />
         </div>
@@ -377,9 +450,9 @@
         </div>
       </div>
       
-      <div class="card">
+      <div class="card brand-card" data-brand="Aeon">
         <div class="card-image">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Aeon_logo.svg/500px-Aeon_logo.svg.png" alt="The New Yorker" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Aeon</div>'" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Aeon_logo.svg/500px-Aeon_logo.svg.png" alt="Aeon" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Aeon</div>'" />
        
         </div>
         <div class="card-content">
@@ -391,9 +464,9 @@
       </div>
       
 
-      <div class="card">
+      <div class="card brand-card" data-brand="BLM">
         <div class="card-image">
-            <img src="blm.png" alt="The New Yorker" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Aeon</div>'" />
+            <img src="blm.png" alt="Aeon" onerror="this.parentElement.innerHTML='<div class=logo-fallback>Aeon</div>'" />
        
         </div>
         <div class="card-content">
@@ -406,9 +479,9 @@
 
 
 
-      <div class="card">
+      <div class="card brand-card" data-brand="Works in Progress">
         <div class="card-image">
-        <img src="wip.png" alt="Works in Progress" onerror="this.parentElement.innerHTML='<div class=logo-fallback>WIP</div>'" />
+        <img src="https://worksinprogress.co/wip-image/uploads/2022/12/WIP_Banner-1024x549-1.jpeg" alt="Works in Progress" onerror="this.parentElement.innerHTML='<div class=logo-fallback>WIP</div>'" />
        
         </div>
         <div class="card-content">
