@@ -1,595 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Researcher Toolkit</title>
-    <style>
-        :root {
-            --github-green: #2da44e;
-            --github-green-dark: #238636;
-            --github-green-light: #e6f4ea;
-            --bg: #f6f8fa;
-            --bg-dark: #0d1117;
-            --text: #222;
-            --text-dark: #c9d1d9;
-            --card: #fff;
-            --card-dark: #161b22;
-            --border: #d0d7de;
-            --border-dark: #30363d;
-            --shadow: 0 4px 24px rgba(27,31,35,0.07);
-        }
-        body {
-            font-family: 'Segoe UI', 'Inter', 'Roboto', 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            transition: background 0.3s, color 0.3s;
-        }
-        body.dark {
-            background: var(--bg-dark);
-            color: var(--text-dark);
-        }
-        .container {
-            max-width: 1100px;
-            margin: 40px auto 0 auto;
-            padding: 16px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 36px;
-            font-weight: 800;
-            font-size: 2.3rem;
-            letter-spacing: -1px;
-            color: var(--github-green-dark);
-        }
-        .tools-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 32px;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        .tool {
-            background: var(--card);
-            border-radius: 14px;
-            box-shadow: var(--shadow);
-            padding: 26px 20px 20px 20px;
-            border: 2.5px solid var(--github-green);
-            transition: background 0.3s, border 0.3s;
-            flex: 1 1 340px;
-            min-width: 320px;
-            max-width: 370px;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-        }
-        body.dark .tool {
-            background: var(--card-dark);
-            border: 2.5px solid var(--github-green-dark);
-        }
-        h2 {
-            margin-top: 0;
-            font-size: 1.18rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            letter-spacing: -0.5px;
-            color: var(--github-green-dark);
-        }
-        textarea, input, select, button, label.button {
-            font-size: 1rem;
-            padding: 10px;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1.5px solid var(--border);
-            background: var(--bg);
-            color: var(--text);
-            transition: background 0.3s, color 0.3s, border 0.3s;
-            outline: none;
-        }
-        body.dark textarea, 
-        body.dark input, 
-        body.dark select {
-            background: var(--bg-dark);
-            color: var(--text-dark);
-            border: 1.5px solid var(--border-dark);
-        }
-        textarea:focus, input:focus, select:focus {
-            border-color: var(--github-green-dark);
-            box-shadow: 0 0 0 2px var(--github-green-light);
-        }
-        button, label.button {
-            background-color: var(--github-green);
-            color: #fff;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(34,197,94,0.08);
-            margin-bottom: 0;
-            width: 100%;
-            display: block;
-            text-align: center;
-        }
-        button:hover, button:focus, label.button:hover, label.button:focus {
-            background-color: var(--github-green-dark);
-        }
-        .output {
-            font-weight: 500;
-            margin-top: 10px;
-            font-family: 'JetBrains Mono', 'Fira Mono', 'Menlo', monospace;
-            font-size: 1.05rem;
-            color: var(--github-green-dark);
-            background: var(--github-green-light);
-            border-radius: 6px;
-            padding: 8px 12px;
-            display: block;
-            word-break: break-all;
-        }
-        /* iOS-style toggle switch */
-        .toggle-switch {
-            position: fixed;
-            top: 28px;
-            right: 32px;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            user-select: none;
-        }
-        .toggle-switch input[type="checkbox"] {
-            display: none;
-        }
-        .slider {
-            position: relative;
-            width: 48px;
-            height: 28px;
-            background: var(--border);
-            border-radius: 16px;
-            transition: background 0.3s;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(27,31,35,0.04);
-            margin-left: 10px;
-        }
-        .slider:before {
-            content: "";
-            position: absolute;
-            left: 4px;
-            top: 4px;
-            width: 20px;
-            height: 20px;
-            background: #fff;
-            border-radius: 50%;
-            transition: transform 0.3s, background 0.3s;
-            box-shadow: 0 1px 4px rgba(27,31,35,0.07);
-        }
-        input[type="checkbox"]:checked + .slider {
-            background: var(--github-green);
-        }
-        input[type="checkbox"]:checked + .slider:before {
-            transform: translateX(20px);
-            background: #fff;
-        }
-        .toggle-switch .icon {
-            font-size: 1.2rem;
-            margin-right: 6px;
-            color: var(--github-green-dark);
-            transition: color 0.3s;
-        }
-        body.dark .toggle-switch .icon {
-            color: var(--github-green);
-        }
-        @media (max-width: 1100px) {
-            .tools-grid {
-                flex-direction: column;
-                align-items: center;
-            }
-            .tool {
-                max-width: 100%;
-            }
-        }
-        @media (max-width: 700px) {
-            .container {
-                padding: 6px;
-            }
-            .toggle-switch {
-                top: 16px;
-                right: 12px;
-            }
-            .tool {
-                min-width: 0;
-                padding: 12px 6px 10px 6px;
-            }
-        }
-        /* PDF tool output links */
-        .output a {
-            display: block;
-            margin: 5px 0;
-            color: var(--github-green-dark);
-            text-decoration: underline;
-            font-size: 0.98em;
-        }
-        .output a.button {
-            background: var(--github-green);
-            color: #fff;
-            border-radius: 6px;
-            padding: 8px 0;
-            margin: 10px 0 0 0;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        /* Drop area for image to PDF */
-        .drop-area {
-            border: 2px dashed var(--github-green-dark);
-            border-radius: 8px;
-            background: var(--github-green-light);
-            padding: 18px;
-            text-align: center;
-            color: var(--github-green-dark);
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: border 0.2s, background 0.2s;
-        }
-        .drop-area.dragover {
-            border-color: var(--github-green);
-            background: #d1fadf;
-        }
-    </style>
-    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f6fb">
+<title>Research Utility</title>
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --ink:#172033; --muted:#596579; --surface:#fff; --page:#f4f6fb; --line:#e2e7f0;
+  --shadow:0 14px 35px rgba(26,38,66,.10); --radius:24px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:
+ radial-gradient(ellipse at 8% 0%,#e0eaff 0,transparent 32rem),
+ radial-gradient(ellipse at 94% 8%,#fce4ef 0,transparent 30rem),var(--page);min-height:100vh}
+.page{width:min(1180px,100%);margin:0 auto;padding:34px 22px 60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:30px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.04em;font-size:1.05rem}
+.brandmark{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:#202d54;color:white;font-size:1.35rem;box-shadow:0 8px 20px #202d5430}
+.theme-btn{border:1px solid #d9dfeb;background:#ffffffb8;color:#28334b;border-radius:999px;padding:11px 15px;font:inherit;font-weight:700;cursor:pointer}
+.hero{padding:12px 0 32px;max-width:760px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#5267d8;background:#e9edff;border-radius:999px;padding:8px 12px}
+h1{font-size:clamp(2.4rem,7vw,4.5rem);line-height:.99;letter-spacing:-.065em;margin:18px 0 16px;font-weight:850}
+.hero p{font-size:clamp(1rem,2.5vw,1.2rem);line-height:1.65;color:var(--muted);margin:0;max-width:650px}
+.section-label{display:flex;align-items:center;gap:12px;margin:16px 0 18px;font-size:.78rem;font-weight:850;letter-spacing:.13em;text-transform:uppercase;color:#69748b}
+.section-label:after{content:"";height:1px;background:#dce2ee;flex:1}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.card{--accent:#5267d8;--tint:#eef1ff;background:var(--surface);border:1px solid #ffffff;border-radius:var(--radius);box-shadow:var(--shadow);padding:25px;min-width:0;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent),white 42%))}
+.card-head{display:flex;align-items:flex-start;gap:15px;margin-bottom:18px}
+.icon{width:56px;height:56px;flex:0 0 56px;border-radius:18px;background:var(--tint);display:grid;place-items:center;font-size:1.65rem}
+.card h2{font-size:1.24rem;letter-spacing:-.035em;margin:3px 0 7px}
+.card .desc{font-size:.92rem;line-height:1.5;color:var(--muted);margin:0}
+label{display:block;font-size:.86rem;font-weight:750;color:#39445a;margin:14px 0 7px}
+input,textarea,select{width:100%;font:inherit;font-size:1rem;color:#172033;background:#fbfcff;border:1px solid #dbe1ed;border-radius:12px;padding:12px 13px;min-height:46px;outline:none}
+textarea{resize:vertical;min-height:110px;line-height:1.5}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent),transparent 84%)}
+button.action{width:100%;border:0;border-radius:13px;background:var(--accent);color:white;font:inherit;font-weight:800;padding:13px 16px;margin-top:12px;cursor:pointer;transition:transform .15s,filter .15s}
+button.action:hover{filter:brightness(.96);transform:translateY(-1px)}
+button.action:focus-visible,.theme-btn:focus-visible{outline:3px solid #202d54;outline-offset:3px}
+.output{margin-top:13px;padding:13px 14px;border-radius:13px;background:var(--tint);color:#25304a;font-size:.92rem;line-height:1.5;overflow-wrap:anywhere;min-height:0}
+.output:empty{display:none}
+.output a{display:block;color:inherit;margin:6px 0;text-decoration:underline}
+.output a.download{display:inline-block;background:var(--accent);color:white;padding:9px 12px;border-radius:9px;text-decoration:none;font-weight:750}
+.hint{font-size:.82rem;line-height:1.5;color:var(--muted);margin:9px 0 0}
+.filelist{font-size:.86rem;color:var(--muted);margin:8px 0}
+.card.green{--accent:#169b72;--tint:#e3f7ef}
+.card.orange{--accent:#d97720;--tint:#fff0df}
+.card.pink{--accent:#c34482;--tint:#fde8f3}
+.card.blue{--accent:#5267d8;--tint:#eef1ff}
+.card.purple{--accent:#8056c9;--tint:#f1eaff}
+.card.teal{--accent:#087e9a;--tint:#e2f6fa}
+.card.red{--accent:#c34b50;--tint:#ffebec}
+.footer{margin:30px 0 0;text-align:center;font-size:.84rem;color:#7b8495}
+body.dark{color:#e6eaf2;background:radial-gradient(ellipse at 8% 0%,#20294a 0,transparent 32rem),#101522}
+body.dark .theme-btn{background:#20283b;color:#e6eaf2;border-color:#37415b}
+body.dark .section-label{color:#9da9c3}body.dark .section-label:after{background:#30384c}
+body.dark .card{background:#1a2030;border-color:#293147;box-shadow:0 14px 35px #0003}
+body.dark label{color:#cbd3e4}
+body.dark input,body.dark textarea,body.dark select{background:#121827;color:#e6eaf2;border-color:#38425a}
+body.dark .output{color:#edf0f8}
+body.dark .hero p,body.dark .card .desc,body.dark .hint,body.dark .filelist{color:#aab4c8}
+body.dark .eyebrow{background:#293253;color:#b9c5ff}
+@media(max-width:760px){
+ .page{padding:20px 14px 42px}.topbar{margin-bottom:20px}.hero{padding:8px 0 24px}
+ .grid{grid-template-columns:1fr;gap:17px}.card{padding:21px;border-radius:20px}
+ .icon{width:50px;height:50px;flex-basis:50px;border-radius:16px}
+}
+@media(max-width:390px){.page{padding:16px 10px 35px}.card{padding:18px}.card-head{gap:12px}h1{font-size:2.55rem}}
+</style>
 </head>
 <body>
-    <div class="toggle-switch" title="Toggle dark mode">
-        <label style="display: flex; align-items: center; cursor: pointer;">
-            <span class="icon" id="themeIcon">🌞</span>
-            <input type="checkbox" id="darkToggle" aria-label="Toggle dark mode">
-            <span class="slider"></span>
-        </label>
-    </div>
-    <div class="container">
-        <h1>🧰 Research Utility</h1>
-        <div class="tools-grid">
-            <!-- Word Counter -->
+<div class="page">
+  <header class="topbar">
+    <div class="brand"><span class="brandmark" aria-hidden="true">⌘</span><span>Research Utility</span></div>
+    <button class="theme-btn" id="themeToggle" type="button" aria-pressed="false">☾ Dark mode</button>
+  </header>
+  <section class="hero">
+    <span class="eyebrow">Your workbench · in the browser</span>
+    <h2>Small tools for researchers</h2>
+    <p>Quick utilities for references, writing, and research documents. Files are processed in your browser; arXiv lookup requires an internet connection.</p>
+  </section>
 
-            <div class="tool">
-                <h2>arXiv ID to BibTeX</h2>
-                <label for="arxivId">Enter arXiv ID (e.g., 2301.12345):</label>
-                <input type="text" id="arxivId" placeholder="arXiv ID" />
-                <button onclick="fetchBibtex()">Get BibTeX</button>
-                <textarea id="bibtexOutput" readonly placeholder="BibTeX will appear here..."></textarea>
-              </div>
+  <div class="section-label">Writing & references</div>
+  <main class="grid">
+    <section class="card blue">
+      <div class="card-head"><div class="icon" aria-hidden="true">📚</div><div><h2>arXiv ID to BibTeX</h2><p class="desc">Fetch paper metadata and create a BibTeX citation.</p></div></div>
+      <label for="arxivId">arXiv ID</label>
+      <input id="arxivId" type="text" placeholder="e.g. 2301.12345 or 2301.12345v2" autocomplete="off">
+      <button class="action" onclick="fetchBibtex()">Get BibTeX</button>
+      <textarea id="bibtexOutput" readonly aria-label="BibTeX output" placeholder="Your BibTeX entry will appear here…" style="margin-top:13px"></textarea>
+      <button class="action" type="button" onclick="copyBibtex()">Copy BibTeX</button>
+      <div class="output" id="bibtexStatus" aria-live="polite"></div>
+    </section>
 
-            <div class="tool">
-                <h2>📝 Word Counter</h2>
-                <textarea id="textInput" rows="5" placeholder="Paste or type your text here..."></textarea>
-                <div class="output" id="wordCount">Words: 0 | Characters: 0</div>
-            </div>
-            <!-- Unit Converter -->
-         
-            <!-- PDF Splitter -->
-            <div class="tool">
-                <h2>📄 PDF Splitter</h2>
-                <input type="file" id="pdfUpload" multiple accept="application/pdf" />
-                <button onclick="splitPDFs()">Split PDFs</button>
-                <div class="output" id="output"></div>
-            </div>
-            <!-- PDF Merger -->
-            <div class="tool">
-                <h2>📑 PDF Merger</h2>
-                <input type="file" id="pdfMergeUpload" multiple accept="application/pdf" style="display:none;" />
-                <label for="pdfMergeUpload" class="button" style="margin-bottom:10px;">Choose PDFs to Merge</label>
-                <span id="mergeFileCount" style="margin-left:0;color:#555;display:block;margin-bottom:8px;"></span>
-                <button onclick="mergePDFs()">Merge PDFs</button>
-                <div class="output" id="mergeOutput"></div>
-            </div>
-           
-            <!-- Image to PDF Converter -->
-            <div class="tool">
-                <h2>🖼️→📄 Image to PDF</h2>
-                <div class="drop-area" id="img2pdfDropArea">
-                    Drag &amp; drop images here or <label for="img2pdfInput" style="color:var(--github-green-dark);text-decoration:underline;cursor:pointer;">browse</label>
-                    <input type="file" id="img2pdfInput" accept="image/png,image/jpeg,image/webp" multiple style="display:none;">
-                </div>
-                <div id="img2pdfFileList" style="font-size:0.97em;margin-bottom:6px;"></div>
-                <input type="text" id="img2pdfFilename" placeholder="Output filename (optional, e.g. myfile.pdf)">
-                <button id="img2pdfBtn">Convert to PDF</button>
-                <div class="output" id="img2pdfOutput"></div>
-            </div>
+    <section class="card purple">
+      <div class="card-head"><div class="icon" aria-hidden="true">✍️</div><div><h2>Word counter</h2><p class="desc">Count words and characters as you draft.</p></div></div>
+      <label for="textInput">Text</label>
+      <textarea id="textInput" rows="7" placeholder="Paste or type your text here…"></textarea>
+      <div class="output" id="wordCount" aria-live="polite">Words: 0 · Characters: 0 · Characters (no spaces): 0</div>
+    </section>
 
-            <div class="tool">
-            <h2>🗜️ Compress PDF File </h2>
-  <input type="file" id="pdfInput" accept="application/pdf" />
-  <button onclick="compressPDF()">Compress</button>
-  <p id="status">Select a PDF to compress.</p>
+    <section class="card orange">
+      <div class="card-head"><div class="icon" aria-hidden="true">📄</div><div><h2>PDF page splitter</h2><p class="desc">Save every page of a PDF as its own file.</p></div></div>
+      <label for="pdfUpload">Choose PDF file(s)</label>
+      <input type="file" id="pdfUpload" multiple accept="application/pdf">
+      <div class="filelist" id="splitFileCount"></div>
+      <button class="action" onclick="splitPDFs()">Split into pages</button>
+      <div class="output" id="splitOutput" aria-live="polite"></div>
+    </section>
+
+    <section class="card teal">
+      <div class="card-head"><div class="icon" aria-hidden="true">✂️</div><div><h2>PDF page extraction</h2><p class="desc">Create a new PDF from selected pages or page ranges.</p></div></div>
+      <label for="extractUpload">Choose a PDF</label>
+      <input type="file" id="extractUpload" accept="application/pdf">
+      <label for="pageRanges">Pages to extract</label>
+      <input type="text" id="pageRanges" placeholder="e.g. 1-3, 5, 8-10" inputmode="text">
+      <p class="hint">Use page numbers as shown in the PDF, starting at 1. Separate pages and ranges with commas.</p>
+      <button class="action" onclick="extractPDFPages()">Extract pages</button>
+      <div class="output" id="extractOutput" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div class="section-label">PDF & figures</div>
+  <div class="grid">
+    <section class="card pink">
+      <div class="card-head"><div class="icon" aria-hidden="true">🧩</div><div><h2>PDF merger</h2><p class="desc">Combine several PDFs in the order you select them.</p></div></div>
+      <label for="pdfMergeUpload">Choose PDFs</label>
+      <input type="file" id="pdfMergeUpload" multiple accept="application/pdf">
+      <div class="filelist" id="mergeFileCount"></div>
+      <button class="action" onclick="mergePDFs()">Merge PDFs</button>
+      <div class="output" id="mergeOutput" aria-live="polite"></div>
+    </section>
+
+    <section class="card green">
+      <div class="card-head"><div class="icon" aria-hidden="true">🖼️</div><div><h2>Images to PDF</h2><p class="desc">Arrange image files into a single PDF, one image per page.</p></div></div>
+      <label for="img2pdfInput">Choose images</label>
+      <input type="file" id="img2pdfInput" accept="image/png,image/jpeg,image/webp" multiple>
+      <div class="filelist" id="img2pdfFileList">No images selected.</div>
+      <label for="img2pdfFilename">Output filename (optional)</label>
+      <input type="text" id="img2pdfFilename" placeholder="images2pdf.pdf">
+      <button class="action" id="img2pdfBtn">Convert to PDF</button>
+      <div class="output" id="img2pdfOutput" aria-live="polite"></div>
+    </section>
+
+    <section class="card red">
+      <div class="card-head"><div class="icon" aria-hidden="true">🗜️</div><div><h2>PDF rasteriser</h2><p class="desc">Re-render pages as JPEG images to reduce file size in some cases.</p></div></div>
+      <label for="pdfInput">Choose a PDF</label>
+      <input type="file" id="pdfInput" accept="application/pdf">
+      <label for="rasterScale">Render quality</label>
+      <select id="rasterScale"><option value="1.2">Smaller file · 1.2×</option><option value="1.5" selected>Balanced · 1.5×</option><option value="2">Sharper · 2×</option></select>
+      <p class="hint">This rasterises pages: searchable text, vector graphics, links, and some accessibility features may be lost. It may not make every PDF smaller.</p>
+      <button class="action" onclick="compressPDF()">Rasterise PDF</button>
+      <div class="output" id="compressOutput" aria-live="polite"></div>
+    </section>
+  </div>
+  <footer class="footer">A standalone research workbench · PDFs and images are processed locally in your browser.</footer>
 </div>
+<script>
+if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-       
-    </div>
-    </div>
-    <script>
+const byId = id => document.getElementById(id);
+function showMessage(id, message){ byId(id).textContent = message; }
+function addDownload(containerId, blob, filename, label='Download'){
+  const box=byId(containerId); box.replaceChildren();
+  const a=document.createElement('a'); a.className='download'; a.href=URL.createObjectURL(blob);
+  a.download=filename; a.textContent=`${label}: ${filename}`; box.appendChild(a);
+}
+function safeFilename(name){return name.replace(/[\\/:*?"<>|]+/g,'_').replace(/\s+/g,' ').trim() || 'document';}
 
-
-    async function fetchBibtex() {
-      const id = document.getElementById('arxivId').value.trim();
-      const output = document.getElementById('bibtexOutput');
-      output.value = 'Fetching...';
-
-      try {
-        const response = await fetch(`https://export.arxiv.org/api/query?id_list=${id}`);
-        const text = await response.text();
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(text, "text/xml");
-
-        const entry = xml.querySelector("entry");
-        if (!entry) throw new Error("Invalid arXiv ID or not found.");
-
-        const title = entry.querySelector("title").textContent.trim().replace(/\s+/g, ' ');
-        const authors = [...entry.querySelectorAll("author > name")].map(a => a.textContent.trim());
-        const year = new Date(entry.querySelector("published").textContent).getFullYear();
-
-        const primaryCategory = entry.querySelector("arxiv\\:primary_category") || entry.querySelector("primary_category");
-        const primaryClass = primaryCategory ? primaryCategory.getAttribute("term") : "unknown";
-
-        const bibtex = `@article{arxiv${id.replace(/\W/g, '')},\n` +
-                       `  title={${title}},\n` +
-                       `  author={${authors.join(" and ")}},\n` +
-                       `  year={${year}},\n` +
-                       `  eprint={${id}},\n` +
-                       `  archivePrefix={arXiv},\n` +
-                       `  primaryClass={${primaryClass}}\n` +
-                       `}`;
-
-        output.value = bibtex;
-      } catch (error) {
-        output.value = 'Error: ' + error.message;
+async function fetchBibtex(){
+  const raw=byId('arxivId').value.trim();
+  const id=raw.replace(/^https?:\/\/(?:www\.)?arxiv\.org\/abs\//i,'').replace(/^arXiv:/i,'');
+  const out=byId('bibtexOutput'), status=byId('bibtexStatus');
+  out.value=''; status.textContent='Fetching…';
+  if(!/^\d{4}\.\d{4,5}(v\d+)?$/.test(id) && !/^[a-z-]+\.\d{7}(v\d+)?$/i.test(id)){
+    status.textContent='Please enter a valid arXiv identifier.'; return;
+  }
+  try{
+    const response=await fetch(`https://export.arxiv.org/api/query?id_list=${encodeURIComponent(id)}`);
+    if(!response.ok) throw new Error(`arXiv returned HTTP ${response.status}`);
+    const xmlText=await response.text(), xml=new DOMParser().parseFromString(xmlText,'text/xml');
+    if(xml.querySelector('parsererror')) throw new Error('Could not read the arXiv response.');
+    const entry=xml.querySelector('entry'); if(!entry) throw new Error('No paper found for that identifier.');
+    const title=(entry.querySelector('title')?.textContent||'').trim().replace(/\s+/g,' ');
+    const authors=[...entry.querySelectorAll('author > name')].map(a=>a.textContent.trim());
+    const published=entry.querySelector('published')?.textContent;
+    const year=published?new Date(published).getFullYear():'';
+    const category=entry.getElementsByTagNameNS('http://arxiv.org/schemas/atom','primary_category')[0]?.getAttribute('term') || 'unknown';
+    const key='arxiv'+id.replace(/\W/g,'');
+    const bib=`@article{${key},\n  title = {${title}},\n  author = {${authors.join(' and ')}},\n  year = {${year}},\n  eprint = {${id.replace(/v\d+$/,'')}},\n  archivePrefix = {arXiv},\n  primaryClass = {${category}}\n}`;
+    out.value=bib; status.textContent='BibTeX entry ready.';
+  }catch(err){status.textContent='Lookup failed: '+err.message+' (check your connection and try again).';}
+}
+async function copyBibtex(){
+  const value=byId('bibtexOutput').value;
+  if(!value){showMessage('bibtexStatus','There is no BibTeX entry to copy yet.');return;}
+  try{await navigator.clipboard.writeText(value);showMessage('bibtexStatus','BibTeX copied.');}
+  catch{byId('bibtexOutput').focus();byId('bibtexOutput').select();showMessage('bibtexStatus','Select the entry above and copy it.');}
+}
+byId('textInput').addEventListener('input',function(){
+  const t=this.value, trimmed=t.trim(), words=trimmed?trimmed.split(/\s+/u).length:0;
+  byId('wordCount').textContent=`Words: ${words} · Characters: ${t.length} · Characters (no spaces): ${t.replace(/\s/g,'').length}`;
+});
+byId('pdfUpload').addEventListener('change',()=>showMessage('splitFileCount',byId('pdfUpload').files.length?`${byId('pdfUpload').files.length} file(s) selected`:''));
+window.splitPDFs=async function(){
+  const files=byId('pdfUpload').files, out=byId('splitOutput'); out.replaceChildren();
+  if(!files.length){showMessage('splitOutput','Please choose at least one PDF.');return;}
+  try{
+    for(const file of files){
+      const doc=await PDFLib.PDFDocument.load(await file.arrayBuffer());
+      for(let i=0;i<doc.getPageCount();i++){
+        const newDoc=await PDFLib.PDFDocument.create(); const [page]=await newDoc.copyPages(doc,[i]);newDoc.addPage(page);
+        const blob=new Blob([await newDoc.save()],{type:'application/pdf'});
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${safeFilename(file.name.replace(/\.pdf$/i,''))}_page_${i+1}.pdf`;a.textContent=`Download: ${a.download}`;out.appendChild(a);
       }
     }
-    document.addEventListener('DOMContentLoaded', function() {
-        // Dark Mode Toggle with iOS Switch
-        const darkToggle = document.getElementById('darkToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        function setTheme(dark) {
-            if (dark) {
-                document.body.classList.add('dark');
-                darkToggle.checked = true;
-                themeIcon.textContent = '🌙';
-            } else {
-                document.body.classList.remove('dark');
-                darkToggle.checked = false;
-                themeIcon.textContent = '🌞';
-            }
-        }
-
-        // On load, check localStorage or system preference
-        let dark = localStorage.getItem('theme');
-        if (dark === null) {
-            dark = prefersDark ? 'dark' : 'light';
-        }
-        setTheme(dark === 'dark');
-
-        darkToggle.addEventListener('change', function() {
-            setTheme(this.checked);
-            localStorage.setItem('theme', this.checked ? 'dark' : 'light');
-        });
-
-        // Word Counter
-        document.getElementById('textInput').addEventListener('input', function() {
-            const text = this.value.trim();
-            const words = text.length ? text.split(/\s+/).length : 0;
-            const chars = text.length;
-            document.getElementById('wordCount').textContent = `Words: ${words} | Characters: ${chars}`;
-        });
-
-        // PDF Splitter
-        window.splitPDFs = async function() {
-            const files = document.getElementById('pdfUpload').files;
-            const outputDiv = document.getElementById('output');
-            outputDiv.innerHTML = '';
-
-            if (!files.length) {
-                alert('Please select at least one PDF file.');
-                return;
-            }
-
-            for (const file of files) {
-                const arrayBuffer = await file.arrayBuffer();
-                const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-
-                for (let i = 0; i < pdfDoc.getPageCount(); i++) {
-                    const newPdf = await PDFLib.PDFDocument.create();
-                    const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
-                    newPdf.addPage(copiedPage);
-                    const pdfBytes = await newPdf.save();
-
-                    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = `${file.name.replace(/\.pdf$/, '')}_page_${i + 1}.pdf`;
-                    link.textContent = `Download: ${link.download}`;
-                    outputDiv.appendChild(link);
-                }
-            }
-        };
-
-        // PDF Merger
-        const mergeUpload = document.getElementById('pdfMergeUpload');
-        const mergeFileCount = document.getElementById('mergeFileCount');
-        mergeUpload.addEventListener('change', () => {
-            mergeFileCount.textContent = mergeUpload.files.length
-                ? `${mergeUpload.files.length} file(s) selected`
-                : '';
-            document.getElementById('mergeOutput').innerHTML = '';
-        });
-
-        window.mergePDFs = async function() {
-            const files = mergeUpload.files;
-            const outputDiv = document.getElementById('mergeOutput');
-            outputDiv.innerHTML = '';
-
-            if (!files.length) {
-                alert('Please select at least two PDF files to merge.');
-                return;
-            }
-
-            const mergedPdf = await PDFLib.PDFDocument.create();
-
-            for (const file of files) {
-                const arrayBuffer = await file.arrayBuffer();
-                const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
-                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-                copiedPages.forEach(page => mergedPdf.addPage(page));
-            }
-
-            const pdfBytes = await mergedPdf.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'merged.pdf';
-            link.textContent = 'Download: merged.pdf';
-            link.className = 'button';
-            outputDiv.appendChild(link);
-        };
-
-        // =========================
-        // Image to PDF Converter
-        // =========================
-        const img2pdfInput = document.getElementById('img2pdfInput');
-        const img2pdfDropArea = document.getElementById('img2pdfDropArea');
-        const img2pdfFileList = document.getElementById('img2pdfFileList');
-        const img2pdfBtn = document.getElementById('img2pdfBtn');
-        const img2pdfOutput = document.getElementById('img2pdfOutput');
-        const img2pdfFilename = document.getElementById('img2pdfFilename');
-        let img2pdfFiles = [];
-
-        function updateImg2pdfFileList() {
-            img2pdfFileList.innerHTML = img2pdfFiles.length
-                ? img2pdfFiles.map(f=>`<span>${f.name}</span>`).join(', ')
-                : '<span style="color:#888;">No images selected.</span>';
-        }
-
-        img2pdfInput.addEventListener('change', function() {
-            img2pdfFiles = Array.from(img2pdfInput.files);
-            updateImg2pdfFileList();
-        });
-
-        img2pdfDropArea.addEventListener('dragover', e => {
-            e.preventDefault();
-            img2pdfDropArea.classList.add('dragover');
-        });
-        img2pdfDropArea.addEventListener('dragleave', e => {
-            img2pdfDropArea.classList.remove('dragover');
-        });
-        img2pdfDropArea.addEventListener('drop', e => {
-            e.preventDefault();
-            img2pdfDropArea.classList.remove('dragover');
-            const files = Array.from(e.dataTransfer.files)
-                .filter(f=>/^image\/(png|jpeg|webp)$/i.test(f.type));
-            img2pdfFiles = img2pdfFiles.concat(files);
-            updateImg2pdfFileList();
-        });
-        img2pdfDropArea.addEventListener('click', () => img2pdfInput.click());
-
-        img2pdfBtn.addEventListener('click', async function() {
-            img2pdfOutput.textContent = '';
-            if (!img2pdfFiles.length) {
-                img2pdfOutput.textContent = 'Please select at least one image.';
-                return;
-            }
-            img2pdfOutput.textContent = 'Converting...';
-            const pdfDoc = await PDFLib.PDFDocument.create();
-            for (const file of img2pdfFiles) {
-                const imgBytes = await file.arrayBuffer();
-                let imgEmbed, dims;
-                if (file.type === 'image/png') {
-                    imgEmbed = await pdfDoc.embedPng(imgBytes);
-                } else {
-                    imgEmbed = await pdfDoc.embedJpg(imgBytes);
-                }
-                dims = imgEmbed.scale(1);
-                const page = pdfDoc.addPage([dims.width, dims.height]);
-                page.drawImage(imgEmbed, {x:0, y:0, width:dims.width, height:dims.height});
-            }
-            const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], {type:'application/pdf'});
-            const link = document.createElement('a');
-            let fname = img2pdfFilename.value.trim() || 'images2pdf.pdf';
-            if (!fname.toLowerCase().endsWith('.pdf')) fname += '.pdf';
-            link.href = URL.createObjectURL(blob);
-            link.download = fname;
-            link.textContent = `Download: ${fname}`;
-            link.className = 'button';
-            img2pdfOutput.innerHTML = '';
-            img2pdfOutput.appendChild(link);
-        });
-    });
-    </script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-<script>
-  async function compressPDF() {
-    const fileInput = document.getElementById('pdfInput');
-    const status = document.getElementById('status');
-    if (!fileInput.files.length) return alert("Please select a PDF file.");
-
-    status.textContent = "Processing...";
-
-    const file = fileInput.files[0];
-    const arrayBuffer = await file.arrayBuffer();
-
-    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-    const pdf = await loadingTask.promise;
-    const newPdf = await PDFLib.PDFDocument.create();
-
-    const scale = 1.5; // 👈 Higher = sharper output
-    const quality = 0.85; // 👈 Higher = better quality
-
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const viewport = page.getViewport({ scale });
-
-      const canvas = document.createElement('canvas');
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-
-      const context = canvas.getContext('2d');
-      const renderContext = {
-        canvasContext: context,
-        viewport,
-      };
-      await page.render(renderContext).promise;
-
-      const imageData = canvas.toDataURL('image/jpeg', quality);
-
-      const jpgImage = await newPdf.embedJpg(imageData);
-      const newPage = newPdf.addPage([canvas.width, canvas.height]);
-      newPage.drawImage(jpgImage, {
-        x: 0,
-        y: 0,
-        width: canvas.width,
-        height: canvas.height,
-      });
-
-      status.textContent = `Compressed page ${i} of ${pdf.numPages}`;
+  }catch(err){showMessage('splitOutput','Could not split PDF: '+err.message);}
+};
+window.extractPDFPages=async function(){
+  const file=byId('extractUpload').files[0], range=byId('pageRanges').value.trim(), out=byId('extractOutput');out.replaceChildren();
+  if(!file){showMessage('extractOutput','Please choose a PDF.');return;}
+  if(!range){showMessage('extractOutput','Enter page numbers or ranges, for example 1-3, 5.');return;}
+  try{
+    const src=await PDFLib.PDFDocument.load(await file.arrayBuffer()), total=src.getPageCount(), pages=new Set();
+    for(const part of range.split(',')){
+      const s=part.trim(); if(!s)continue;
+      const m=s.match(/^(\d+)\s*(?:-\s*(\d+))?$/);
+      if(!m)throw new Error(`Invalid page range: "${s}". Use forms like 2 or 2-5.`);
+      let start=Number(m[1]),end=m[2]?Number(m[2]):start;
+      if(start<1||end<1||start>total||end>total)throw new Error(`Page range "${s}" is outside this PDF (1–${total}).`);
+      if(start>end)throw new Error(`Range "${s}" is reversed. Put the smaller page number first.`);
+      for(let p=start;p<=end;p++)pages.add(p-1);
     }
-
-    const pdfBytes = await newPdf.save();
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = "compressed.pdf";
-    a.click();
-
-    status.textContent = "✅ Done. Compressed PDF downloaded.";
-  }
+    if(!pages.size)throw new Error('No pages were selected.');
+    const dest=await PDFLib.PDFDocument.create(), copied=await dest.copyPages(src,[...pages].sort((a,b)=>a-b));
+    copied.forEach(p=>dest.addPage(p));
+    addDownload('extractOutput',new Blob([await dest.save()],{type:'application/pdf'}),`${safeFilename(file.name.replace(/\.pdf$/i,''))}_extracted.pdf`,'Download extracted PDF');
+  }catch(err){showMessage('extractOutput','Could not extract pages: '+err.message);}
+};
+byId('pdfMergeUpload').addEventListener('change',()=>{
+  const files=byId('pdfMergeUpload').files;showMessage('mergeFileCount',files.length?`${files.length} PDF(s) selected — merge order follows file selection.`:'');
+});
+window.mergePDFs=async function(){
+  const files=byId('pdfMergeUpload').files;byId('mergeOutput').replaceChildren();
+  if(files.length<2){showMessage('mergeOutput','Please select at least two PDFs.');return;}
+  try{
+    const merged=await PDFLib.PDFDocument.create();
+    for(const f of files){const doc=await PDFLib.PDFDocument.load(await f.arrayBuffer());(await merged.copyPages(doc,doc.getPageIndices())).forEach(p=>merged.addPage(p));}
+    addDownload('mergeOutput',new Blob([await merged.save()],{type:'application/pdf'}),'merged.pdf','Download merged PDF');
+  }catch(err){showMessage('mergeOutput','Could not merge PDFs: '+err.message);}
+};
+let imgFiles=[];
+byId('img2pdfInput').addEventListener('change',function(){imgFiles=Array.from(this.files);byId('img2pdfFileList').textContent=imgFiles.length?imgFiles.map(f=>f.name).join(', '):'No images selected.';});
+byId('img2pdfBtn').addEventListener('click',async function(){
+  const out=byId('img2pdfOutput');out.replaceChildren();
+  if(!imgFiles.length){showMessage('img2pdfOutput','Please choose at least one image.');return;}
+  try{
+    const doc=await PDFLib.PDFDocument.create();
+    for(const file of imgFiles){
+      let bytes=await file.arrayBuffer(), embedded;
+      if(file.type==='image/png')embedded=await doc.embedPng(bytes);
+      else if(file.type==='image/jpeg')embedded=await doc.embedJpg(bytes);
+      else if(file.type==='image/webp'){
+        const bitmap=await createImageBitmap(file),canvas=document.createElement('canvas');canvas.width=bitmap.width;canvas.height=bitmap.height;
+        canvas.getContext('2d').drawImage(bitmap,0,0);const data=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.92));
+        embedded=await doc.embedJpg(await data.arrayBuffer());bitmap.close();
+      }else throw new Error(`Unsupported image format: ${file.type}`);
+      const dims=embedded.scale(1),page=doc.addPage([dims.width,dims.height]);page.drawImage(embedded,{x:0,y:0,width:dims.width,height:dims.height});
+    }
+    let name=byId('img2pdfFilename').value.trim()||'images2pdf.pdf';if(!name.toLowerCase().endsWith('.pdf'))name+='.pdf';
+    addDownload('img2pdfOutput',new Blob([await doc.save()],{type:'application/pdf'}),safeFilename(name),'Download PDF');
+  }catch(err){showMessage('img2pdfOutput','Could not convert images: '+err.message);}
+});
+window.compressPDF=async function(){
+  const file=byId('pdfInput').files[0],out=byId('compressOutput');out.replaceChildren();
+  if(!file){showMessage('compressOutput','Please choose a PDF.');return;}
+  showMessage('compressOutput','Rasterising pages…');
+  try{
+    const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise, dest=await PDFLib.PDFDocument.create();
+    const scale=Number(byId('rasterScale').value);
+    for(let i=1;i<=pdf.numPages;i++){
+      const page=await pdf.getPage(i),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');
+      canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
+      await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;
+      const data=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.84));
+      const jpg=await dest.embedJpg(await data.arrayBuffer()),newPage=dest.addPage([canvas.width,canvas.height]);
+      newPage.drawImage(jpg,{x:0,y:0,width:canvas.width,height:canvas.height});
+      showMessage('compressOutput',`Rasterised ${i} of ${pdf.numPages} pages…`);
+    }
+    addDownload('compressOutput',new Blob([await dest.save()],{type:'application/pdf'}),`${safeFilename(file.name.replace(/\.pdf$/i,''))}_rasterised.pdf`,'Download rasterised PDF');
+  }catch(err){showMessage('compressOutput','Could not rasterise PDF: '+err.message);}
+};
+byId('themeToggle').addEventListener('click',()=>{
+  const dark=document.body.classList.toggle('dark');byId('themeToggle').textContent=dark?'☀ Light mode':'☾ Dark mode';
+  byId('themeToggle').setAttribute('aria-pressed',String(dark));
+  try{localStorage.setItem('researchUtilityTheme',dark?'dark':'light');}catch{}
+});
+try{if(localStorage.getItem('researchUtilityTheme')==='dark'){document.body.classList.add('dark');byId('themeToggle').textContent='☀ Light mode';byId('themeToggle').setAttribute('aria-pressed','true');}}catch{}
 </script>
-
-
 </body>
 </html>
