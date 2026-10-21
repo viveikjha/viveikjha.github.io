@@ -1,243 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Astronomy Tools Suite</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0d1117;
-            color: #c9d1d9;
-            margin: 0;
-            padding: 1rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-        h1 {
-            color: #58a6ff;
-            font-size: 2rem;
-            grid-column: 1 / -1;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .tool {
-            background: #161b22;
-            border-radius: 1rem;
-            padding: 1rem;
-            box-shadow: 0 0 8px rgba(22,27,34,0.2);
-            position: relative;
-            border: 1px solid #21262d;
-        }
-        h2 {
-            color: #79c0ff;
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        .info-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #21262d;
-            color: #c9d1d9;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            text-align: center;
-            transition: background 0.2s;
-        }
-        .info-btn:hover, .info-btn:focus {
-            background: #30363d;
-            color: #58a6ff;
-        }
-        .desc {
-            display: none;
-            font-size: 0.85rem;
-            background: #21262d;
-            color: #8b949e;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            margin: 0.5rem 0;
-            border: 1px solid #30363d;
-        }
-        .tool:hover .desc,
-        .tool:focus-within .desc,
-        .tool .info-btn:focus + .desc {
-            display: block;
-        }
-        input, select, button {
-            margin: 0.25rem 0;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            border: 1px solid #30363d;
-            font-size: 1rem;
-            width: 100%;
-            background: #0d1117;
-            color: #c9d1d9;
-            box-sizing: border-box;
-            transition: border 0.2s;
-        }
-        input:focus, select:focus {
-            border: 1.5px solid #58a6ff;
-            outline: none;
-        }
-        button {
-            background: linear-gradient(90deg, #238636, #2ea043);
-            color: #f0f6fc;
-            cursor: pointer;
-            font-weight: 600;
-            border: none;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background: linear-gradient(90deg, #2ea043, #238636);
-        }
-        p {
-            color: #adbac7;
-            margin: 0.5rem 0 0 0;
-            font-size: 1rem;
-        }
-        select {
-            background: #161b22;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>AstroCalc — Astronomy & Cosmology</title>
+<style>
+:root{
+  --bg:#070b16; --panel:#10182a; --panel2:#0b1222; --line:#26334d;
+  --text:#e8eefb; --muted:#9aa9c5; --accent:#8bd5ff; --accent2:#b7a6ff;
+  --good:#9de4c1; --warn:#ffd28a; --shadow:0 18px 50px #0005;
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--text);font:15px/1.5 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ background:radial-gradient(ellipse at 18% 0%,#18294a 0,transparent 34%),radial-gradient(ellipse at 90% 12%,#25204c 0,transparent 28%),var(--bg);min-height:100vh}
+header{max-width:1440px;margin:auto;padding:32px 28px 22px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:14px}.mark{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#172f50,#25204b);border:1px solid #496083;font-size:25px;box-shadow:0 8px 30px #101b3e}
+h1{font-size:clamp(1.7rem,3vw,2.5rem);letter-spacing:-.04em;margin:0;font-weight:720}.subtitle{color:var(--muted);margin:4px 0 0}
+.header-note{border:1px solid #33415f;background:#111a2caa;border-radius:999px;padding:9px 14px;color:#b8c8e5;font-size:12px;white-space:nowrap}
+main{max-width:1440px;margin:auto;padding:0 28px 48px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:26px}
+nav{position:sticky;top:20px;align-self:start;border:1px solid var(--line);background:#0c1424d9;border-radius:20px;padding:12px;box-shadow:var(--shadow)}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:#7385a7;padding:10px 12px 7px}
+nav a{display:flex;align-items:center;gap:10px;text-decoration:none;color:#aebbd2;padding:10px 12px;border-radius:12px;font-size:13px;transition:.18s}
+nav a:hover,nav a.active{color:var(--text);background:#1b2942}nav a.active{box-shadow:inset 2px 0 var(--accent)}
+.nav-icon{width:20px;text-align:center;color:var(--accent)}
+.content{min-width:0}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin:2px 0 24px}
+.eyebrow{color:var(--accent);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.hero h2{font-size:clamp(1.4rem,2.5vw,2rem);letter-spacing:-.035em;margin:4px 0 5px}
+.hero p{margin:0;color:var(--muted);max-width:650px}
+.cosmo-chip{font-size:12px;color:#c3b9ff;background:#211f3c;border:1px solid #4a4477;border-radius:12px;padding:10px 13px;white-space:nowrap}
+.section{margin:32px 0 42px;scroll-margin-top:24px}
+.section-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.section-head h3{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:#a9bbd9;margin:0}
+.section-head:after{content:"";height:1px;background:linear-gradient(90deg,var(--line),transparent);flex:1}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.card{background:linear-gradient(150deg,#131e33f2,#0d1525f2);border:1px solid #263653;border-radius:19px;padding:19px;box-shadow:0 10px 32px #0002;min-width:0;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;top:0;left:20px;right:20px;height:1px;background:linear-gradient(90deg,transparent,#7bcfff66,transparent)}
+.card.wide{grid-column:1/-1}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:14px}
+.card h4{font-size:16px;letter-spacing:-.02em;margin:0 0 3px;font-weight:680}
+.card .desc{font-size:12px;color:var(--muted);margin:0;max-width:440px}
+.pill{font-size:10px;color:#a8c9e8;background:#182942;border:1px solid #2d4968;padding:4px 8px;border-radius:999px;white-space:nowrap}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:14px 0}
+.fields.one{grid-template-columns:1fr}.fields.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+label{display:block;color:#aab8d1;font-size:11px;margin:0 0 5px}
+input,select{width:100%;min-width:0;border:1px solid #2b3b59;border-radius:10px;padding:10px 11px;background:#080f1d;color:var(--text);font:inherit;font-size:13px;outline:none}
+input:focus,select:focus{border-color:#75caff;box-shadow:0 0 0 3px #75caff18}
+input::placeholder{color:#64728c}
+.actions{display:flex;gap:9px;align-items:center;margin-top:12px}
+button{border:1px solid #6dc7f1;background:linear-gradient(135deg,#8bd5ff,#8daeff);color:#07101d;font:700 12px/1.2 inherit;padding:10px 15px;border-radius:10px;cursor:pointer;transition:transform .15s,filter .15s}
+button:hover{filter:brightness(1.07);transform:translateY(-1px)}button.secondary{background:#151f32;color:#c4d2e8;border-color:#34445f}
+.result{margin-top:13px;border:1px solid #29465a;background:linear-gradient(110deg,#0b1d2b,#0d1728);border-radius:12px;padding:12px 13px;min-height:50px;color:#b9dff1;font-size:13px;overflow-wrap:anywhere}
+.result:empty{display:none}.result strong{display:block;color:#e5f7ff;font-size:19px;letter-spacing:-.02em;margin:0 0 3px}.result small{display:block;color:#91a8c1;font-size:11px;margin-top:3px}
+.note{font-size:11px;color:#8192ad;margin:12px 0 0}
+footer{max-width:1440px;margin:auto;padding:0 28px 30px;color:#697a98;font-size:11px;display:flex;justify-content:space-between;gap:20px;border-top:1px solid #1b2940;padding-top:18px}
+@media(max-width:950px){main{grid-template-columns:1fr}nav{position:static;display:flex;flex-wrap:wrap;gap:3px}nav .nav-label{width:100%}nav a{padding:8px 10px}.header-note{display:none}}
+@media(max-width:650px){header{padding:22px 16px 16px}main{padding:0 16px 30px}.cards{grid-template-columns:1fr}.card.wide{grid-column:auto}.fields.three{grid-template-columns:1fr 1fr}.hero{display:block}.cosmo-chip{display:inline-block;margin-top:14px}footer{padding-left:16px;padding-right:16px;display:block}}
+</style>
 </head>
 <body>
-    <h1>🔭 Astronomy Tools Suite</h1>
+<header>
+  <div class="brand"><div class="mark" aria-hidden="true">✦</div><div><h1>AstroCalc</h1><p class="subtitle">Astronomy & cosmology, at your fingertips.</p></div></div>
+  <div class="header-note">LOCAL CALCULATIONS · NO DATA SENT</div>
+</header>
+<main>
+<nav aria-label="Calculator sections">
+  <div class="nav-label">Navigate</div>
+  <a class="active" href="#cosmology"><span class="nav-icon">◉</span> Cosmology & distances</a>
+  <a href="#photometry"><span class="nav-icon">◌</span> Photometry & spectra</a>
+  <a href="#coordinates"><span class="nav-icon">⌖</span> Coordinates & time</a>
+  <a href="#observing"><span class="nav-icon">⌁</span> Observing conditions</a>
+</nav>
+<div class="content">
+  <div class="hero">
+    <div><div class="eyebrow">Research toolkit / 01</div><h2>Measure the Universe.</h2><p>Quick, transparent calculators for common astronomical conversions. Cosmological quantities share one parameter set; results are estimates under the model shown.</p></div>
+    <div class="cosmo-chip">Flat ΛCDM · numerical integration</div>
+  </div>
 
-    <div class="tool">
-        <h2>Julian Date Calculator</h2>
-        <button class="info-btn">i</button>
-        <div class="desc">Converts a calendar date/time to Julian Date, which is used in astronomical timekeeping. JD = days since noon, January 1, 4713 BCE.</div>
-        <input type="datetime-local" id="jd-date" />
-        <button onclick="calculateJD()">Calculate JD</button>
-        <p id="jd-result"></p>
+  <section class="section" id="cosmology">
+    <div class="section-head"><h3>Cosmology & distances</h3></div>
+    <div class="cards">
+      <article class="card wide">
+        <div class="card-top"><div><h4>Cosmology engine</h4><p class="desc">Set the background cosmology used by all redshift-based distance and time tools.</p></div><span class="pill">Shared parameters</span></div>
+        <div class="fields three">
+          <div><label for="H0">H₀ (km s⁻¹ Mpc⁻¹)</label><input id="H0" type="number" value="70" min="1" step="any"></div>
+          <div><label for="Om">Ω matter</label><input id="Om" type="number" value="0.3" min="0" max="2" step="any"></div>
+          <div><label for="Or">Ω radiation</label><input id="Or" type="number" value="0" min="0" max="1" step="any"></div>
+        </div>
+        <p class="note">Assumes spatially flat ΛCDM: ΩΛ = 1 − Ωm − Ωr. Radiation defaults to zero for low-redshift work. A negative ΩΛ is permitted mathematically, but may not describe the cosmology you intend.</p>
+        <div class="result" id="cosmo-status">Current model: H₀ = 70, Ωm = 0.30, Ωr = 0.00, ΩΛ = 0.70</div>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Redshift → distances & time</h4><p class="desc">Comoving, angular-diameter and luminosity distances, plus lookback time and cosmic age.</p></div><span class="pill">ΛCDM</span></div>
+        <div class="fields one"><div><label for="zcos">Redshift z</label><input id="zcos" type="number" min="0" step="any" value="1"></div></div>
+        <div class="actions"><button onclick="calcCosmo()">Calculate distances</button></div>
+        <div class="result" id="cosmo-result"></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Angular size ↔ physical size</h4><p class="desc">Convert an angular diameter to a transverse physical size using Dₐ(z).</p></div><span class="pill">Small-angle</span></div>
+        <div class="fields"><div><label for="as-z">Redshift z</label><input id="as-z" type="number" min="0" step="any" value="0.5"></div><div><label for="as-angle">Angular size (arcsec)</label><input id="as-angle" type="number" min="0" step="any" value="1"></div></div>
+        <div class="fields one"><div><label for="as-size">Physical size (kpc) — optional input instead</label><input id="as-size" type="number" min="0" step="any" placeholder="Enter to calculate angular size"></div></div>
+        <div class="actions"><button onclick="calcAngular()">Convert</button></div><div class="result" id="as-result"></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Flux ↔ luminosity</h4><p class="desc">Bolometric or band-integrated flux and luminosity, without a K-correction.</p></div><span class="pill">Inverse-square law</span></div>
+        <div class="fields"><div><label for="fl-z">Redshift z</label><input id="fl-z" type="number" min="0" step="any" value="0.1"></div><div><label for="fl-mode">Calculate</label><select id="fl-mode"><option value="L">Luminosity from flux</option><option value="F">Flux from luminosity</option></select></div></div>
+        <div class="fields one"><div><label for="fl-value">Flux (erg s⁻¹ cm⁻²) or luminosity (erg s⁻¹)</label><input id="fl-value" type="number" min="0" step="any" value="1e-13"></div></div>
+        <div class="actions"><button onclick="calcFluxLum()">Calculate</button></div><div class="result" id="fl-result"></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Distance modulus</h4><p class="desc">Apparent ↔ absolute magnitude from luminosity distance.</p></div><span class="pill">No extinction / K-correction</span></div>
+        <div class="fields"><div><label for="dm-z">Redshift z</label><input id="dm-z" type="number" min="0" step="any" value="0.1"></div><div><label for="dm-mode">Calculate</label><select id="dm-mode"><option value="M">Absolute magnitude M</option><option value="m">Apparent magnitude m</option></select></div></div>
+        <div class="fields one"><div><label for="dm-mag">Magnitude (m or M)</label><input id="dm-mag" type="number" step="any" value="20"></div></div>
+        <div class="actions"><button onclick="calcDM()">Calculate</button></div><div class="result" id="dm-result"></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Redshift ↔ spectral wavelength</h4><p class="desc">Observed/rest wavelength conversion for spectral features.</p></div><span class="pill">Spectroscopy</span></div>
+        <div class="fields"><div><label for="wl-rest">Rest wavelength (Å)</label><input id="wl-rest" type="number" min="0" step="any" value="6562.8"></div><div><label for="wl-z">Redshift z</label><input id="wl-z" type="number" min="-0.99" step="any" value="0.5"></div></div>
+        <div class="fields one"><div><label for="wl-obs">Observed wavelength (Å) — optional input instead</label><input id="wl-obs" type="number" min="0" step="any" placeholder="Enter to calculate redshift"></div></div>
+        <div class="actions"><button onclick="calcWavelength()">Convert</button></div><div class="result" id="wl-result"></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Redshift ↔ recession velocity</h4><p class="desc">Special-relativistic Doppler conversion for a radial velocity interpretation.</p></div><span class="pill">Not Hubble flow at high z</span></div>
+        <div class="fields"><div><label for="rv-z">Redshift z</label><input id="rv-z" type="number" min="-0.999999" step="any" value="0.01"></div><div><label for="rv-v">Radial velocity (km/s) — optional instead</label><input id="rv-v" type="number" step="any" placeholder="Enter to calculate z"></div></div>
+        <div class="actions"><button onclick="calcVelocity()">Convert</button></div><div class="result" id="rv-result"></div>
+        <p class="note">This is a Doppler-equivalent velocity, not a general cosmological recession velocity. For nearby objects, peculiar velocity corrections and the adopted frame (heliocentric, barycentric, CMB) matter.</p>
+      </article>
     </div>
+  </section>
 
-    <div class="tool">
-        <h2>RA/Dec Converter</h2>
-        <button class="info-btn">i</button>
-        <div class="desc">Convert RA from HH:MM:SS to degrees and Dec from DD:MM:SS to degrees. This format is standard in celestial coordinate systems.</div>
-        <input type="text" id="ra-hms" placeholder="RA (HH:MM:SS)" />
-        <input type="text" id="dec-dms" placeholder="Dec (DD:MM:SS)" />
-        <button onclick="convertRaDec()">Convert</button>
-        <p id="radec-result"></p>
+  <section class="section" id="photometry">
+    <div class="section-head"><h3>Photometry & spectra</h3></div>
+    <div class="cards">
+      <article class="card">
+        <div class="card-top"><div><h4>AB magnitude ↔ flux density</h4><p class="desc">Convert AB magnitude and fν in Jy, mJy or μJy.</p></div><span class="pill">AB system</span></div>
+        <div class="fields"><div><label for="ab-mode">Calculate</label><select id="ab-mode"><option value="f">Flux density from AB mag</option><option value="m">AB mag from flux density</option></select></div><div><label for="ab-unit">Flux unit</label><select id="ab-unit"><option value="Jy">Jy</option><option value="mJy">mJy</option><option value="uJy">μJy</option></select></div></div>
+        <div class="fields one"><div><label for="ab-value">AB magnitude or flux density</label><input id="ab-value" type="number" step="any" value="20"></div></div>
+        <div class="actions"><button onclick="calcAB()">Convert</button></div><div class="result" id="ab-result"></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Galactic foreground extinction</h4><p class="desc">Estimate Aᵦ = Rᵦ × E(B−V) using a selectable coefficient.</p></div><span class="pill">Foreground only</span></div>
+        <div class="fields"><div><label for="ebv">E(B−V) (mag)</label><input id="ebv" type="number" min="0" step="any" value="0.05"></div><div><label for="ext-r">Rᵦ coefficient</label><select id="ext-r"><option value="3.1">V · Rᵥ = 3.1</option><option value="3.303">SDSS u (approx.)</option><option value="2.742">SDSS g (approx.)</option><option value="2.285">SDSS r (approx.)</option><option value="1.698">SDSS i (approx.)</option><option value="1.263">SDSS z (approx.)</option><option value="custom">Custom coefficient</option></select></div></div>
+        <div class="fields one" id="ext-custom-wrap" hidden><div><label for="ext-custom">Custom Rᵦ</label><input id="ext-custom" type="number" step="any" value="3.1"></div></div>
+        <div class="actions"><button onclick="calcExt()">Calculate</button></div><div class="result" id="ext-result"></div>
+        <p class="note">Coefficients are approximate and depend on the adopted extinction law, bandpass and source SED. Apply to Galactic foreground only; internal attenuation is a separate correction.</p>
+      </article>
     </div>
+  </section>
 
-    <div class="tool">
-        <h2>Cosmology: Distance vs Redshift</h2>
-        <button class="info-btn">i</button>
-        <div class="desc">Estimate comoving distance from redshift using a basic ΛCDM cosmology (H₀ = 70, Ωₘ = 0.3). Useful for large-scale structure studies.</div>
-        <input type="number" id="cosmo-z" placeholder="Redshift (z)" step="any" />
-        <button onclick="cosmoCalc()">Calculate</button>
-        <p id="cosmo-result"></p>
+  <section class="section" id="coordinates">
+    <div class="section-head"><h3>Coordinates & time</h3></div>
+    <div class="cards">
+      <article class="card">
+        <div class="card-top"><div><h4>RA / Dec ↔ decimal degrees</h4><p class="desc">Parse sexagesimal coordinates with sign and range checks.</p></div><span class="pill">ICRS-style input</span></div>
+        <div class="fields"><div><label for="ra">RA (HH:MM:SS)</label><input id="ra" value="12:34:56.7"></div><div><label for="dec">Dec (±DD:MM:SS)</label><input id="dec" value="-12:34:56"></div></div>
+        <div class="actions"><button onclick="calcRaDec()">Convert to degrees</button></div><div class="result" id="radec-result"></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Angular separation</h4><p class="desc">Great-circle separation between two sky positions.</p></div><span class="pill">Spherical geometry</span></div>
+        <div class="fields"><div><label for="sep-ra1">RA₁ (degrees)</label><input id="sep-ra1" type="number" step="any" value="10"></div><div><label for="sep-dec1">Dec₁ (degrees)</label><input id="sep-dec1" type="number" step="any" value="20"></div><div><label for="sep-ra2">RA₂ (degrees)</label><input id="sep-ra2" type="number" step="any" value="10.1"></div><div><label for="sep-dec2">Dec₂ (degrees)</label><input id="sep-dec2" type="number" step="any" value="20.1"></div></div>
+        <div class="actions"><button onclick="calcSep()">Calculate separation</button></div><div class="result" id="sep-result"></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Julian Date / Modified Julian Date</h4><p class="desc">Calendar date and time in UTC → JD and MJD.</p></div><span class="pill">UTC input</span></div>
+        <div class="fields one"><div><label for="jd-date">Date and time (UTC)</label><input id="jd-date" type="datetime-local" value="2026-10-21T00:00"></div></div>
+        <div class="actions"><button onclick="calcJD()">Calculate JD / MJD</button></div><div class="result" id="jd-result"></div>
+        <p class="note">This uses the browser's date input fields as UTC calendar components; leap-second representation is not supported.</p>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Galactic ↔ equatorial coordinates</h4><p class="desc">Transform ICRS/J2000 equatorial coordinates to Galactic longitude and latitude.</p></div><span class="pill">Fixed rotation</span></div>
+        <div class="fields"><div><label for="gal-ra">RA (degrees)</label><input id="gal-ra" type="number" step="any" value="266.4051"></div><div><label for="gal-dec">Dec (degrees)</label><input id="gal-dec" type="number" step="any" value="-28.936175"></div></div>
+        <div class="actions"><button onclick="calcGal()">Convert to Galactic</button></div><div class="result" id="gal-result"></div>
+      </article>
     </div>
+  </section>
 
-    <div class="tool">
-        <h2>Galactic Extinction Calculator</h2>
-        <button class="info-btn">i</button>
-        <div class="desc">Computes extinction A(λ) using E(B-V) and band-specific R-values from Schlafly & Finkbeiner (2011). Useful for correcting observed magnitudes.</div>
-        <input type="number" id="ebv" placeholder="E(B-V)" step="any" />
-        <select id="band">
-            <option value="3.1">V-band</option>
-            <option value="2.742">g-band</option>
-            <option value="2.285">r-band</option>
-            <option value="1.698">i-band</option>
-        </select>
-        <button onclick="calcExtinction()">Calculate</button>
-        <p id="extinction-result"></p>
+  <section class="section" id="observing">
+    <div class="section-head"><h3>Observing conditions</h3></div>
+    <div class="cards">
+      <article class="card">
+        <div class="card-top"><div><h4>Airmass</h4><p class="desc">Kasten–Young approximation from target altitude.</p></div><span class="pill">Atmosphere</span></div>
+        <div class="fields one"><div><label for="alt">Altitude above horizon (degrees)</label><input id="alt" type="number" min="0" max="90" step="any" value="45"></div></div>
+        <div class="actions"><button onclick="calcAirmass()">Calculate airmass</button></div><div class="result" id="air-result"></div>
+        <p class="note">The approximation is not intended for targets at or below the horizon; near-horizon atmospheric conditions are especially uncertain.</p>
+      </article>
+      <article class="card">
+        <div class="card-top"><div><h4>Quick unit conversions</h4><p class="desc">Useful constants and common distance conversions.</p></div><span class="pill">Exact factors</span></div>
+        <div class="fields"><div><label for="unit-value">Value</label><input id="unit-value" type="number" step="any" value="1"></div><div><label for="unit-kind">Convert</label><select id="unit-kind"><option value="pc-kpc">pc → kpc</option><option value="kpc-pc">kpc → pc</option><option value="ly-pc">ly → pc</option><option value="pc-ly">pc → ly</option><option value="au-km">AU → km</option><option value="km-au">km → AU</option></select></div>
+        <div class="actions"><button onclick="calcUnits()">Convert</button></div><div class="result" id="unit-result"></div>
+      </article>
     </div>
-
-    <div class="tool">
-        <h2>Angular Size Calculator</h2>
-        <button class="info-btn">i</button>
-        <div class="desc">Convert physical size (in kpc) to angular size using angular diameter distance. θ = (D / D<sub>A</sub>) × 206.265 arcsec.</div>
-        <input type="number" id="physical-size" placeholder="Size (kpc)" step="any" />
-        <input type="number" id="z-angular" placeholder="Redshift (z)" step="any" />
-        <button onclick="angularSize()">Calculate</button>
-        <p id="angular-result"></p>
-    </div>
-
-    <div class="tool">
-        <h2>Lookback Time Calculator</h2>
-        <button class="info-btn">i</button>
-        <div class="desc">Estimate the time since light left a galaxy, given redshift. Approximate formula: t = z / (1+z) × 13.8 Gyr.</div>
-        <input type="number" id="z-lookback" placeholder="Redshift (z)" step="any" />
-        <button onclick="lookbackTime()">Calculate</button>
-        <p id="lookback-result"></p>
-    </div>
-
-    <div class="tool">
-        <h2>Airmass Calculator (Simplified)</h2>
-        <button class="info-btn">i</button>
-        <div class="desc">Estimate airmass using: airmass ≈ sec(z) = 1 / cos(90° – Altitude). Used to determine atmospheric attenuation.</div>
-        <input type="number" id="altitude" placeholder="Altitude (deg)" step="any" />
-        <button onclick="calcAirmass()">Calculate</button>
-        <p id="airmass-result"></p>
-        
-       
-    
-    </div>
-    <footer style="grid-column: 1 / -1; text-align: center; margin-top: 2rem; position: fixed; left: 0; bottom: 0; width: 100%; background: #161b22; padding: 0.75rem 0; border-top: 1px solid #21262d; z-index: 10;">
-        Developed and maintained by <a href="https://viveikjha.github.io" style="color: #58a6ff; text-decoration: none;">Vivek Kumar Jha</a>
-    </footer>
-    <script>
-        function calculateJD() {
-            const dt = new Date(document.getElementById("jd-date").value);
-            const jd = dt.getTime() / 86400000 + 2440587.5;
-            document.getElementById("jd-result").innerText = `Julian Date: ${jd.toFixed(5)}`;
-        }
-
-        function convertRaDec() {
-            const ra = document.getElementById("ra-hms").value.split(":"),
-                        dec = document.getElementById("dec-dms").value.split(":");
-            const raDeg = (+ra[0] + ra[1] / 60 + ra[2] / 3600) * 15;
-            const sign = dec[0].startsWith("-") ? -1 : 1;
-            const absDec = dec.map(d => Math.abs(+d));
-            const decDeg = sign * (absDec[0] + absDec[1] / 60 + absDec[2] / 3600);
-            document.getElementById("radec-result").innerText = `RA: ${raDeg.toFixed(5)}°, Dec: ${decDeg.toFixed(5)}°`;
-        }
-
-        function cosmoCalc() {
-            const z = parseFloat(document.getElementById("cosmo-z").value);
-            const H0 = 70, c = 299792.458, omegaM = 0.3;
-            const d = (c / H0) * z * (1 - 0.5 * omegaM * z);
-            document.getElementById("cosmo-result").innerText = `Comoving Distance ≈ ${d.toFixed(2)} Mpc`;
-        }
-
-        function calcExtinction() {
-            const ebv = parseFloat(document.getElementById("ebv").value);
-            const r = parseFloat(document.getElementById("band").value);
-            const extinction = ebv * r;
-            document.getElementById("extinction-result").innerText = `A(λ) ≈ ${extinction.toFixed(3)} mag`;
-        }
-
-        function angularSize() {
-            const size = parseFloat(document.getElementById("physical-size").value);
-            const z = parseFloat(document.getElementById("z-angular").value);
-            const D_A = 1000 / (1 + z);
-            const theta = (size / D_A) * 206.265;
-            document.getElementById("angular-result").innerText = `Angular size ≈ ${theta.toFixed(2)} arcsec`;
-        }
-
-        function lookbackTime() {
-            const z = parseFloat(document.getElementById("z-lookback").value);
-            const t = (z / (1 + z)) * 13.8;
-            document.getElementById("lookback-result").innerText = `Lookback Time ≈ ${t.toFixed(2)} Gyr`;
-        }
-
-        function calcAirmass() {
-            const alt = parseFloat(document.getElementById("altitude").value);
-            const airmass = 1 / Math.cos((90 - alt) * Math.PI / 180);
-            document.getElementById("airmass-result").innerText = `Airmass ≈ ${airmass.toFixed(3)}`;
-        }
-    </script>
+  </section>
+</div>
+</main>
+<footer><span>AstroCalc · Built for transparent, quick calculations</span><span>Verify assumptions before using results in publication.</span></footer>
+<script>
+const $ = id => document.getElementById(id);
+const C = 299792.458; // km/s
+const MPC_KM = 3.0856775814913673e19;
+const MPC_CM = 3.0856775814913673e24;
+const SEC_GYR = 31557600e9;
+function num(id,label){const x=Number($(id).value);if(!$(id).value.trim() || !Number.isFinite(x)) throw Error(`Enter a valid ${label}.`);return x}
+function show(id,html){$(id).innerHTML=html}
+function run(id,fn){try{fn()}catch(e){show(id,`<span style="color:#ffd28a">${e.message||"Check the input values."}</span>`)}}
+function cosmology(){
+ const H0=num("H0","H₀"), Om=num("Om","Ω matter"), Or=num("Or","Ω radiation"), Ol=1-Om-Or;
+ if(H0<=0||Om<0||Or<0)throw Error("H₀ must be positive and density parameters non-negative.");
+ return {H0,Om,Or,Ol}
+}
+function Ez(z,p){const zp=1+z;const val=p.Or*zp**4+p.Om*zp**3+p.Ol;if(val<=0)throw Error("Expansion rate is not real for these parameters and redshift.");return Math.sqrt(val)}
+function simpson(f,a,b,n=1200){if(a===b)return 0;if(n%2)n++;const h=(b-a)/n;let s=f(a)+f(b);for(let i=1;i<n;i++)s+=(i%2?4:2)*f(a+i*h);return s*h/3}
+function cosmo(z){
+ const p=cosmology();if(z<0)throw Error("This cosmology tool currently accepts z ≥ 0.");
+ const DH=C/p.H0;const dc=DH*simpson(x=>1/Ez(x,p),0,z);
+ const da=dc/(1+z),dl=dc*(1+z);
+ const Hsec=p.H0/MPC_KM; // H0 is km s⁻¹ Mpc⁻¹ and MPC_KM is km per Mpc.
+ const look=simpson(x=>1/((1+x)*Ez(x,p)),0,z)/Hsec/SEC_GYR;
+ const amax=1/(1+z);
+ // Scale-factor age integral: t(a) = H0^-1 ∫ da/[a E(a)].
+ // Algebraically rewrite the integrand as a/sqrt(Ωr + Ωm a + ΩΛ a⁴).
+ // This form is finite and well behaved at a=0, including Ωr=0.
+ const ageIntegrand=a=>{
+   if(a===0) return (p.Or>0 || p.Om>0) ? 0 : NaN;
+   const e2=p.Or+p.Om*a+p.Ol*a**4;
+   return e2>0 ? a/Math.sqrt(e2) : NaN;
+ };
+ const age=simpson(ageIntegrand,0,amax)/Hsec/SEC_GYR;
+ return {p,dc,da,dl,look,age}
+}
+function fmt(x,d=3){return Number(x).toLocaleString(undefined,{maximumFractionDigits:d,minimumFractionDigits:0})}
+function calcCosmo(){run("cosmo-result",()=>{const z=num("zcos","redshift"),r=cosmo(z);show("cosmo-result",`<strong>Comoving radial distance: ${fmt(r.dc)} Mpc</strong><div>Angular-diameter distance Dₐ: ${fmt(r.da)} Mpc</div><div>Luminosity distance Dₗ: ${fmt(r.dl)} Mpc</div><div>Lookback time: ${fmt(r.look)} Gyr</div><div>Age of Universe at z: ${fmt(r.age)} Gyr</div><small>Flat ΛCDM · ΩΛ = ${fmt(r.p.Ol,4)} · integration over E(z)</small>`);show("cosmo-status",`Current model: H₀ = ${r.p.H0}, Ωm = ${fmt(r.p.Om,4)}, Ωr = ${fmt(r.p.Or,4)}, ΩΛ = ${fmt(r.p.Ol,4)}`)})}
+function calcAngular(){run("as-result",()=>{const z=num("as-z","redshift"),r=cosmo(z);let size=$("as-size").value.trim(),ang=$("as-angle").value.trim();if(size){const s=Number(size);if(!Number.isFinite(s)||s<0)throw Error("Physical size must be non-negative.");const a=s/(r.da*1000)*206264.806;show("as-result",`<strong>${fmt(a,4)} arcsec</strong><div>For physical size ${fmt(s)} kpc at z = ${z}; Dₐ = ${fmt(r.da)} Mpc.</div>`)}else{const a=Number(ang);if(!ang||!Number.isFinite(a)||a<0)throw Error("Enter a non-negative angular size or physical size.");const s=a/206264.806*r.da*1000;show("as-result",`<strong>${fmt(s,4)} kpc</strong><div>For angular size ${fmt(a)} arcsec at z = ${z}; Dₐ = ${fmt(r.da)} Mpc.</div>`)}})}
+function calcFluxLum(){run("fl-result",()=>{const z=num("fl-z","redshift"),v=num("fl-value","flux or luminosity");if(v<0)throw Error("Flux/luminosity must be non-negative.");const dl=cosmo(z).dl*MPC_CM,mode=$("fl-mode").value;const out=mode==="L"?4*Math.PI*dl*dl*v:v/(4*Math.PI*dl*dl);if(dl===0&&mode==="F")throw Error("At z = 0, luminosity distance is zero; flux from luminosity is undefined.");show("fl-result",`<strong>${mode==="L"?fmt(out,5)+" erg s⁻¹":out.toExponential(5)+" erg s⁻¹ cm⁻²"}</strong><div>${mode==="L"?"Luminosity":"Flux"} using Dₗ = ${fmt(dl/MPC_CM)} Mpc.</div><small>No K-correction, extinction correction, lensing, or bandpass conversion applied.</small>`)})}
+function calcDM(){run("dm-result",()=>{const z=num("dm-z","redshift"),m=num("dm-mag","magnitude"),dl=cosmo(z).dl;if(dl<=0)throw Error("Distance modulus is undefined at zero luminosity distance.");const mu=5*Math.log10(dl*1e6)-5,mode=$("dm-mode").value,out=mode==="M"?m-mu:m+mu;show("dm-result",`<strong>${mode==="M"?"Absolute":"Apparent"} magnitude: ${fmt(out,4)}</strong><div>Distance modulus μ = ${fmt(mu,4)} mag; Dₗ = ${fmt(dl)} Mpc.</div><small>No extinction or K-correction applied.</small>`)})}
+function calcWavelength(){run("wl-result",()=>{const rest=num("wl-rest","rest wavelength"),z=num("wl-z","redshift"),obs=$("wl-obs").value.trim();if(rest<=0)throw Error("Rest wavelength must be positive.");if(obs){const o=Number(obs);if(!Number.isFinite(o)||o<=0)throw Error("Observed wavelength must be positive.");show("wl-result",`<strong>z = ${fmt(o/rest-1,6)}</strong><div>λobs / λrest − 1</div>`)}else{if(z<=-1)throw Error("Redshift must be greater than −1.");show("wl-result",`<strong>${fmt(rest*(1+z),4)} Å</strong><div>Observed wavelength for z = ${z}.</div>`)}})}
+function calcVelocity(){run("rv-result",()=>{const z=num("rv-z","redshift"),vinput=$("rv-v").value.trim();if(vinput){const v=Number(vinput);if(!Number.isFinite(v)||Math.abs(v)>=C)throw Error("Velocity must have |v| < c.");const b=v/C,zcalc=Math.sqrt((1+b)/(1-b))-1;show("rv-result",`<strong>z = ${fmt(zcalc,7)}</strong><div>Special-relativistic Doppler redshift.</div>`)}else{if(z<=-1)throw Error("Redshift must be greater than −1.");const q=(1+z)**2,b=(q-1)/(q+1);show("rv-result",`<strong>${fmt(b*C,4)} km s⁻¹</strong><div>Relativistic Doppler-equivalent radial velocity.</div>`)}})}
+function calcAB(){run("ab-result",()=>{const v=num("ab-value","magnitude or flux"),unit=$("ab-unit").value,scale={Jy:1,mJy:1e-3,uJy:1e-6}[unit],mode=$("ab-mode").value;if(mode==="f"){const jy=3631*10**(-0.4*v),out=jy/scale;show("ab-result",`<strong>${out.toExponential(5)} ${unit}</strong><div>fν = ${jy.toExponential(5)} Jy</div>`)}else{if(v<=0)throw Error("Flux density must be positive.");const jy=v*scale,m=-2.5*Math.log10(jy/3631);show("ab-result",`<strong>${fmt(m,5)} AB mag</strong><div>fν = ${jy.toExponential(5)} Jy</div>`)}})}
+$("ext-r").addEventListener("change",()=>{$("ext-custom-wrap").hidden=$("ext-r").value!=="custom"});
+function calcExt(){run("ext-result",()=>{const e=num("ebv","E(B−V)"),r=$("ext-r").value==="custom"?num("ext-custom","R coefficient"):Number($("ext-r").value);if(e<0)throw Error("E(B−V) must be non-negative.");show("ext-result",`<strong>A = ${fmt(e*r,4)} mag</strong><div>Using R = ${fmt(r,4)} and E(B−V) = ${fmt(e,4)} mag.</div><small>Correct a measured magnitude with m₀ = mobs − A.</small>`)})}
+function parseSex(s,isRA){const parts=s.trim().split(/[:\s]+/);if(parts.length!==3||parts.some(x=>x===""))throw Error("Use three fields: HH:MM:SS or ±DD:MM:SS.");let sign=1,first=parts[0];if(first.startsWith("-"))sign=-1;first=first.replace(/^[+-]/,"");const a=Number(first),b=Number(parts[1]),c=Number(parts[2]);if(![a,b,c].every(Number.isFinite)||a<0||b<0||b>=60||c<0||c>=60)throw Error("Invalid sexagesimal coordinate fields.");if(isRA){if(sign<0||a>=24)throw Error("RA hours must be 0–23 (no negative RA).");return (a+b/60+c/3600)*15}else{if(a>90||(a===90&&(b!==0||c!==0)))throw Error("Declination must lie between −90° and +90°.");return sign*(a+b/60+c/3600)}}
+function calcRaDec(){run("radec-result",()=>{const ra=parseSex($("ra").value,true),dec=parseSex($("dec").value,false);show("radec-result",`<strong>RA ${fmt(ra,6)}° · Dec ${fmt(dec,6)}°</strong><div>RA = ${fmt(ra/15,6)} hours.</div>`)})}
+function calcSep(){run("sep-result",()=>{const ra1=num("sep-ra1","RA₁"),d1=num("sep-dec1","Dec₁"),ra2=num("sep-ra2","RA₂"),d2=num("sep-dec2","Dec₂");if(Math.abs(d1)>90||Math.abs(d2)>90)throw Error("Declinations must be between −90° and +90°.");const rad=Math.PI/180,a=ra1*rad,b=ra2*rad,c=d1*rad,d=d2*rad;const cos=Math.sin(c)*Math.sin(d)+Math.cos(c)*Math.cos(d)*Math.cos(a-b),sep=Math.acos(Math.max(-1,Math.min(1,cos)))/rad;show("sep-result",`<strong>${fmt(sep,6)}°</strong><div>${fmt(sep*3600,4)} arcsec · ${fmt(sep*60,4)} arcmin</div>`)})}
+function calcJD(){run("jd-result",()=>{const s=$("jd-date").value;if(!s)throw Error("Choose a UTC date and time.");const [date,time]=s.split("T"),[Y,M,D]=date.split("-").map(Number),[h,m]=time.split(":").map(Number);let y=Y,mo=M;if(mo<=2){y--;mo+=12}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);const jd=Math.floor(365.25*(y+4716))+Math.floor(30.6001*(mo+1))+D+B-1524.5+(h+m/60)/24;show("jd-result",`<strong>JD ${jd.toFixed(6)}</strong><div>MJD ${(jd-2400000.5).toFixed(6)}</div><small>UTC calendar input; JD begins at noon, hence the fractional-day offset.</small>`)})}
+function calcGal(){run("gal-result",()=>{const ra=num("gal-ra","RA"),dec=num("gal-dec","Dec");if(ra<0||ra>=360||Math.abs(dec)>90)throw Error("RA must be 0–360° and Dec −90° to +90°.");const r=ra*Math.PI/180,d=dec*Math.PI/180;
+ // ICRS/J2000 to Galactic rotation matrix (IAU)
+ const x=Math.cos(d)*Math.cos(r),y=Math.cos(d)*Math.sin(r),z=Math.sin(d);
+ const X=-0.0548755604*x-0.8734370902*y-0.4838350155*z;
+ const Y= 0.4941094279*x-0.4448296300*y+0.7469822445*z;
+ const Z=-0.8676661490*x-0.1980763734*y+0.4559837762*z;
+ const l=(Math.atan2(Y,X)*180/Math.PI+360)%360,b=Math.asin(Math.max(-1,Math.min(1,Z)))*180/Math.PI;
+ show("gal-result",`<strong>l = ${fmt(l,6)}° · b = ${fmt(b,6)}°</strong><div>Galactic longitude and latitude.</div>`)})}
+function calcAirmass(){run("air-result",()=>{const a=num("alt","altitude");if(a<=0||a>90)throw Error("Altitude must be above 0° and at most 90°.");const X=1/(Math.sin(a*Math.PI/180)+0.50572*Math.pow(a+6.07995,-1.6364));show("air-result",`<strong>${fmt(X,5)}</strong><div>Airmass X at altitude ${fmt(a)}° (zenith distance ${fmt(90-a)}°).</div>`)})}
+function calcUnits(){run("unit-result",()=>{const x=num("unit-value","value"),k=$("unit-kind").value;const f={"pc-kpc":[1e-3,"kpc"],"kpc-pc":[1e3,"pc"],"ly-pc":[1/3.261563777,"pc"],"pc-ly":[3.261563777,"ly"],"au-km":[149597870.7,"km"],"km-au":[1/149597870.7,"AU"]}[k];show("unit-result",`<strong>${fmt(x*f[0],8)} ${f[1]}</strong>`)})}
+document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active')}));
+calcCosmo();
+</script>
 </body>
 </html>
