@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vivek Kumar Jha | Home</title>
+  <meta name="description" content="Vivek Kumar Jha: astrophysicist and curious wanderer. Research on AGN variability, galaxy SED modelling and time-domain astronomy.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Apply the saved (or system) colour mode before first paint -->
+  <script>
+    try {
+      var s = localStorage.getItem('darkMode');
+      var d = s === null ? window.matchMedia('(prefers-color-scheme: dark)').matches : s === 'true';
+      if (d) document.documentElement.classList.add('dark');
+      if (localStorage.getItem('sidePinned') === 'true') document.documentElement.classList.add('pinned');
+    } catch (e) {}
+  </script>
+
+  <style>
+    /* ==========================================================
+       1. Tokens: washi paper, sumi ink, one vermilion seal
+       ========================================================== */
+    :root {
+      --paper:   #f1ece0;     /* washi */
+      --ink:     #1f1c18;     /* sumi */
+      --ink-2:   #57524a;
+      --ink-3:   #8c867a;
+      --line:    rgba(31, 28, 24, 0.13);
+      --card:    rgba(255, 252, 245, 0.58);
+      --card-open: rgba(255, 252, 245, 0.88);
+      --shadow:  0 1px 0 rgba(255,255,255,.65) inset, 0 18px 40px -22px rgba(70, 52, 24, .38);
+
+      --seal:    #b8452f;     /* vermilion */
+      --green:   #6f7c62;     /* rikyu grey-green */
+      --indigo:  #34507a;     /* ai */
+      --ochre:   #a98443;
+      --plum:    #86506a;
+      --teal:    #3b7a76;
+      --sun:     var(--seal);
+
+      --serif:  'Cormorant Garamond', 'Shippori Mincho', Georgia, serif;
+      --mincho: 'Shippori Mincho', 'Cormorant Garamond', serif;
+      --sans:   'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+      --ease:   cubic-bezier(.22, 1, .36, 1);
+      --spring: cubic-bezier(.34, 1.45, .64, 1);
+
+      --rail: 60px;
+      --wide: 236px;
+      --gutter: 16px;
+      --side: var(--rail);
+    }
+    html.dark {
+      --paper:   #0b0e15;
+      --ink:     #ece6d7;
+      --ink-2:   #aaa496;
+      --ink-3:   #706c62;
+      --line:    rgba(236, 230, 215, 0.13);
+      --card:    rgba(24, 29, 41, 0.55);
+      --card-open: rgba(30, 37, 52, 0.88);
+      --shadow:  0 1px 0 rgba(255,255,255,.04) inset, 0 20px 44px -24px rgba(0, 0, 0, .8);
+
+      --seal:    #e0654c;
+      --green:   #a1b890;
+      --indigo:  #8eaedf;
+      --ochre:   #dbae5c;
+      --plum:    #c48aa7;
+      --teal:    #7ec3bc;
+      --sun:     #e8e0cc;
+    }
+    html.pinned { --side: var(--wide); }
+
+    /* ==========================================================
+       2. Base
+       ========================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink);
+      background:
+        radial-gradient(60rem 40rem at 88% -8%, color-mix(in srgb, var(--seal) 9%, transparent), transparent 62%),
+        radial-gradient(52rem 42rem at -8% 62%, color-mix(in srgb, var(--green) 14%, transparent), transparent 62%),
+        var(--paper);
+      background-attachment: fixed;
+      transition: background-color .5s, color .5s;
+      -webkit-font-smoothing: antialiased;
+    }
+    body:not(.entered) { overflow: hidden; height: 100vh; }
+
+    /* washi grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      opacity: .5;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .36  0 0 0 0 .26  0 0 0 .22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+    html.dark body::before { opacity: .22; mix-blend-mode: screen; }
+
+    #stars {
+      position: fixed; inset: 0; z-index: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1.2s;
+    }
+    html.dark #stars { opacity: 1; }
+
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--seal); outline-offset: 3px; border-radius: 6px; }
+    .hidden-svg { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+    #progress {
+      position: fixed; top: 0; left: 0; z-index: 90;
+      height: 2px; width: 100%;
+      background: var(--seal);
+      transform: scaleX(0); transform-origin: 0 50%;
+    }
+
+    @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    @keyframes draw {
+      0%   { stroke-dashoffset: 1; opacity: 0; }
+      3%   { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+
+    /* ==========================================================
+       3. Cover: an iris of ink that closes on entry
+       ========================================================== */
+    #cover {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      background: #070a11;
+      color: #efe8d8;
+      overflow: hidden;
+      clip-path: circle(150% at 50% 50%);
+      transition: clip-path 1.3s cubic-bezier(.76, 0, .24, 1);
+    }
+    #cover.leaving { clip-path: circle(0% at 50% 50%); }
+    .cover-bg {
+      position: absolute; inset: -6%;
+      background: url('images/astro_bkg.jpg') center / cover no-repeat;
+      opacity: .36;
+      filter: saturate(.65) contrast(1.05);
+      animation: drift 60s ease-in-out infinite alternate;
+    }
+    @keyframes drift { from { transform: scale(1) translateX(-1.5%); } to { transform: scale(1.08) translateX(1.5%); } }
+    #cover::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(4,6,10,.78) 100%);
+    }
+    #coverStars { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .cover-inner {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 1.5rem; text-align: center;
+      transition: transform .2s linear;
+    }
+    .cover-enso { width: clamp(150px, 30vh, 280px); height: auto; color: #efe8d8; margin-bottom: 1.2rem; }
+    .cover-enso .sun-c { fill: var(--seal); }
+    .cover .enso { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; animation: draw 3s .3s var(--ease) forwards; }
+    .cover .enso.e2 { animation-delay: .5s; }
+    .cover h1 {
+      margin: 0 0 1rem;
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(2.4rem, 6.4vw, 4.8rem);
+      line-height: 1.05; letter-spacing: -.01em;
+    }
+    .cover h1 .w { display: inline-block; opacity: 0; animation: rise 1s var(--ease) forwards; animation-delay: calc(.9s + var(--i) * .12s); }
+    .cover h1 .w:nth-child(4), .cover h1 .w:nth-child(5) { font-style: italic; }
+    .cover p {
+      margin: 0 0 .35rem; max-width: 34rem;
+      font-size: clamp(.95rem, 1.7vw, 1.1rem); color: rgba(239,232,216,.78);
+      opacity: 0; animation: rise 1s 1.7s var(--ease) forwards;
+    }
+    .cover p + p { animation-delay: 1.85s; }
+    #enterBtn {
+      margin-top: 2.2rem;
+      display: inline-flex; align-items: center; gap: .9rem;
+      padding: .85rem 1.9rem;
+      background: transparent; color: inherit;
+      border: 1px solid rgba(239,232,216,.45); border-radius: 999px;
+      font: 500 .82rem var(--sans); letter-spacing: .26em; text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0; animation: rise 1s 2.1s var(--ease) forwards;
+      transition: background .4s, color .4s, border-color .4s, transform .5s var(--spring);
+    }
+    #enterBtn i { transition: transform .5s var(--spring); }
+    #enterBtn:hover { background: #efe8d8; color: #0b0e15; border-color: #efe8d8; transform: translateY(-3px); }
+    #enterBtn:hover i { transform: translateX(5px); }
+
+    /* ==========================================================
+       4. Sidebar: a slim rail that unfolds
+       ========================================================== */
+    .sidebar {
+      position: fixed; z-index: 60;
+      top: var(--gutter); bottom: var(--gutter); left: var(--gutter);
+      width: var(--rail);
+      padding: 8px;
+      display: flex; flex-direction: column;
+      background: var(--card);
+      -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: width .55s var(--ease), box-shadow .4s, transform .55s var(--ease);
+    }
+    .sidebar:hover, .sidebar:focus-within, html.pinned .sidebar {
+      width: var(--wide);
+      box-shadow: 0 30px 60px -26px rgba(0,0,0,.45);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 2px; text-decoration: none; }
+    .brand img {
+      flex: none; width: 42px; height: 42px; border-radius: 50%; object-fit: cover;
+      border: 2px solid var(--seal); padding: 2px; background: var(--paper);
+    }
+    .brand .who { white-space: nowrap; line-height: 1.25; }
+    .brand .who b { display: block; font-family: var(--serif); font-size: 1.12rem; font-weight: 600; }
+    .brand .who small { color: var(--ink-3); font-size: .72rem; letter-spacing: .04em; }
+    .nav { display: flex; flex-direction: column; gap: 2px; margin-top: 6px; flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav hr { border: 0; border-top: 1px solid var(--line); margin: 8px 6px; }
+    .nav a, .pin {
+      position: relative;
+      display: flex; align-items: center; gap: 14px;
+      height: 42px; padding: 0 11px;
+      border-radius: 14px;
+      color: var(--ink-2); text-decoration: none; white-space: nowrap;
+      background: none; border: 0; font: inherit; cursor: pointer; width: 100%; text-align: left;
+      transition: background .3s, color .3s;
+    }
+    .nav a i, .pin i { flex: none; width: 20px; font-size: 1.08rem; text-align: center; }
+    .nav a span, .pin span { font-size: .9rem; font-weight: 500; opacity: 0; transition: opacity .3s; }
+    .sidebar:hover .nav a span, .sidebar:focus-within .nav a span, html.pinned .nav a span,
+    .sidebar:hover .pin span, .sidebar:focus-within .pin span, html.pinned .pin span,
+    .sidebar:hover .who, .sidebar:focus-within .who, html.pinned .who { opacity: 1; transition-delay: .1s; }
+    .brand .who { opacity: 0; transition: opacity .3s; }
+    .nav a:hover, .pin:hover { background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink); }
+    .nav a.active { color: var(--seal); }
+    .nav a.active::before {
+      content: ''; position: absolute; left: -7px; top: 12px;
+      width: 3px; height: 18px; border-radius: 3px; background: var(--seal);
+    }
+    .pin { margin-top: auto; }
+    .pin i { transition: transform .5s var(--spring); }
+    html.pinned .pin i { transform: rotate(180deg); }
+
+    .menu-btn, .theme-btn {
+      position: fixed; z-index: 70; top: 18px;
+      width: 44px; height: 44px; display: grid; place-items: center;
+      background: var(--card); color: var(--ink);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border: 1px solid var(--line); border-radius: 50%;
+      box-shadow: var(--shadow); cursor: pointer; font-size: 1.1rem;
+      transition: transform .5s var(--spring), background .3s;
+    }
+    .theme-btn { right: 22px; }
+    .menu-btn { left: 16px; display: none; }
+    .theme-btn:hover, .menu-btn:hover { transform: scale(1.1) rotate(-12deg); }
+    .theme-btn .bi-sun { display: none; }
+    html.dark .theme-btn .bi-sun { display: block; }
+    html.dark .theme-btn .bi-moon-stars { display: none; }
+    .scrim { display: none; }
+
+    /* ==========================================================
+       5. Shell and hero
+       ========================================================== */
+    .shell {
+      position: relative; z-index: 1;
+      margin-left: calc(var(--gutter) * 2 + var(--side));
+      padding: 0 clamp(1.2rem, 4.5vw, 4.5rem) 3rem 0;
+      transition: margin-left .55s var(--ease);
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; }
+
+    .hero {
+      --px: 0; --py: 0;
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 2rem;
+      padding: 9vh 0 6vh;
+    }
+    body.entered .hero [data-in] { animation: rise 1.1s var(--ease) both; animation-delay: calc(var(--d, 0) * 1s + .35s); }
+    .hero [data-in] { opacity: 0; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: .7rem;
+      font-size: .72rem; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-2);
+    }
+    .kicker::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--seal); }
+    .hero h1 {
+      margin: 1.2rem 0 1.4rem;
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(3.6rem, 9vw, 8rem); line-height: .9; letter-spacing: -.025em;
+    }
+    .hero h1 em { display: block; font-style: italic; color: var(--ink-2); padding-left: .35em; }
+    .lead { max-width: 34rem; margin: 0 0 2rem; font-size: 1.12rem; color: var(--ink-2); }
+    .pills { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .pill {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .5rem 1rem; font-size: .85rem; font-weight: 500; text-decoration: none;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: var(--card);
+      transition: transform .5s var(--spring), background .3s, color .3s, border-color .3s;
+    }
+    .pill:hover { transform: translateY(-3px); background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+    .hero-art { position: relative; justify-self: center; width: min(100%, 500px); aspect-ratio: 1; }
+    .hero-art svg { width: 100%; height: 100%; overflow: visible; color: var(--ink); }
+    .hero-art .enso { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; }
+    body.entered .hero-art .enso { animation: draw 2.8s .5s var(--ease) forwards; }
+    body.entered .hero-art .enso.e2 { animation-delay: .7s; }
+    .sun { fill: var(--sun); transition: fill .6s, transform .8s var(--ease); transform: translate(calc(var(--px) * 16px), calc(var(--py) * 16px)); }
+    html.dark .sun { filter: drop-shadow(0 0 28px rgba(232,224,204,.28)); }
+    .vertical {
+      position: absolute; right: -6px; top: 8%;
+      writing-mode: vertical-rl;
+      font-family: var(--mincho); font-size: .95rem; letter-spacing: .5em; color: var(--ink-3);
+    }
+    .scroll-cue {
+      position: absolute; left: 0; bottom: 4vh;
+      display: flex; align-items: center; gap: .8rem;
+      font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-3);
+    }
+    .scroll-cue::after { content: ''; width: 54px; height: 1px; background: currentColor; transform-origin: 0 50%; animation: cue 2.8s ease-in-out infinite; }
+    @keyframes cue { 0%, 100% { transform: scaleX(.25); } 50% { transform: scaleX(1); } }
+    .hero-wrap { position: relative; }
+
+    /* ==========================================================
+       6. Section heading and cards
+       ========================================================== */
+    .section-head { margin: 4vh 0 2.4rem; }
+    .section-head h2 {
+      margin: .6rem 0 0;
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.05;
+    }
+    .section-head h2 em { color: var(--ink-3); }
+
+    [data-reveal], .card { opacity: 0; transform: translateY(26px); }
+    [data-reveal].in, .card.in { opacity: 1; transform: none; }
+    [data-reveal] { transition: opacity 1s var(--ease), transform 1s var(--ease); }
+
+    .feature { margin-bottom: 22px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: start; }
+    .col { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+    .cards[data-cols="3"] .col:nth-child(2) { margin-top: 64px; }   /* asymmetry, as wabi-sabi would have it */
+    .cards[data-cols="2"] .col:nth-child(2) { margin-top: 40px; }
+
+    .card {
+      --c: var(--seal);
+      position: relative;
+      padding: 26px 26px 22px;
+      background: var(--card);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden; cursor: pointer;
+      transition: opacity 1s var(--ease), transform .6s var(--spring), border-color .4s, background .4s, box-shadow .4s;
+    }
+    .card.in:hover { transform: translateY(-5px); box-shadow: var(--shadow), 0 26px 50px -30px var(--c); }
+    .card::before {                    /* pointer spotlight */
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .4s;
+      background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--c) 17%, transparent), transparent 62%);
+    }
+    .card:hover::before { opacity: 1; }
+    .card::after {                     /* small brush line */
+      content: ''; position: absolute; top: 0; left: 26px;
+      width: 34px; height: 2px; border-radius: 2px; background: var(--c);
+      transition: width .6s var(--ease);
+    }
+    .card:hover::after, .card.open::after { width: 96px; }
+    .card.open { background: var(--card-open); border-color: color-mix(in srgb, var(--c) 48%, var(--line)); }
+
+    .c-green  { --c: var(--green); }
+    .c-indigo { --c: var(--indigo); }
+    .c-ochre  { --c: var(--ochre); }
+    .c-plum   { --c: var(--plum); }
+    .c-teal   { --c: var(--teal); }
+
+    .card-top { position: relative; display: flex; justify-content: space-between; align-items: flex-start; }
+    .num { font-family: var(--mincho); font-size: 1.5rem; line-height: 1; color: var(--c); }
+    .motif { width: 54px; height: 54px; color: var(--c); fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .motif .solid { fill: currentColor; stroke: none; }
+    .motif .lc { stroke-dasharray: 1; stroke-dashoffset: 0; }
+    .card:hover .motif .lc, .card.open .motif .lc { animation: draw 1.5s var(--ease); }
+
+    .card h2 {
+      position: relative; margin: .9rem 0 .5rem;
+      font-family: var(--serif); font-weight: 600; font-size: 1.95rem; line-height: 1.08;
+    }
+    .teaser { position: relative; margin: 0 0 1.25rem; color: var(--ink-2); font-size: .95rem; line-height: 1.65; }
+
+    .cta {
+      position: relative;
+      display: flex; align-items: center; justify-content: space-between; width: 100%;
+      padding: .95rem 0 0; margin: 0;
+      background: none; border: 0; border-top: 1px solid var(--line);
+      color: var(--ink); font: 600 .74rem var(--sans); letter-spacing: .18em; text-transform: uppercase;
+      cursor: pointer;
+    }
+    .plus {
+      position: relative; width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--line); color: var(--ink);
+      transition: transform .7s var(--spring), background .3s, border-color .3s, color .3s;
+    }
+    .plus::before, .plus::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 1.6px; background: currentColor; border-radius: 2px; transform: translate(-50%, -50%); }
+    .plus::after { transform: translate(-50%, -50%) rotate(90deg); }
+    .cta:hover .plus { border-color: var(--c); }
+    .card.open .plus { transform: rotate(135deg); background: var(--c); border-color: var(--c); color: var(--paper); }
+
+    .more { display: none; overflow: hidden; }
+    .more-inner { padding-top: 1.2rem; font-size: .94rem; line-height: 1.78; color: var(--ink-2); }
+    .more-inner strong, .more-inner b { color: var(--ink); font-weight: 600; }
+    .more-inner p { margin: 0 0 .9rem; }
+    .more-inner a { text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--c) 60%, transparent); text-underline-offset: 3px; transition: color .25s; }
+    .more-inner a:hover { color: var(--c); }
+    .card.open .more-inner > * { animation: rise .7s var(--ease) both; }
+    .card.open .more-inner > *:nth-child(1) { animation-delay: .10s; }
+    .card.open .more-inner > *:nth-child(2) { animation-delay: .18s; }
+    .card.open .more-inner > *:nth-child(3) { animation-delay: .26s; }
+    .card.open .more-inner > *:nth-child(4) { animation-delay: .34s; }
+    .card.open .more-inner > *:nth-child(n+5) { animation-delay: .42s; }
+
+    .feature .card { padding: 34px 34px 26px; }
+    .feature .card h2 { font-size: clamp(2.4rem, 4vw, 3.2rem); }
+    .feature .teaser { font-size: 1.15rem; max-width: 44rem; }
+    .feature .more-inner { column-gap: 3rem; }
+    @media (min-width: 900px) { .feature .more-inner.cols { columns: 2; } .feature .more-inner.cols p { break-inside: avoid; } }
+
+    /* timeline */
+    .tl { list-style: none; margin: 0; padding: 0 0 0 1.25rem; border-left: 1px solid var(--line); }
+    .tl li { position: relative; margin-bottom: 1.05rem; }
+    .tl li::before { content: ''; position: absolute; left: calc(-1.25rem - 4px); top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+    .tl b { display: block; font-size: .98rem; }
+    .tl .when { display: block; color: var(--c); font-size: .74rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+    /* dotted list */
+    .dots { list-style: none; margin: 0 0 .5rem; padding: 0; }
+    .dots li { position: relative; padding-left: 1.1rem; margin-bottom: .6rem; }
+    .dots li::before { content: ''; position: absolute; left: 0; top: .78em; width: 5px; height: 5px; border-radius: 50%; background: var(--c); }
+    .dots ul { list-style: none; margin: .5rem 0 0; padding: 0 0 0 .2rem; }
+    .dots ul li { margin-bottom: .35rem; }
+    /* publications */
+    .pubs { list-style: none; margin: 0 0 .9rem; padding: 0; }
+    .pubs li { display: grid; grid-template-columns: 3.1rem 1fr; gap: .6rem; padding: .85rem 0; border-top: 1px solid var(--line); }
+    .pubs li:first-child { border-top: 0; padding-top: 0; }
+    .pubs .yr { font-family: var(--serif); font-size: 1.45rem; font-weight: 600; line-height: 1.1; color: var(--c); }
+    .pubs em { display: block; color: var(--ink-3); font-size: .85rem; }
+    /* software */
+    .tools { list-style: none; margin: 0; padding: 0; }
+    .tools li { display: grid; grid-template-columns: 1.7rem 1fr; gap: .5rem; margin-bottom: .75rem; }
+    .tools i { color: var(--c); font-size: 1.05rem; line-height: 1.7; }
+    /* chips */
+    .label { margin: 1rem 0 .5rem; font-size: .7rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); }
+    .label:first-child { margin-top: 0; }
+    .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .6rem; }
+    .more-inner .chips a {
+      text-decoration: none; padding: .28rem .8rem; font-size: .82rem; line-height: 1.5;
+      border: 1px solid var(--line); border-radius: 999px; background: color-mix(in srgb, var(--paper) 55%, transparent);
+      transition: background .3s, color .3s, border-color .3s, transform .5s var(--spring);
+    }
+    .more-inner .chips a:hover { background: var(--c); border-color: var(--c); color: var(--paper); transform: translateY(-2px); }
+    /* essays */
+    .essays { list-style: none; margin: 0 0 1rem; padding: 0; }
+    .essays li { border-top: 1px solid var(--line); }
+    .essays li:last-child { border-bottom: 1px solid var(--line); }
+    .more-inner .essays a {
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+      padding: .75rem 0; text-decoration: none;
+      font-family: var(--serif); font-size: 1.12rem; font-weight: 600; line-height: 1.3; color: var(--ink);
+      transition: color .3s, padding .4s var(--ease);
+    }
+    .more-inner .essays a:hover { color: var(--c); padding-left: .5rem; }
+    .essays i { flex: none; color: var(--c); transition: transform .5s var(--spring); }
+    .essays a:hover i { transform: translate(3px, -3px); }
+    .more-inner a.btn {
+      display: inline-flex; align-items: center; gap: .6rem; text-decoration: none;
+      padding: .55rem 1.2rem; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--paper); background: var(--ink); border-radius: 999px;
+      transition: transform .5s var(--spring), background .3s;
+    }
+    .more-inner a.btn:hover { transform: translateY(-3px); background: var(--c); color: var(--paper); }
+    /* slider */
+    .slider { position: relative; aspect-ratio: 4 / 3; margin-bottom: 1rem; border-radius: 16px; overflow: hidden; background: color-mix(in srgb, var(--ink) 8%, transparent); }
+    .slider img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1s, transform 6s linear; }
+    .slider img.on { opacity: 1; transform: scale(1); }
+    .slider .go {
+      position: absolute; top: 50%; width: 36px; height: 36px; margin-top: -18px;
+      display: grid; place-items: center; border: 0; border-radius: 50%; cursor: pointer;
+      background: rgba(255,255,255,.82); color: #1f1c18; transition: transform .5s var(--spring);
+    }
+    .slider .go:hover { transform: scale(1.12); }
+    .slider .prev { left: 10px; } .slider .next { right: 10px; }
+    .slider .dotsnav { position: absolute; left: 0; right: 0; bottom: 10px; display: flex; justify-content: center; gap: 6px; }
+    .slider .dotsnav span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.5); transition: width .4s var(--ease), background .3s; }
+    .slider .dotsnav span.on { width: 18px; border-radius: 4px; background: #fff; }
+
+    /* ==========================================================
+       7. Footer
+       ========================================================== */
+    .foot { margin-top: 6rem; padding-top: 2.4rem; text-align: center; border-top: 1px solid var(--line); color: var(--ink-3); font-size: .85rem; }
+    .foot .ma { display: block; font-family: var(--mincho); font-size: 2.4rem; line-height: 1; color: var(--seal); margin-bottom: .6rem; }
+    .foot p { margin: .2rem 0; }
+    .foot .quiet { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--ink-2); }
+
+    /* ==========================================================
+       8. Responsive
+       ========================================================== */
+    @media (max-width: 1180px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; padding-top: 14vh; }
+      .hero-art { order: -1; width: min(70%, 340px); }
+      .vertical { display: none; }
+    }
+    @media (max-width: 860px) {
+      .menu-btn { display: grid; }
+      .sidebar { transform: translateX(calc(-100% - 24px)); width: var(--wide); }
+      .sidebar .nav a span, .sidebar .pin span, .brand .who { opacity: 1; }
+      .pin { display: none; }
+      body.menu-open .sidebar { transform: none; }
+      .menu-btn { transition: transform .5s var(--spring), background .3s, opacity .3s; }
+      body.menu-open .menu-btn { opacity: 0; pointer-events: none; }
+      .scrim { display: block; position: fixed; inset: 0; z-index: 55; background: rgba(8,10,14,.45); opacity: 0; pointer-events: none; transition: opacity .4s; }
+      body.menu-open .scrim { opacity: 1; pointer-events: auto; }
+      .shell { margin-left: 0; padding: 0 1.2rem 3rem; }
+    }
+    @media (max-width: 760px) {
+      .cards { grid-template-columns: 1fr; }
+      .scroll-cue { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+      .hero [data-in], .cover p, .cover h1 .w, #enterBtn { opacity: 1 !important; }
+      .enso { stroke-dashoffset: 0 !important; opacity: 1 !important; }
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <!-- Shared SVG filter: a slightly rough, hand-brushed edge -->
+  <svg class="hidden-svg" aria-hidden="true" focusable="false">
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="3" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="7"/>
+    </filter>
+  </svg>
+
+  <div id="progress"></div>
+  <canvas id="stars"></canvas>
+
+  <!-- ============================================================
+       COVER
+       ============================================================ -->
+  <div id="cover" class="cover" role="dialog" aria-label="Welcome">
+    <div class="cover-bg"></div>
+    <canvas id="coverStars"></canvas>
+    <div class="cover-inner">
+      <svg class="cover-enso" viewBox="0 0 400 400" aria-hidden="true">
+        <circle class="sun-c" cx="200" cy="208" r="54" opacity=".92"/>
+        <g filter="url(#rough)" fill="none" stroke="currentColor" stroke-linecap="round">
+          <path class="enso"    pathLength="1" d="M174 52A150 150 0 1 1 77 114" stroke-width="15"/>
+          <path class="enso e2" pathLength="1" d="M180 60A142 142 0 1 1 84 118" stroke-width="5" opacity=".5"/>
+        </g>
+      </svg>
+      <h1><span class="w" style="--i:0">Hi,</span> <span class="w" style="--i:1">I’m</span> <span class="w" style="--i:2">Vivek</span> <span class="w" style="--i:3">Kumar</span> <span class="w" style="--i:4">Jha</span></h1>
+      <p>Astrophysicist and a curious wanderer—exploring our World and beyond!</p>
+      <p>Welcome to my Website</p>
+      <button id="enterBtn" type="button">Enter <i class="bi bi-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       CONTROLS
+       ============================================================ -->
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu"><i class="bi bi-list"></i></button>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle light and dark mode">
+    <i class="bi bi-moon-stars"></i><i class="bi bi-sun"></i>
+  </button>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ============================================================
+       SIDEBAR
+       ============================================================ -->
+  <aside class="sidebar" id="sidebar" aria-label="Site navigation">
+    <a class="brand" href="#top" aria-label="Vivek Kumar Jha, home">
+      <img src="images/profile.jpg" alt="Vivek Jha">
+      <span class="who"><b>Vivek Kumar Jha</b><small>Postdoctoral Fellow<br>NCRA-TIFR, India</small></span>
+    </a>
+    <nav class="nav">
+      <a class="active" href="#top" title="Home"><i class="bi bi-house-door"></i><span>Home</span></a>
+      <a href="images/my_cv.pdf" title="CV"><i class="bi bi-file-earmark-text"></i><span>CV</span></a>
+      <a href="https://www.researchgate.net/profile/Vivek-Jha-9" title="Research"><i class="bi bi-bar-chart-line"></i><span>Research</span></a>
+      <a href="https://ui.adsabs.harvard.edu/search/p_=0&amp;q=orcid%3A0000-0002-3277-6335&amp;sort=date%20desc%2C%20bibcode%20desc" title="Publications"><i class="bi bi-journal-text"></i><span>Publications</span></a>
+      <a href="https://vkjha.substack.com/" target="_blank" rel="noopener" title="Blog"><i class="bi bi-pencil-square"></i><span>Blog</span></a>
+      <a href="https://viveikjha.github.io/tilphysics" title="TIL Physics"><i class="bi bi-mortarboard"></i><span>TIL Physics</span></a>
+      <hr>
+      <a href="astro.html" title="Astro Tools"><i class="bi bi-stars"></i><span>Astro Tools</span></a>
+      <a href="sed_grid" title="SED Grid"><i class="bi bi-grid-3x3-gap"></i><span>SED Grid</span></a>
+      <a href="time.html" title="World Time"><i class="bi bi-globe2"></i><span>World Time</span></a>
+      <a href="images/gallery.html" title="Gallery"><i class="bi bi-images"></i><span>Gallery</span></a>
+      <hr>
+      <a href="https://github.com/viveikjha" target="_blank" rel="noopener" title="GitHub"><i class="bi bi-github"></i><span>GitHub</span></a>
+      <a href="https://scholar.google.com/citations?user=BtSbSgNYB_sC&amp;hl=en" target="_blank" rel="noopener" title="Google Scholar"><i class="bi bi-mortarboard"></i><span>Google Scholar</span></a>
+      <a href="mailto:vivekjha.aries@gmail.com" title="Email"><i class="bi bi-envelope"></i><span>Email</span></a>
+    </nav>
+    <button class="pin" id="pinBtn" type="button" title="Keep the sidebar open"><i class="bi bi-chevron-double-right"></i><span>Keep open</span></button>
+  </aside>
+
+  <!-- ============================================================
+       MAIN
+       ============================================================ -->
+  <div class="shell" id="shell" inert>
+    <div class="wrap">
+
+      <!-- Hero -->
+      <header class="hero hero-wrap" id="hero">
+        <div class="hero-copy">
+          <span class="kicker" data-in style="--d:0">Postdoctoral Researcher · Astrophysics</span>
+          <h1 data-in style="--d:.12">Vivek<em>Kumar Jha</em></h1>
+          <p class="lead" data-in style="--d:.3">Exploring galaxy evolution and AGNs using advanced modelling and multi-wavelength data.</p>
+          <div class="pills" data-in style="--d:.45">
+            <a class="pill" href="images/my_cv.pdf"><i class="bi bi-file-earmark-text"></i> CV</a>
+            <a class="pill" href="https://ui.adsabs.harvard.edu/search/p_=0&amp;q=orcid%3A0000-0002-3277-6335&amp;sort=date%20desc%2C%20bibcode%20desc" target="_blank" rel="noopener"><i class="bi bi-journal-text"></i> Publications</a>
+            <a class="pill" href="https://vkjha.substack.com/" target="_blank" rel="noopener"><i class="bi bi-pencil-square"></i> Essays</a>
+            <a class="pill" href="mailto:vivekjha.aries@gmail.com"><i class="bi bi-envelope"></i> Email</a>
+          </div>
+        </div>
+
+        <div class="hero-art" data-in style="--d:.2">
+          <svg viewBox="0 0 400 400" role="img" aria-label="An ink circle holding a sun, with a small body in orbit">
+            <circle class="sun" cx="200" cy="208" r="54"/>
+            <g filter="url(#rough)" fill="none" stroke="currentColor" stroke-linecap="round">
+              <path class="enso"    pathLength="1" d="M174 52A150 150 0 1 1 77 114" stroke-width="15" opacity=".92"/>
+              <path class="enso e2" pathLength="1" d="M180 60A142 142 0 1 1 84 118" stroke-width="5" opacity=".45"/>
+            </g>
+            <g transform="rotate(-24 200 200)">
+              <ellipse cx="200" cy="200" rx="190" ry="58" fill="none" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="2 7"/>
+              <circle r="5" fill="var(--seal)">
+                <animateMotion dur="16s" repeatCount="indefinite" path="M10 200a190 58 0 1 0 380 0a190 58 0 1 0 -380 0"/>
+              </circle>
+            </g>
+            <g fill="var(--ink-3)" opacity=".7">
+              <circle cx="46" cy="96" r="1.6"/><circle cx="352" cy="64" r="1.3"/><circle cx="372" cy="288" r="1.8"/><circle cx="60" cy="318" r="1.2"/><circle cx="318" cy="352" r="1.4"/>
+            </g>
+          </svg>
+          <span class="vertical" title="To look at the stars">星を見る</span>
+        </div>
+        <span class="scroll-cue" data-in style="--d:.8">Scroll</span>
+      </header>
+
+      <!-- Section heading -->
+      <div class="section-head" data-reveal>
+        <span class="kicker">Contents · 目次</span>
+        <h2>Unfold what <em>interests you</em></h2>
+      </div>
+
+      <!-- Featured card -->
+      <div class="feature">
+        <article class="card" id="about">
+          <div class="card-top">
+            <span class="num">一</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><path d="M30 8a20 20 0 1 1-17 9"/><circle class="solid" cx="28" cy="28" r="5"/></svg>
+          </div>
+          <h2>About me</h2>
+          <p class="teaser">A postdoctoral fellow at NCRA-TIFR, Pune. Born in Darbhanga, in the cultural heart of Mithila, with a Ph.D. from ARIES, near Nainital.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more">
+            <div class="more-inner cols">
+              <p>I am a Post Doctoral Fellow at the National Centre For Radio Astrophysics - Tata Institute Of Fundamental Research (<a href="http://www.ncra.tifr.res.in/ncra/main" target="_blank" rel="noopener">NCRA-TIFR</a>) in Pune. Before joining here I worked briefly as a postdoc at the Manipal Centre for Natural Sciences (<a href="https://manipal.edu/mcns-manipal/about-mcns.html" target="_blank" rel="noopener">MCNS</a>) in Manipal.</p>
+              <p>I was born in Darbhanga, the northern district of Bihar state, also known as the cultural capital of the <a href="https://en.wikipedia.org/wiki/Mithila_(region)" target="_blank" rel="noopener">Mithila region</a>. I obtained my B.&nbsp;Sc. degree from the <a href="http://www.du.ac.in/" target="_blank" rel="noopener">University of Delhi</a> and M.&nbsp;Sc. degree from the Banaras Hindu University (<a href="https://www.bhu.ac.in/" target="_blank" rel="noopener">BHU</a>).</p>
+              <p>Having completed my school and University education in Bihar, Uttar Pradesh, New Delhi, and partly in Tamil Nadu, I moved to the Aryabhatta Research Institute of observational sciencES (<a href="https://www.aries.res.in/" target="_blank" rel="noopener">ARIES</a>) for PhD. The observatory is located near the beautiful hill city of <a href="https://nainital.nic.in/" target="_blank" rel="noopener">Nainital</a>. My <a href="https://ui.adsabs.harvard.edu/abs/2024arXiv240203968J/abstract" target="_blank" rel="noopener">Ph.D. thesis</a> is related to the extra-galactic domain of astrophysics.</p>
+              <p>This website is my personal space where one may find articles and information related to my research, sometimes aimed at general understanding. Besides astronomy, I spend my time travelling, reading books, playing with animals, writing random things and discovering new technological advances. Drop me an <a href="mailto:vivekjha.aries@gmail.com">email</a> in case you want to connect with me.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Cards (distributed into staggered columns by script) -->
+      <section class="cards" id="cards" data-cols="3" aria-label="Details">
+
+        <!-- 二 Employment -->
+        <article class="card c-green">
+          <div class="card-top">
+            <span class="num">二</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><path d="M8 44h12V34h12V24h12"/><circle class="solid" cx="44" cy="14" r="3"/></svg>
+          </div>
+          <h2>Employment</h2>
+          <p class="teaser">Postdoctoral Fellow at NCRA-TIFR, Pune, since July 2024, after posts across Manipal and Nainital.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more"><div class="more-inner">
+            <ul class="tl">
+              <li><b>Postdoctoral Fellow</b><span class="when">Jul 2024 – Present</span>National Centre for Radio Astrophysics – TIFR, Pune, India</li>
+              <li><b>Postdoctoral Fellow</b><span class="when">Dec 2023 – Jun 2024</span>Manipal Centre for Natural Sciences (MCNS), Manipal, India</li>
+              <li><b>Project Associate (Scientific)</b><span class="when">Apr 2022 – Oct 2023</span>ARIES, Nainital, India</li>
+              <li><b>Senior Research Fellow (SRF)</b><span class="when">Mar 2020 – Jul 2021</span>ARIES, Nainital, India</li>
+              <li><b>Junior Research Fellow (JRF)</b><span class="when">Mar 2018 – Feb 2020</span>ARIES, Nainital, India</li>
+            </ul>
+          </div></div>
+        </article>
+
+        <!-- 三 Education -->
+        <article class="card c-indigo">
+          <div class="card-top">
+            <span class="num">三</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><path d="M8 16h40M8 28h32M8 40h22"/><circle class="solid" cx="46" cy="40" r="3"/></svg>
+          </div>
+          <h2>Education</h2>
+          <p class="teaser">A Ph.D. in Astrophysics from ARIES, an M.Sc. from BHU and a B.Sc. from the University of Delhi.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more"><div class="more-inner">
+            <ul class="tl">
+              <li><b>Ph.D. in Astrophysics</b><span class="when">2018 – 2023 · ARIES, Nainital, India</span>Supervised by <a href="https://www.humchand.in" target="_blank" rel="noopener">Dr. Hum Chand</a> and co-supervised by <a href="https://www.iau.org/administration/membership/individual/13519/" target="_blank" rel="noopener">Prof. Shantanu Rastogi</a>. Thesis submitted to Deen Dayal Upadhyaya Gorakhpur University, Gorakhpur, India (submitted in September 2023 and awarded in February 2024).</li>
+              <li><b>M.Sc. in Physics</b><span class="when">2015 – 2017 · Banaras Hindu University</span>Specialisation in Space Physics.</li>
+              <li><b>B.Sc. in Physics (Honours)</b><span class="when">2011 – 2014 · Deshbandhu College, University of Delhi</span>Foundation in physics and mathematics.</li>
+            </ul>
+          </div></div>
+        </article>
+
+        <!-- 四 Research -->
+        <article class="card">
+          <div class="card-top">
+            <span class="num">四</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><path d="M4 46h48" opacity=".35"/><path class="lc" pathLength="1" d="M4 34c4-2 6-12 10-10s4 14 9 12 5-18 10-16 4 12 8 10 5-8 9-6"/></svg>
+          </div>
+          <h2>Research</h2>
+          <p class="teaser">Reading the inner workings of active galactic nuclei in their flicker, and the physics of galaxies in their light.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more"><div class="more-inner">
+            <p>I'm currently working with the <strong>LSST Galaxies collaboration</strong>, focusing on <strong>stellar population synthesis (SPS) modelling</strong> to derive physical properties of galaxies from broadband photometry. You can learn more about this work <a href="https://sites.google.com/view/lsstgsc/active-infrastructure-projects/physical-properties-from-bagpipes-and-prospector?authuser=0" target="_blank" rel="noopener">here</a>.</p>
+            <p>During my Ph.D., I worked on mapping the inner regions of AGN using UV-optical variability and multi-band observations to understand structure and kinematics on sub-parsec scales. I continue to work on interesting projects related to the variability of AGN. Check out <a href="https://www.youtube.com/watch?v=FPF1X13wbDI" target="_blank" rel="noopener">this animation</a> for a visual on quasar interiors (courtesy ESO).</p>
+            <p>I'm also a member of the <strong>LSST AGN Science collaboration</strong>, where I follow developments in time-domain science with AGNs, with the volume of data arriving from the Rubin/LSST. For those new to the field, I've curated a collection of <strong>review articles on AGNs</strong> — <a href="agn_reviews.html">view the collection here</a>.</p>
+            <a class="btn" href="research.html">Full research page <i class="bi bi-arrow-right"></i></a>
+          </div></div>
+        </article>
+
+        <!-- 五 Publications -->
+        <article class="card c-ochre">
+          <div class="card-top">
+            <span class="num">五</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><rect x="12" y="8" width="32" height="40" rx="3"/><path d="M19 19h18M19 27h18M19 35h10"/></svg>
+          </div>
+          <h2>Publications</h2>
+          <p class="teaser">Selected papers in ApJ and MNRAS, from 2022 to 2026.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more"><div class="more-inner">
+            <ol class="pubs">
+              <li><span class="yr">2026</span><div>Exploring the Origins of Optical Variability in Active Galactic Nuclei: Correlations with Black Hole Properties, X-Ray, and Radio Emission.<em>ApJ, Volume 1001, Issue 1</em></div></li>
+              <li><span class="yr">2026</span><div>Probing jet-induced optical variability across time-scales in radio-loud NLSy1 galaxies.<em>MNRAS, Volume 545, Issue 3</em></div></li>
+              <li><span class="yr">2023</span><div>Evidence of Jet induced Optical Microvariability in Radio-loud Narrow Line Seyfert 1 Galaxies.<em>MNRAS, Volume 514, Issue 4</em></div></li>
+              <li><span class="yr">2022</span><div>Accretion Disk Sizes from Continuum Reverberation Mapping of AGN Selected from the ZTF Survey.<em>MNRAS, Volume 511, Issue 2</em></div></li>
+              <li><span class="yr">2022</span><div>A comparative study of the physical properties for a representative sample of Narrow and Broad-line Seyfert galaxies.<em>MNRAS, Volume 510, Issue 3</em></div></li>
+            </ol>
+            <p>Link to view all my publications: <a href="https://ui.adsabs.harvard.edu/search/p_=0&amp;q=orcid%3A0000-0002-3277-6335&amp;sort=date%20desc%2C%20bibcode%20desc" target="_blank" rel="noopener">NASA-ADS</a></p>
+          </div></div>
+        </article>
+
+        <!-- 六 Software -->
+        <article class="card c-teal">
+          <div class="card-top">
+            <span class="num">六</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><path d="M20 18 10 28l10 10M36 18l10 10-10 10M31 14l-6 28"/></svg>
+          </div>
+          <h2>Software</h2>
+          <p class="teaser">Python tools for exploring SEDs, reducing photometry and analysing time series.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more"><div class="more-inner">
+            <ul class="tools">
+              <li><i class="bi bi-filetype-py"></i><span>Fluent in <b>Python</b>, with extensive experience in scientific computing, visualisation, and automation of research workflows.</span></li>
+              <li><i class="bi bi-grid-3x3-gap"></i><span>Development of <a href="sed_grid.html" target="_blank" rel="noopener">SED Grid</a>, an interactive, pre-computed tool to explore how galaxy physical parameters shape their SEDs.</span></li>
+              <li><i class="bi bi-archive"></i><span>Contributor to the ARIES data archive team; developed software for effective data management.</span></li>
+              <li><i class="bi bi-graph-up"></i><span>Extensive use of <a href="https://github.com/nye17/javelin" target="_blank" rel="noopener">JAVELIN</a> (MCMC-based) for time series analysis; also familiar with ICCF, DCF, etc. for cross-correlation.</span></li>
+              <li><i class="bi bi-tools"></i><span><a href="astro.html" target="_blank" rel="noopener">Astro Tools</a> – a collection of astronomy utilities and scripts.</span></li>
+              <li><i class="bi bi-github"></i><span><a href="http://github.com/viveikjha" target="_blank" rel="noopener">GitHub</a> for version control and code management.</span></li>
+              <li><i class="bi bi-terminal"></i><span>Past experience with <b>IDL</b> and some programming in <b>FORTRAN</b>.</span></li>
+              <li><i class="bi bi-filetype-html"></i><span>Basic knowledge of <b>HTML/CSS</b>; maintenance of static websites.</span></li>
+            </ul>
+          </div></div>
+        </article>
+
+        <!-- 七 Telescope Experience -->
+        <article class="card c-indigo">
+          <div class="card-top">
+            <span class="num">七</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="20"/><circle cx="28" cy="28" r="11" opacity=".6"/><path d="M28 4v10M28 42v10M4 28h10M42 28h10" opacity=".6"/><circle class="solid" cx="28" cy="28" r="2.5"/></svg>
+          </div>
+          <h2>Telescope Experience</h2>
+          <p class="teaser">Rubin-LSST collaborations, public survey archives, and observing nights at ARIES.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more"><div class="more-inner">
+            <p>Member of the Rubin-LSST Galaxies and AGN science collaborations.</p>
+            <div class="label">Public datasets</div>
+            <div class="chips">
+              <a href="https://www.ztf.caltech.edu/" target="_blank" rel="noopener">Zwicky Transient Facility (ZTF)</a>
+              <a href="https://www.sdss.org/" target="_blank" rel="noopener">Sloan Digital Sky Survey (SDSS)</a>
+              <a href="https://hsc.mtk.nao.ac.jp/ssp/" target="_blank" rel="noopener">Hyper Suprime-Cam Subaru Strategic Program (HSC-SSP)</a>
+              <a href="https://www.desi.lbl.gov/" target="_blank" rel="noopener">Dark Energy Spectroscopic Instrument (DESI)</a>
+              <a href="https://lofar-surveys.org/dr2_release.html" target="_blank" rel="noopener">LOFAR Two-metre Sky Survey (LoTSS)</a>
+            </div>
+            <div class="label">Observed at <a href="https://www.aries.res.in/" target="_blank" rel="noopener">ARIES, Nainital</a></div>
+            <div class="chips">
+              <a href="https://www.aries.res.in/facilities/astronomical-telescopes/104m-telescope" target="_blank" rel="noopener">1.04m ST</a>
+              <a href="https://www.aries.res.in/facilities/astronomical-telescopes/13m-telescope" target="_blank" rel="noopener">1.3m DFOT</a>
+              <a href="https://www.aries.res.in/facilities/astronomical-telescopes/36m-telescope" target="_blank" rel="noopener">3.6m DOT</a>
+            </div>
+            <p>Remotely observed using the <a href="https://trt.narit.or.th" target="_blank" rel="noopener">Thai Robotic Telescope (TRT)</a> network, with telescopes in the USA, Australia, Thailand, and China.</p>
+            <p>Developed and maintain an open-source <a href="https://github.com/viveikjha/aperture_photometry" target="_blank" rel="noopener">Python pipeline</a> for aperture photometry, specifically tailored to data from these facilities.</p>
+          </div></div>
+        </article>
+
+        <!-- 八 Outreach -->
+        <article class="card c-plum">
+          <div class="card-top">
+            <span class="num">八</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><circle class="solid" cx="14" cy="28" r="3"/><path d="M24 18a14 14 0 0 1 0 20M32 12a22 22 0 0 1 0 32M40 6a30 30 0 0 1 0 44"/></svg>
+          </div>
+          <h2>Outreach &amp; Leadership</h2>
+          <p class="teaser">Chair of the Young Astronomers' Meet 2022, co-founder of CosmicVarta, and a regular at science-day events.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more"><div class="more-inner">
+            <ul class="dots">
+              <li>Event Chair for the <a href="https://aries.res.in/yam2022/" target="_blank" rel="noopener"><strong>Young Astronomers' Meet (YAM)-2022</strong></a>, a conference that brought together about 160 Ph.D. students working in astronomy across the country.</li>
+              <li>Co-founder of <a href="https://cosmicvarta.in/" target="_blank" rel="noopener"><strong>CosmicVarta</strong></a> (2021), a web portal presenting simplified versions of astrophysics research articles for the general public. Managed the website until October 2022 and regularly edited articles from researchers across the country.</li>
+              <li>Active participant in outreach activities at the institute(s), including:
+                <ul>
+                  <li><a href="https://www.ncra.tifr.res.in/outreach/national-science-day" target="_blank" rel="noopener">NCRA-TIFR National Science Day celebration at GMRT</a> (28th February 2026)</li>
+                  <li><a href="https://www.youtube.com/watch?v=YFLoEqapAkw" target="_blank" rel="noopener">ARIES National Science Day celebration</a> (28th February 2021)</li>
+                  <li><a href="https://www.youtube.com/watch?v=ywrb0TbZTCo&amp;list=PLgl-JfF3_RW57liM_24saqcr-jwcgKQ7j" target="_blank" rel="noopener">ARIES e-lecture series</a> during the COVID-19 lockdown (May–June 2020)</li>
+                </ul>
+              </li>
+            </ul>
+          </div></div>
+        </article>
+
+        <!-- 九 Blog -->
+        <article class="card c-green">
+          <div class="card-top">
+            <span class="num">九</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><path d="M8 40c10-4 22-18 40-24" stroke-width="3"/><path d="M12 48c8-2 16-2 28-6" opacity=".5"/><circle class="solid" cx="46" cy="42" r="2.5"/></svg>
+          </div>
+          <h2>Blog</h2>
+          <p class="teaser">Essays on astronomy, technology, travel and academic life, written on Substack.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more"><div class="more-inner">
+            <p>Sometimes a few random things cross my mind and get structured in the form of little, sometimes eerily long, blog posts. I write about astronomy, tech, travel, and thoughts on academia. A few of them:</p>
+            <ul class="essays">
+              <li><a href="https://vkjha.substack.com/p/the-valley-of-flowers-where-the-himalaya" target="_blank" rel="noopener">The Valley of Flowers: Where the Himalaya Reduces You <i class="bi bi-arrow-up-right"></i></a></li>
+              <li><a href="https://vkjha.substack.com/p/kerala-order-memory-and-the-rhythm" target="_blank" rel="noopener">Kerala: Order, Memory, and the Rhythm of Water <i class="bi bi-arrow-up-right"></i></a></li>
+              <li><a href="https://vkjha.substack.com/p/the-second-space-race-from-nations" target="_blank" rel="noopener">The Second Space Race: From Nations to Corporations <i class="bi bi-arrow-up-right"></i></a></li>
+              <li><a href="https://vkjha.substack.com/p/istanbul-where-civilisations-endure" target="_blank" rel="noopener">Istanbul: Layers of Endurance <i class="bi bi-arrow-up-right"></i></a></li>
+              <li><a href="https://vkjha.substack.com/p/where-the-senses-remember" target="_blank" rel="noopener">Where the Senses Remember <i class="bi bi-arrow-up-right"></i></a></li>
+              <li><a href="https://vkjha.substack.com/p/journey-on-the-silk-road-uzbekistan" target="_blank" rel="noopener">Journey on the Silk Road: Uzbekistan <i class="bi bi-arrow-up-right"></i></a></li>
+            </ul>
+            <a class="btn" href="https://vkjha.substack.com" target="_blank" rel="noopener">Read more <i class="bi bi-arrow-right"></i></a>
+          </div></div>
+        </article>
+
+        <!-- 十 Gallery -->
+        <article class="card c-ochre">
+          <div class="card-top">
+            <span class="num">十</span>
+            <svg class="motif" viewBox="0 0 56 56" aria-hidden="true"><rect x="8" y="12" width="28" height="28" rx="4"/><rect x="20" y="22" width="28" height="28" rx="4" opacity=".6"/></svg>
+          </div>
+          <h2>Gallery</h2>
+          <p class="teaser">Travels, nature walks and quiet scenes that were worth noticing and saving.</p>
+          <button class="cta" type="button" aria-expanded="false"><span class="cta-label">Know more</span><span class="plus"></span></button>
+          <div class="more"><div class="more-inner">
+            <p>A visual glimpse into my travels, nature walks, and everyday scenes that made me stop for a moment—sometimes to take in the light, a quiet street, or just something oddly beautiful. No big plan behind the photos—just things that felt worth noticing and saving.</p>
+            <div class="slider" aria-roledescription="carousel" aria-label="Gallery preview">
+              <img class="on" src="images/gallery/thumbnails/ahmedabad_thumb.jpg" alt="Gallery image 1" loading="lazy">
+              <img src="images/gallery/thumbnails/china7_thumb.jpg" alt="Gallery image 2" loading="lazy">
+              <img src="images/gallery/thumbnails/cuhp5_thumb.jpg" alt="Gallery image 3" loading="lazy">
+              <button class="go prev" type="button" aria-label="Previous image"><i class="bi bi-chevron-left"></i></button>
+              <button class="go next" type="button" aria-label="Next image"><i class="bi bi-chevron-right"></i></button>
+              <div class="dotsnav"><span class="on"></span><span></span><span></span></div>
+            </div>
+            <a class="btn" href="images/gallery.html">View more <i class="bi bi-arrow-right"></i></a>
+          </div></div>
+        </article>
+
+      </section>
+
+      <footer class="foot">
+        <span class="ma" aria-hidden="true">間</span>
+        <p class="quiet">The space between things is part of the design.</p>
+        <p>&copy; 2026 Vivek Kumar Jha. All rights reserved.</p>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $  = function (s, r) { return (r || document).querySelector(s); };
+    var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+    var root = document.documentElement;
+    var body = document.body;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---------- Star field (night mode and cover) ---------- */
+    function Stars(canvas) {
+      var ctx = canvas.getContext('2d'), w = 0, h = 0, stars = [], raf = 0, running = false;
+      function size() {
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = canvas.clientWidth; h = canvas.clientHeight;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        var n = Math.round(w * h / 9000);
+        stars = [];
+        for (var i = 0; i < n; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.2 + .2, p: Math.random() * 6.28, s: .4 + Math.random() * 1.4 });
+      }
+      function draw(t) {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#f4efe2';
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          ctx.globalAlpha = (.3 + .7 * Math.abs(Math.sin(t / 1000 * s.s + s.p))) * .85;
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+        }
+      }
+      function loop(t) { draw(t); if (running) raf = requestAnimationFrame(loop); }
+      return {
+        start: function () { if (running) return; running = true; size(); if (reduce) { draw(0); running = false; } else raf = requestAnimationFrame(loop); },
+        stop:  function () { running = false; cancelAnimationFrame(raf); ctx.clearRect(0, 0, w, h); },
+        resize: function () { if (running || reduce) { size(); if (reduce) draw(0); } }
+      };
+    }
+    var pageStars  = Stars($('#stars'));
+    var coverStars = Stars($('#coverStars'));
+    coverStars.start();
+    window.addEventListener('resize', function () { pageStars.resize(); coverStars.resize(); });
+
+    /* ---------- Theme ---------- */
+    function syncStars() { if (root.classList.contains('dark')) pageStars.start(); else pageStars.stop(); }
+    syncStars();
+    $('#themeBtn').addEventListener('click', function () {
+      var dark = root.classList.toggle('dark');
+      try { localStorage.setItem('darkMode', dark); } catch (e) {}
+      syncStars();
+    });
+
+    /* ---------- Cover ---------- */
+    var cover = $('#cover');
+    var entered = false;
+    $('.cover-inner').style.willChange = 'transform';
+    document.addEventListener('mousemove', function (e) {
+      var x = (e.clientX / innerWidth - .5) * 24, y = (e.clientY / innerHeight - .5) * 24;
+      if (!entered) $('.cover-inner').style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      var hero = $('#hero');
+      hero.style.setProperty('--px', ((e.clientX / innerWidth - .5) * 2).toFixed(3));
+      hero.style.setProperty('--py', ((e.clientY / innerHeight - .5) * 2).toFixed(3));
+    });
+    function enter() {
+      if (entered) return;
+      entered = true;
+      body.classList.add('entered');
+      $('#shell').inert = false;
+      cover.classList.add('leaving');
+      setTimeout(function () { cover.remove(); coverStars.stop(); }, 1400);
+    }
+    $('#enterBtn').addEventListener('click', enter);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !entered) enter(); });
+
+    /* ---------- Sidebar ---------- */
+    $('#pinBtn').addEventListener('click', function () {
+      var p = root.classList.toggle('pinned');
+      try { localStorage.setItem('sidePinned', p); } catch (e) {}
+    });
+    function closeMenu() { body.classList.remove('menu-open'); }
+    $('#menuBtn').addEventListener('click', function () { body.classList.toggle('menu-open'); });
+    $('#scrim').addEventListener('click', closeMenu);
+    $$('.nav a').forEach(function (a) { a.addEventListener('click', closeMenu); });
+
+    /* ---------- Scroll progress ---------- */
+    var bar = $('#progress');
+    function onScroll() {
+      var max = root.scrollHeight - root.clientHeight;
+      bar.style.transform = 'scaleX(' + (max > 0 ? root.scrollTop / max : 0) + ')';
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    /* ---------- Reveal on scroll ---------- */
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+    function observe() { $$('[data-reveal], .card').forEach(function (el) { if (!el.classList.contains('in')) io.observe(el); }); }
+
+    /* ---------- Staggered masonry columns ---------- */
+    var cardsEl = $('#cards');
+    var items = $$(':scope > .card', cardsEl);
+    var current = 0;
+    function layout() {
+      var w = window.innerWidth;
+      var n = w >= 1180 ? 3 : (w >= 760 ? 2 : 1);
+      if (n === current) return;
+      current = n;
+      cardsEl.dataset.cols = n;
+      cardsEl.style.gridTemplateColumns = 'repeat(' + n + ', minmax(0, 1fr))';
+      cardsEl.innerHTML = '';
+      var cols = [];
+      for (var i = 0; i < n; i++) { var c = document.createElement('div'); c.className = 'col'; cardsEl.appendChild(c); cols.push(c); }
+      items.forEach(function (el, i) { cols[i % n].appendChild(el); });
+      observe();
+    }
+    layout();
+    window.addEventListener('resize', layout);
+    observe();
+
+    /* ---------- Cards: a gentle spring ---------- */
+    function openCard(card) {
+      var more = $('.more', card), btn = $('.cta', card);
+      more.style.display = 'block';
+      var h = more.scrollHeight;
+      if (!reduce) {
+        var a = more.animate([
+          { height: '0px', opacity: 0, easing: 'ease-out' },
+          { height: (h * 1.05) + 'px', opacity: 1, offset: .58, easing: 'ease-in-out' },
+          { height: (h * .985) + 'px', offset: .8, easing: 'ease-in-out' },
+          { height: h + 'px' }
+        ], { duration: 800 });
+        a.onfinish = function () { more.style.height = 'auto'; };
+      }
+      card.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      $('.cta-label', card).textContent = 'Close';
+    }
+    function closeCard(card) {
+      var more = $('.more', card), btn = $('.cta', card);
+      var done = function () { more.style.display = 'none'; more.style.height = ''; };
+      if (reduce) done();
+      else {
+        var h = more.offsetHeight;
+        more.animate([{ height: h + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 380, easing: 'ease-in' }).onfinish = done;
+      }
+      card.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      $('.cta-label', card).textContent = 'Know more';
+    }
+    $$('.card').forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a, .slider')) return;
+        if (e.target.closest('.more') && !e.target.closest('.more-inner > .btn')) {
+          /* clicking text inside an open card should not close it */
+          return;
+        }
+        card.classList.contains('open') ? closeCard(card) : openCard(card);
+      });
+      card.addEventListener('pointermove', function (e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+
+    /* ---------- Gallery slider ---------- */
+    $$('.slider').forEach(function (s) {
+      var imgs = $$('img', s), dots = $$('.dotsnav span', s), i = 0;
+      function go(n) {
+        imgs[i].classList.remove('on'); dots[i].classList.remove('on');
+        i = (n + imgs.length) % imgs.length;
+        imgs[i].classList.add('on'); dots[i].classList.add('on');
+      }
+      $('.prev', s).addEventListener('click', function (e) { e.stopPropagation(); go(i - 1); });
+      $('.next', s).addEventListener('click', function (e) { e.stopPropagation(); go(i + 1); });
+      if (!reduce) setInterval(function () { if (s.closest('.card').classList.contains('open')) go(i + 1); }, 4800);
+    });
+  })();
+  </script>
+</body>
+</html>
