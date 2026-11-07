@@ -231,6 +231,7 @@
   .card.brand-card[data-brand="Al Jazeera English"] { --brand-bg: #F2B632; --brand-fg: #17212B; }
   .card.brand-card[data-brand="Channel NewsAsia"] { --brand-bg: #123B5D; --brand-fg: #FFFFFF; }
   .card.brand-card[data-brand="The Hindu"] { --brand-bg: #8E1B24; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="DD India"] { --brand-bg: #FF9933; --brand-fg: #202020; }
   .card.brand-card[data-brand="The Guardian"] { --brand-bg: #052962; --brand-fg: #FFFFFF; }
   .card.brand-card[data-brand="BBC News"] { --brand-bg: #B5121B; --brand-fg: #FFFFFF; }
   .card.brand-card[data-brand="Reuters"] { --brand-bg: #F05A28; --brand-fg: #1D1D1D; }
@@ -245,6 +246,9 @@
   .card.brand-card[data-brand="Aeon"] { --brand-bg: #641B2B; --brand-fg: #FFFFFF; }
   .card.brand-card[data-brand="BLM"] { --brand-bg: #7A2338; --brand-fg: #FFFFFF; }
   .card.brand-card[data-brand="Works in Progress"] { --brand-bg: #D9E5C5; --brand-fg: #1E2B1A; }
+  .card.brand-card[data-brand="TIME"] { --brand-bg: #E31B23; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="DW"] { --brand-bg: #07529A; --brand-fg: #FFFFFF; }
+  .card.brand-card[data-brand="ARTE"] { --brand-bg: #3D2855; --brand-fg: #FFFFFF; }
 
 </style>
 </head>
@@ -259,7 +263,30 @@
     <h2 class="section-title">News Outlets</h2>
     <div class="cards-grid">
 
-      <div class="card brand-card" data-brand="Al Jazeera English">
+<div class="card brand-card" data-brand="The Hindu">
+        <div class="card-image">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/The_Hindu_logo.svg?width=500" alt="The Hindu" onerror="this.parentElement.innerHTML='<div class=logo-fallback>TH</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.thehindu.com" target="_blank" rel="noopener" class="card-link">The Hindu</a>
+          </h3>
+          <p class="card-description">India's leading national newspaper providing comprehensive South Asia coverage and analysis.</p>
+        </div>
+      </div>
+
+      <div class="card brand-card" data-brand="DD India">
+        <div class="card-image">
+          <img src="https://thumb.wikimedia.org/wikipedia/en/thumb/3/33/DD_India_logo.svg/3840px-DD_India_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail" alt="DD India" onerror="this.parentElement.innerHTML='<div class=logo-fallback>DD India</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://ddindia.co.in/" target="_blank" rel="noopener" class="card-link">DD India</a>
+          </h3>
+          <p class="card-description">India’s international news platform, offering national and global coverage from an Indian public-service broadcasting perspective.</p>
+        </div>
+      </div>
+<div class="card brand-card" data-brand="Al Jazeera English">
         <div class="card-image">
           <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aljazeera_eng.svg?width=500" alt="Al Jazeera English" onerror="this.parentElement.innerHTML='<div class=logo-fallback>AJ</div>'" />
         </div>
@@ -283,17 +310,7 @@
         </div>
       </div>
       
-      <div class="card brand-card" data-brand="The Hindu">
-        <div class="card-image">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/The_Hindu_logo.svg?width=500" alt="The Hindu" onerror="this.parentElement.innerHTML='<div class=logo-fallback>TH</div>'" />
-        </div>
-        <div class="card-content">
-          <h3 class="card-title">
-            <a href="https://www.thehindu.com" target="_blank" rel="noopener" class="card-link">The Hindu</a>
-          </h3>
-          <p class="card-description">India's leading national newspaper providing comprehensive South Asia coverage and analysis.</p>
-        </div>
-      </div>
+      
       
       <div class="card brand-card" data-brand="The Guardian">
         <div class="card-image">
@@ -332,7 +349,32 @@
       </div>
       
 
-    </div>
+
+      <div class="card brand-card" data-brand="TIME">
+        <div class="card-image">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Time_Magazine_logo.svg?width=500" alt="TIME magazine logo" onerror="this.parentElement.innerHTML='<div class=logo-fallback>TIME</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://time.com" target="_blank" rel="noopener" class="card-link">TIME</a>
+          </h3>
+          <p class="card-description">International news and magazine journalism covering politics, world affairs, culture, science, and the people shaping our time.</p>
+        </div>
+      </div>
+
+      <div class="card brand-card" data-brand="DW">
+        <div class="card-image">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Deutsche_Welle_Logo.svg?width=500" alt="Deutsche Welle logo" onerror="this.parentElement.innerHTML='<div class=logo-fallback>DW</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.dw.com" target="_blank" rel="noopener" class="card-link">DW</a>
+          </h3>
+          <p class="card-description">German international public-service journalism offering global reporting and a distinctive European perspective on politics, society, and culture.</p>
+        </div>
+      </div>
+
+</div>
   </section>
 
   <section class="section">
@@ -478,6 +520,19 @@
       </div>
 
 
+
+      
+      <div class="card brand-card" data-brand="ARTE">
+        <div class="card-image">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Arte_Logo_2026.svg?width=500" alt="ARTE logo" onerror="this.parentElement.innerHTML='<div class=logo-fallback>ARTE</div>'" />
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">
+            <a href="https://www.arte.tv" target="_blank" rel="noopener" class="card-link">ARTE</a>
+          </h3>
+          <p class="card-description">Franco-German public-service culture and documentary broadcaster exploring European affairs, history, science, cinema, and the arts.</p>
+        </div>
+      </div>
 
       <div class="card brand-card" data-brand="Works in Progress">
         <div class="card-image">
